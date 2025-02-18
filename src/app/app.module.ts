@@ -6,6 +6,8 @@ import { AppComponent } from './app.component';
 import { AuthModule } from './screens/auth/auth.module';
 import { HttpClientModule } from '@angular/common/http';
 import { LayoutModule } from './layout/layout.module';
+import { ToastrModule } from 'ngx-toastr';
+import { BrowserAnimationsModule } from '@angular/platform-browser/animations';
 
 @NgModule({
   declarations: [
@@ -17,6 +19,8 @@ import { LayoutModule } from './layout/layout.module';
     AuthModule,
     HttpClientModule,
     LayoutModule,
+    ToastrModule.forRoot(),
+    BrowserAnimationsModule
   ],
   providers: [],
   bootstrap: [AppComponent]

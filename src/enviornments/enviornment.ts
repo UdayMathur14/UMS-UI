@@ -5,5 +5,5 @@
 export const environment = {
     production: false,
     // apiPath: 'https://localhost:7199'
-    apiPath: 'http://111.93.61.253:8061'
+    apiPath: 'https://tickwiz-ums.azurewebsites.net'
 };
