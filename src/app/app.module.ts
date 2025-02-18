@@ -6,6 +6,8 @@ import { AppComponent } from './app.component';
 import { LoginComponent } from './screens/auth/login/login.component';
 import { SignupComponent } from './screens/auth/signup/signup.component';
 import { AuthModule } from './screens/auth/auth.module';
+import { FormsModule } from '@angular/forms';
+import { HttpClientModule } from '@angular/common/http';
 
 @NgModule({
   declarations: [
@@ -17,6 +19,7 @@ import { AuthModule } from './screens/auth/auth.module';
     BrowserModule,
     AppRoutingModule,
     AuthModule,
+    HttpClientModule,
   ],
   providers: [],
   bootstrap: [AppComponent]
