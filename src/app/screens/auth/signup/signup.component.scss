@@ -1,6 +1,14 @@
 .login-container {
     display: flex;
     height: 100vh;
+    
+    .image-container {
+      background-image: url('../../../../assets/images/tms-login.jpg');
+      background-size: cover;
+      background-repeat: no-repeat;
+      background-position: center center;
+      width: 50%;
+    }
   }
   
   .login-right,
