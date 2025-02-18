@@ -1,0 +1,85 @@
+@import '../../../../assets/SCSS/mixins.scss';
+
+.login-container {
+  display: flex;
+  height: 100vh;
+  background: var(--white);
+
+  .image-container {
+    background-image: url('../../../../assets/images/tms-login.jpg');
+    background-size: cover;
+    background-repeat: no-repeat;
+    background-position: center center;
+    width: 50%;
+  }
+
+  .form-container {
+    flex: 1;
+    display: flex;
+    justify-content: center;
+    align-items: center;
+    flex-direction: column;
+
+    .login-header {
+      width: 400px;
+
+      h1 {
+        font-size: var(--spacer-26);
+        font-weight: 600;
+        margin-bottom: 0;
+      }
+
+      p {
+        font-size: var(--spacer-12);
+        color: var(--gray1);
+        margin-top: var(--spacer-10);
+      }
+    }
+  }
+
+  .lg-logo img {
+    max-width: var(--spacer-100);
+  }
+
+  form {
+    text-align: center;
+
+    .input-field-login {
+      position: relative;
+
+      input {
+        width: 400px;
+        outline: none;
+        @include inputFieldLogin(50px);
+      }
+
+      .img-icon-left,
+      .img-icon-right {
+        position: absolute;
+        width: var(--spacer-15);
+      }
+
+      .img-icon-left {
+        left: var(--spacer-10);
+        top: calc(50% - var(--spacer-8));
+      }
+
+      .img-icon-right {
+        cursor: pointer;
+        right: var(--spacer-10);
+        top: calc(50% - var(--spacer-4));
+      }
+    }
+
+    .login-button {
+      @include buttonLogin;
+    }
+
+    .reset-password-text {
+      margin-top: var(--spacer-10);
+      font-size: var(--spacer-14);
+      font-weight: 600;
+      cursor: pointer;
+    }
+  }
+}
