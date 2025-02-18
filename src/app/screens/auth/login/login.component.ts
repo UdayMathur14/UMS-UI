@@ -15,7 +15,7 @@ export class LoginComponent {
 
   login(event: Event) {
     event.preventDefault();  // Prevent form's default submit behavior
-    this.router.navigate(['/admin/dashboard']);  // Navigate to dashboard
+    this.router.navigate(['/layout']);  // Navigate to layout page
   }
 
   onForgotPassword() {

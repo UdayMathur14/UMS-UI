@@ -1,0 +1,61 @@
+<div class="header d-flex bd-highlight" [class.sidebar-collapsed]="isSidebarCollapsed">
+    <h3 class="message">{{greetingMessage}}</h3>
+    <div class="p-2 flex-grow-1 bd-highlight">
+        <div class="search-container">
+            <i class="bi bi-search search-icon"></i>
+            <input type="text" placeholder="Search" class="search-bar">
+        </div>
+    </div>
+
+    <div class="p-2 bd-highlight">
+        <div class="notifications" (click)="toggleNotifications()">
+            <i class="bi bi-bell">
+                <span *ngIf="notifications.length"
+                    class="position-absolute translate-middle badge rounded-pill bg-danger">
+                    {{ notifications.length > 99 ? '99+' : notifications.length }}
+                </span>
+            </i>
+        </div>
+    </div>
+    <div #subNotifyWrap class="sub-notify-wrap">
+        <div class="sub-notify">
+            <div class="notify-list">
+                <h4>Notifications</h4>
+                <ng-container *ngIf="notifications.length > 0; else noNotifications">
+                    <h6 *ngFor="let notification of notifications">{{ notification }}</h6>
+                    <p (click)="markAllAsRead()" class="mark-read">
+                        <img src="../../../assets/images/icons/doubletick.svg">
+                        <span>Mark all as Read</span>
+                    </p>
+                </ng-container>
+                <ng-template #noNotifications>
+                    <p>No new notifications</p>
+                </ng-template>
+            </div>
+        </div>
+    </div>
+
+
+    <div class="user-profile" (click)="toggleProfile()">
+        <img src="../../../assets/images/user-pic.png" class="user-pic">
+        <span class="user-name">User Name
+            <img src="../../../assets/images/icons/down.svg" alt="" [class.rotate-up]="isProfileOpen"
+                class="toggle-icon">
+        </span>
+    </div>
+
+    <div #subProfileWrap class="sub-profile-wrap">
+        <div class="sub-profile">
+            <div class="user-info">
+                <img src="../../../assets/images/user-pic.png">
+                <h3>User Name</h3>
+            </div>
+            <!-- <hr> -->
+            <h5>UMS</h5>
+            <h6>Project Name: User Management</h6>
+            <h4 style="cursor: pointer;" routerLink="home">Logout
+                <img src="../../../assets/images/icons/signOutblack.svg" class="signout">
+            </h4>
+        </div>
+    </div>
+</div>
