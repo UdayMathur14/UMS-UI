@@ -127,6 +127,7 @@ export class LoginComponent implements OnInit {
       (response: any) => {
         const encrRes = btoa(JSON.stringify(response));
         localStorage.setItem('data', atob(encrRes));
+        this.router.navigate(['/masters'])
       },
       (error) => {
       }
