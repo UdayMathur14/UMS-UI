@@ -3,6 +3,7 @@ import { Component, OnInit } from '@angular/core';
 import { Router } from '@angular/router';
 import { MsalService } from '@azure/msal-angular';
 import { AccountInfo, EventMessage, EventType } from '@azure/msal-browser';
+import { AuthService } from '../../../core/service/auth.service';
 
 @Component({
   selector: 'app-login',
@@ -13,11 +14,14 @@ export class LoginComponent implements OnInit {
   showPassword: boolean = false;
   userProfile: any;
   loginDisplay = false;
+  emailId: string = '';
+  password: string = '';
 
   constructor(
     private router: Router,
     private msalService: MsalService,
-    private http: HttpClient
+    private http: HttpClient,
+    private authService: AuthService
   ) { }
 
   ngOnInit() {
@@ -116,5 +120,16 @@ export class LoginComponent implements OnInit {
 
   onForgotPassword() {
     this.router.navigate(['']);
+  }
+
+  onSignIn(){
+    this.authService.login({ username: this.emailId, password: this.password }).subscribe(
+      (response: any) => {
+        const encrRes = btoa(JSON.stringify(response));
+        localStorage.setItem('data', atob(encrRes));
+      },
+      (error) => {
+      }
+    );
   }
 }
