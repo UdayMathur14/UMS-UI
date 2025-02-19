@@ -1,51 +1,50 @@
 <div class="login-container">
-    <div class="image-container"></div>
-  
-    <div class="login-right">
-      <h2>SignUp</h2>
-      <form [formGroup]="signUpForm" (ngSubmit)="onSubmit()">
-        <label for="fullName" class="form-label">Full Name</label>
-        <input type="text" class="form-control" id="fullName" formControlName="userName">
-        <small class="text-danger" *ngIf="signUpForm.controls['userName'].hasError('required') && signUpForm.controls['userName'].touched">
-          Full Name is required.
-        </small>
-  
-        <label for="email" class="form-label">Email</label>
-        <input type="email" class="form-control" id="email" formControlName="emailId">
-        <small class="text-danger" *ngIf="signUpForm.controls['emailId'].hasError('required') && signUpForm.controls['emailId'].touched">
-          Email is required.
-        </small>
-        <small class="text-danger" *ngIf="signUpForm.controls['emailId'].hasError('email') && signUpForm.controls['emailId'].touched">
-          Enter a valid email address.
-        </small>
-  
-        <label for="password" class="form-label">Password</label>
-        <input type="password" class="form-control" id="password" formControlName="password">
-        <small class="text-danger" *ngIf="signUpForm.controls['password'].hasError('required') && signUpForm.controls['password'].touched">
-          Password is required.
-        </small>
-        <small class="text-danger" *ngIf="signUpForm.controls['password'].hasError('minLength') && signUpForm.controls['password'].touched">
-          Password must be at least 6 characters long.
-        </small>
-        <small class="text-danger" *ngIf="signUpForm.controls['password'].hasError('invalidCombination') && signUpForm.controls['password'].touched">
-          Password must include at least one uppercase letter, one number, and one special character.
-        </small>
-  
-        <label for="number" class="form-label">Phone Number</label>
-        <input type="tel" class="form-control" id="number" formControlName="contactNo">
-        <small class="text-danger" *ngIf="signUpForm.controls['contactNo'].hasError('required') && signUpForm.controls['contactNo'].touched">
-          Phone number is required.
-        </small>
-  
-        <label for="name" class="form-label">Company/Organization Name</label>
-        <input type="text" class="form-control" id="name" formControlName="organisation">
-        <small class="text-danger" *ngIf="signUpForm.controls['organisation'].hasError('required') && signUpForm.controls['organisation'].touched">
-          Organization name is required.
-        </small>
-  
-        <button type="submit" class="btn btn-signup" [disabled]="!signUpForm.valid">Sign Up</button>
-      </form>
-      <p><small>Already have an account?</small> <a class="ms-2" href="/auth/login">Log In</a></p>
-    </div>
+  <div class="image-container"></div>
+
+  <div class="login-right">
+    <h2>Sign Up</h2>
+    <form [formGroup]="signUpForm" (ngSubmit)="onSubmit()">
+      <label for="fullName" class="form-label">Full Name</label>
+      <input type="text" class="form-control" id="fullName" formControlName="userName">
+      <small class="text-danger" *ngIf="signUpForm.controls['userName'].hasError('required') && signUpForm.controls['userName'].touched">
+        Full Name is required.
+      </small>
+
+      <label for="email" class="form-label">Email</label>
+      <input type="email" class="form-control" id="email" formControlName="emailId" [disabled]="isMicrosoftLogin">
+      <small class="text-danger" *ngIf="signUpForm.controls['emailId'].hasError('required') && signUpForm.controls['emailId'].touched">
+        Email is required.
+      </small>
+      <small class="text-danger" *ngIf="signUpForm.controls['emailId'].hasError('email') && signUpForm.controls['emailId'].touched">
+        Enter a valid email address.
+      </small>
+
+      <label for="password" class="form-label">{{ passwordLabel }}</label>
+      <input type="password" class="form-control" id="password" formControlName="password">
+      <small class="text-danger" *ngIf="signUpForm.controls['password'].hasError('required') && signUpForm.controls['password'].touched">
+        {{ passwordLabel }} is required.
+      </small>
+      <small class="text-danger" *ngIf="signUpForm.controls['password'].hasError('minLength') && signUpForm.controls['password'].touched">
+        {{ passwordLabel }} must be at least 6 characters long.
+      </small>
+      <small class="text-danger" *ngIf="signUpForm.controls['password'].hasError('invalidCombination') && signUpForm.controls['password'].touched">
+        {{ passwordLabel }} must include at least one uppercase letter, one number, and one special character.
+      </small>
+
+      <label for="number" class="form-label">Phone Number</label>
+      <input type="tel" class="form-control" id="number" formControlName="contactNo">
+      <small class="text-danger" *ngIf="signUpForm.controls['contactNo'].hasError('required') && signUpForm.controls['contactNo'].touched">
+        Phone number is required.
+      </small>
+
+      <label for="name" class="form-label">Company/Organization Name</label>
+      <input type="text" class="form-control" id="name" formControlName="organisation">
+      <small class="text-danger" *ngIf="signUpForm.controls['organisation'].hasError('required') && signUpForm.controls['organisation'].touched">
+        Organization name is required.
+      </small>
+
+      <button type="submit" class="btn btn-signup" [disabled]="!signUpForm.valid">Sign Up</button>
+    </form>
+    <p><small>Already have an account?</small> <a class="ms-2" href="/auth/login">Log In</a></p>
   </div>
-  
+</div>
