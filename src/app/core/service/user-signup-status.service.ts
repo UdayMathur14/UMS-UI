@@ -28,4 +28,9 @@ export class UserSignupStatusService extends CRUDService<AuthRequest> {
       const url = `${APIConstant.signupStatusDataById}/${id}`;
       return this.baseService.get(url);
     }
+
+    signupUserStatusUpdate(id: string = '', data: any) {
+      const url = `${APIConstant.signupStatusUpdate}/${id}`;
+      return this.baseService.put(url, data);
+    }
 }

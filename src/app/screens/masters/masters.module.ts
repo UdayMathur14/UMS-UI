@@ -8,13 +8,15 @@ import { EditUserSignupStatusComponent } from './user-signup-status/edit-user-si
 import { NgSelectModule } from '@ng-select/ng-select';
 import { FormsModule, ReactiveFormsModule } from '@angular/forms';
 import { UserSignupStatusFilterComponent } from './user-signup-status/filter/user-signup-status-filter.component';
-import { NgbPaginationModule } from '@ng-bootstrap/ng-bootstrap';
+import { NgbModule, NgbPaginationModule } from '@ng-bootstrap/ng-bootstrap';
+import { ApprovalModalComponent } from './user-signup-status/approval-modal/approval-modal.component';
 @NgModule({
   declarations: [
     UserSignupStatusComponent,
     UserSignupStatusGridTableComponent,
     EditUserSignupStatusComponent,
-    UserSignupStatusFilterComponent
+    UserSignupStatusFilterComponent,
+    ApprovalModalComponent,
   ],
   imports: [
     CommonModule,
@@ -23,6 +25,7 @@ import { NgbPaginationModule } from '@ng-bootstrap/ng-bootstrap';
     ReactiveFormsModule,
     FormsModule,
     NgbPaginationModule,
+    NgbModule
   ]
 })
 export class MastersModule { }

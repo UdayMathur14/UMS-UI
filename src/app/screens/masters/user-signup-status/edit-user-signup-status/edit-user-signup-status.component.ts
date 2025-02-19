@@ -1,43 +1,55 @@
 import { Component, OnInit } from '@angular/core';
-import { ActivatedRoute } from '@angular/router';
+import { ActivatedRoute, Router } from '@angular/router';
 import { UserSignupStatusService } from '../../../../core/service/user-signup-status.service';
 import { FormGroup, FormControl, Validators } from '@angular/forms';
+import { LoginComponent } from '../../../auth/login/login.component';
+import { NgbModal } from '@ng-bootstrap/ng-bootstrap';
+import { ApprovalModalComponent } from '../approval-modal/approval-modal.component';
+import { ToastrService } from 'ngx-toastr';
 
 @Component({
   selector: 'app-edit-user-signup-status',
   templateUrl: './edit-user-signup-status.component.html',
-  styleUrl: './edit-user-signup-status.component.scss'
+  styleUrl: './edit-user-signup-status.component.scss',
 })
 export class EditUserSignupStatusComponent implements OnInit {
-
   userId: any;
-  signupUser:any = [];
+  signupUser: any = [];
   loadSpinner: boolean = true;
+  showSaveButton: boolean = false;
+  emailId:string = '';
   signupUserForm = new FormGroup({
-      name: new FormControl('', Validators.required),
-      emailId: new FormControl('', Validators.required),
-      contactNo: new FormControl('', Validators.required),
-      organisation: new FormControl('', Validators.required),
-      status: new FormControl('', Validators.required)
-    });
+    name: new FormControl('', Validators.required),
+    emailId: new FormControl('', Validators.required),
+    contactNo: new FormControl('', Validators.required),
+    organisation: new FormControl('', Validators.required),
+    status: new FormControl('', Validators.required),
+  });
 
-  constructor(private activatedRoute: ActivatedRoute, private userService: UserSignupStatusService){}
+  constructor(
+    private activatedRoute: ActivatedRoute,
+    private userService: UserSignupStatusService,
+    private router: Router,
+    private modalService: NgbModal,
+    private toastr: ToastrService
+  ) {}
 
   ngOnInit(): void {
-    this.userId = this.activatedRoute.snapshot.paramMap.get("id");
+    this.userId = this.activatedRoute.snapshot.paramMap.get('id');
     this.getSignUpUserListById();
   }
 
   getSignUpUserListById() {
     this.userService.signupUserStatusDataById(this.userId).subscribe(
       (response: any) => {
+        this.emailId = response.emailId;
         this.signupUserForm.patchValue({
           name: response?.name,
           emailId: response?.emailId,
           contactNo: response?.contactNo,
           organisation: response?.organisation,
           status: response?.status,
-        })
+        });
         this.loadSpinner = false;
       },
       (error) => {
@@ -46,4 +58,53 @@ export class EditUserSignupStatusComponent implements OnInit {
     );
   }
 
+  onCancel() {
+    this.router.navigate(['/masters/user-signup-status'])
+  }
+
+  onChangeStatus(data: any){
+    if(data.toLowerCase() == 'rejected'){
+      this.showSaveButton = true;
+    } else{
+      this.showSaveButton = false;
+    }
+    if(data.toLowerCase() == 'approved'){
+    let documentModal = this.modalService.open(ApprovalModalComponent, {
+      size: 'lg',
+      backdrop: 'static',
+      windowClass: 'modal-width',
+    });
+    documentModal.componentInstance.status = data;
+    documentModal.componentInstance.id = data;
+    documentModal.componentInstance.userId = this.userId;
+    documentModal.componentInstance.emailId = this.emailId;
+    documentModal.result.then(
+      (result) => {
+        if (result) {
+          this.router.navigate(['master/advice']);
+        }
+      },
+    );
+  }
+}
+
+updateUserSignUpStatus() {
+  const data = {
+    status: this.signupUserForm.controls['status']?.value,
+    actionBy: '1',
+    userType: '',
+    userCategory: '',
+    designation: '',
+  };
+  this.userService.signupUserStatusUpdate(this.userId, data).subscribe(
+    (response: any) => {
+      this.loadSpinner = false;
+      this.toastr.success(response.message);
+      this.onCancel()
+    },
+    (error) => {
+      this.loadSpinner = false;
+    }
+  );
+}
 }
