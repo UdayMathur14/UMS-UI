@@ -1,4 +1,4 @@
-import { Component } from '@angular/core';
+import { Component, OnInit } from '@angular/core';
 import { AuthService } from '../../../core/service/auth.service';
 import { FormGroup, FormControl, Validators } from '@angular/forms';
 import { Router } from '@angular/router';
@@ -10,48 +10,63 @@ import { ToastrService } from 'ngx-toastr';
   templateUrl: './signup.component.html',
   styleUrl: './signup.component.scss'
 })
-export class SignupComponent {
-  signUpForm = new FormGroup({
-    userName: new FormControl('', Validators.required),
-    emailId: new FormControl('', Validators.required),
-    contactNo: new FormControl('', Validators.required),
-    password: new FormControl('', [Validators.required,  Validators.minLength(6),
-      this.passwordValidator()]),
-    organisation: new FormControl('', Validators.required),
-  });
+export class SignupComponent implements OnInit {
+  signUpForm!: FormGroup;
+  isMicrosoftLogin = false;
+  passwordLabel = 'Password';
 
-  constructor(private authService: AuthService, private router: Router,   private passwordService: PasswordDataShareService,
+  constructor(
+    private authService: AuthService, 
+    private router: Router,   
+    private passwordService: PasswordDataShareService,
     private toastr: ToastrService
-  ){}
+  ) {}
 
-  onSubmit(){
-    if(this.signUpForm.valid){
-      const data = {
-        "name": this.signUpForm.controls['userName']?.value,
-        "emailId": this.signUpForm.controls['emailId']?.value,
-        "contactNo": this.signUpForm.controls['contactNo']?.value,
-        "password": this.signUpForm.controls['password']?.value,
-        "organisation": this.signUpForm.controls['organisation']?.value,
-        "otp":'',
-      }
-      this.passwordService.setPasswordData({
-        "name": this.signUpForm.controls['userName']?.value,
-        "emailId": this.signUpForm.controls['emailId']?.value,
-        "contactNo": this.signUpForm.controls['contactNo']?.value,
-        "password": this.signUpForm.controls['password']?.value,
-        "organisation": this.signUpForm.controls['organisation']?.value,
-      });
+  ngOnInit() {
+    // Check if user logged in via Microsoft
+    const userProfile = JSON.parse(localStorage.getItem('userProfile') || '{}');
+    const email = userProfile?.mail;
 
-      this.authService.signUp(data).subscribe((res) =>{
-        if (res.code === 200) {
-          this.toastr.success(res.message, 'Success');
-          this.router.navigate(['/otpValidation'])
-        }
-      },error => {
-        this.toastr.error(error?.error?.message, 'Error');
-    })
+    this.isMicrosoftLogin = !!email; // If email exists, user logged in via Microsoft
+
+    this.signUpForm = new FormGroup({
+      userName: new FormControl('', Validators.required),
+      emailId: new FormControl({ value: email || '', disabled: this.isMicrosoftLogin }, Validators.required),
+      contactNo: new FormControl('', Validators.required),
+      password: new FormControl('', [Validators.required, Validators.minLength(6), this.passwordValidator()]),
+      organisation: new FormControl('', Validators.required),
+    });
+
+    if (this.isMicrosoftLogin) {
+      this.passwordLabel = 'New Password';
     }
+  }
 
+  onSubmit() {
+    if (this.signUpForm.valid) {
+      const data = {
+        name: this.signUpForm.controls['userName']?.value,
+        emailId: this.signUpForm.controls['emailId']?.value,
+        contactNo: this.signUpForm.controls['contactNo']?.value,
+        password: this.signUpForm.controls['password']?.value,
+        organisation: this.signUpForm.controls['organisation']?.value,
+        otp: '',
+      };
+
+      this.passwordService.setPasswordData(data);
+
+      this.authService.signUp(data).subscribe(
+        (res) => {
+          if (res.code === 200) {
+            this.toastr.success(res.message, 'Success');
+            this.router.navigate(['/otpValidation']);
+          }
+        },
+        (error) => {
+          this.toastr.error(error?.error?.message, 'Error');
+        }
+      );
+    }
   }
 
   passwordValidator() {
@@ -61,12 +76,10 @@ export class SignupComponent {
         return null;
       }
 
-      // Minimum 10 characters
       if (password.length < 6) {
         return { minLength: true };
       }
 
-      // Check for combination of at least 1 special, 1 uppercase, and 1 number
       const hasSpecial = /[!@#$%^&*(),.?":{}|<>]/.test(password);
       const hasUpperCase = /[A-Z]/.test(password);
       const hasNumber = /\d/.test(password);
