@@ -6,13 +6,14 @@ const routes: Routes = [
   { path: '', redirectTo: '/login', pathMatch: 'full' },
   { path: 'auth', loadChildren: () => import('./screens/auth/auth.module').then(m => m.AuthModule) },
   {
-    path: 'layout',
+    path: '',
     component: LayoutComponent,
     children: [
       // { path: '', loadChildren: () => import('./screens/demo.module').then(m => m.demoModule) },
       // { path: '', loadChildren: () => import('./screens/demo.module').then(m => m.demoModule) },
       // { path: '', loadChildren: () => import('./screens/demo.module').then(m => m.demoModule) },
       // { path: '', loadChildren: () => import('./screens/demo.module').then(m => m.demoModule) },
+      { path: 'masters', loadChildren: () => import('./screens/masters/masters.module').then(m => m.MastersModule) },
     ],
   },
 ];
