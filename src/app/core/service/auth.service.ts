@@ -9,14 +9,32 @@ import { APIConstant } from '../constants/api.constant';
   providedIn: 'root',
 })
 export class AuthService extends CRUDService<AuthRequest> {
+
+  private isAuthenticated = false;
+  private authSecretKey = 'data';
+
   constructor(
     protected override baseService: BaseService,
-    private http: HttpClient
   ) {
     super(baseService, APIConstant.basePath);
+    this.isAuthenticated = !!localStorage.getItem(this.authSecretKey);
   }
+
+  isAuthenticatedUser(): boolean {
+    return this.isAuthenticated;
+}
 
   signUp(data: any) {
     return this.baseService.post(APIConstant.signUp, data);
   }
+
+  login(data: any) {
+    let headers = new Headers();
+    headers.append('Authorization', 'Basic ' + btoa(data.username + ':' + data.password));
+
+    return this.baseService.post(
+        APIConstant.login,
+        null,
+        { headers: headers });
+}
 }

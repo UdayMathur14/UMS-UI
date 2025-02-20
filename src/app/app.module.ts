@@ -11,6 +11,7 @@ import { BrowserAnimationsModule } from '@angular/platform-browser/animations';
 import { MsalInterceptor, MsalModule, MsalRedirectComponent } from '@azure/msal-angular';
 import { PublicClientApplication } from '@azure/msal-browser';
 import { msalConfig, msalGuardConfig, msalInterceptorConfig } from './auth-config';
+import { AuthInterceptor } from './core/interceptor';
 @NgModule({
   declarations: [
     AppComponent,
@@ -34,7 +35,12 @@ import { msalConfig, msalGuardConfig, msalInterceptorConfig } from './auth-confi
       provide: HTTP_INTERCEPTORS,
       useClass: MsalInterceptor,
       multi: true
-    }
+    }, 
+    {
+      provide: HTTP_INTERCEPTORS,
+      useClass: AuthInterceptor,
+      multi: true,
+    },
   ],
   bootstrap: [AppComponent, MsalRedirectComponent]
 })

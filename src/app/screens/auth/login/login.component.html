@@ -12,22 +12,23 @@
     </div>
 
     <!-- <form (submit)="login($event)"> -->
-    <form (submit)="login()">
+    <form >
       <div class="input-field-login mb-4">
         <img class="img-icon-left" src="assets/images/icons/email.svg" alt="email">
-        <input type="text" class="input-field" placeholder="Enter User ID" name="username" />
+        <input type="text" class="input-field" placeholder="Enter User ID" name="username" [(ngModel)]="emailId" />
       </div>
       <div class="input-field-login mb-5">
         <img class="img-icon-left" src="assets/images/icons/password.svg" alt="password">
         <input id="password" type="{{ showPassword ? 'text' : 'password' }}" placeholder="Enter Password"
-          name="password" />
+          name="password" [(ngModel)]="password" />
         <img class="img-icon-right pointer" src="assets/images/icons/viewPassword.svg" alt="viewPassword"
           (click)="showPassword = !showPassword">
       </div>
-      <button type="submit" class="login-button mb-2">Sign In</button>
+      <button type="submit" class="login-button mb-2" (click)="onSignIn()">Sign In</button>
       <p (click)="onForgotPassword()" class="reset-password-text">Forgot Password</p>
     </form>
-    <p><small style="margin-right: 8px;">Don't have an account?</small> <a href="/auth/signup">Sign Up</a> or <button
+    <p><small style="margin-right: 8px;">Don't have an account?</small> <a href="/auth/signup">Sign Up</a> or 
+      <button (submit)="login()"
         class="btn btn-dark ms-3 sign-in-button" (click)="loginDisplay ? logout() : login()">
         <img src="../../../../assets/images/icons/microsoft-login.svg" alt="Microsoft Logo" height="20" class="me-2" />
         {{ loginDisplay ? 'Sign out with Microsoft' : 'Sign in with Microsoft' }}
