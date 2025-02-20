@@ -1,5 +1,8 @@
 <div class="page-title">
     <h3>Role Master</h3>
+    <div class="action-buttons">
+        <button class="custom-button-regulr" (click)="onCreate()">Create</button>
+      </div>
 </div>
 <div class="filter-section">
     <app-role-master-filter [filters]="filters" (getData)="getData($event)"></app-role-master-filter>
@@ -7,12 +10,12 @@
 <div class="content-section">
     <div class="grid-table">
         <div class="table-container">
-            <app-role-master-grid-table [signupUsers]="signupUsers"></app-role-master-grid-table>
+            <app-role-master-grid-table [roleData]="roleData"></app-role-master-grid-table>
 
         </div>
 
         <div class="d-flex justify-content-center mt-3">
-            <ngb-pagination [collectionSize]="totalSignupUsers" [(page)]="currentPage" [pageSize]="count"
+            <ngb-pagination [collectionSize]="totalRoles" [(page)]="currentPage" [pageSize]="count"
                 (pageChange)="onPageChange($event)" [boundaryLinks]="true" [maxSize]="5"
                 [rotate]="true"></ngb-pagination>
             <p class="mt-2 ms-3"> Items per page:</p>

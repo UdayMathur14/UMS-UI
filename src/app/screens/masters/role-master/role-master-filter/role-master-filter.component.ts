@@ -7,27 +7,23 @@ import { Component, EventEmitter, Input, Output } from '@angular/core';
 })
 export class RoleMasterFilterComponent {
   @Input() filters: any;
-  name: any;
-  organization: any;
+  roleName: any;
   status: any;
   @Output() getData: EventEmitter<object> = new EventEmitter();
 
   onSearch() {
     let obj = {
-      name: this.name || '',
-      organization: this.organization || '',
+      roleName: this.roleName || '',
       status: this.status || '',
     };
     this.getData.emit(obj);
   }
 
   onClearFilter() {
-    this.name = undefined;
-    this.organization = undefined;
+    this.roleName = undefined;
     this.status = undefined;
     let obj = {
-      pointName: undefined,
-      locationIds: undefined,
+      roleName: undefined,
       status: undefined,
     };
 

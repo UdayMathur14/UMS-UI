@@ -2,23 +2,23 @@
     <table>
         <thead>
             <tr class="header">
-                <th>Roll Name</th>
+                <th>Role Name</th>
                 <th>Description</th>
-                <th>Roll Key</th>
+                <th>Role Key</th>
                 <th>Status</th>
                 <th>Action</th>
             </tr>
         </thead>
-        <tbody *ngFor="let users of signupUsers">
+        <tbody *ngFor="let data of roleData">
             <tr>
-                <td>{{users?.name || '-'}}</td>
-                <td>{{users?.emailId || '-'}}</td>
-                <td>{{users?.contactNo || '-'}}</td>
-                <td>{{users?.status || '-'}}</td>
+                <td>{{data?.roleName || '-'}}</td>
+                <td>{{data?.roleDescription || '-'}}</td>
+                <td>{{data?.roleKey || '-'}}</td>
+                <td>{{data?.status || '-'}}</td>
                 <td style="cursor: pointer">
                     <button class="icon-button">
                         <img class="ms-3" src="../../../../assets/images/icons/editPencil.svg" alt=""
-                            [routerLink]="['/masters/add-edit-role-master', users.id]">
+                            [routerLink]="['/masters/edit-role', data.id]">
                     </button>
                 </td>
             </tr>

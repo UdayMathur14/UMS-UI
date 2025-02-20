@@ -2,19 +2,10 @@
     <div class="row">
         <div class="col-lg-2">
             <div class="custom-form-input">
-                <label>Name</label>
-                <ng-select class="input-field" [(ngModel)]="name" placeholder="Select Name">
-                    <ng-option *ngFor="let data of filters?.Name" [value]="data">
+                <label>Role Name</label>
+                <ng-select class="input-field" [(ngModel)]="roleName" placeholder="Select Role Name">
+                    <ng-option *ngFor="let data of filters?.RoleName" [value]="data">
                         {{data}}</ng-option>
-                </ng-select>
-            </div>
-        </div>
-
-        <div class="col-lg-2">
-            <div class="custom-form-input">
-                <label>Organization</label>
-                <ng-select class="input-field" [(ngModel)]="organization" placeholder="Select Organization">
-                    <ng-option *ngFor="let data of filters?.Organization" [value]="data">{{data}}</ng-option>
                 </ng-select>
             </div>
         </div>

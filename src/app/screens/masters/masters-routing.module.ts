@@ -36,7 +36,11 @@ const routes: Routes = [
     component: RoleMasterComponent,
   },
   {
-    path: 'add-edit-role-master/:id',
+    path: 'edit-role/:id',
+    component: AddEditRoleMasterComponent,
+  },
+  {
+    path: 'add-role',
     component: AddEditRoleMasterComponent,
   },
 ];

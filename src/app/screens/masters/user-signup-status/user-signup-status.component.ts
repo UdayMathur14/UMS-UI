@@ -7,7 +7,7 @@ import { UserSignupStatusService } from '../../../core/service/user-signup-statu
   styleUrl: './user-signup-status.component.scss',
 })
 export class UserSignupStatusComponent implements OnInit {
-  userId: any = 1;
+  userId: string = '';
   loadSpinner: boolean = true;
   signupUsers: any = [];
   offset = 0;
@@ -20,6 +20,11 @@ export class UserSignupStatusComponent implements OnInit {
   constructor(private userService: UserSignupStatusService) {}
 
   ngOnInit() {
+    const data = localStorage.getItem('data');
+    if (data) {
+      const dataObj = JSON.parse(data);
+      this.userId = dataObj.userId;
+    }
     this.getSignUpUserList();
   }
 

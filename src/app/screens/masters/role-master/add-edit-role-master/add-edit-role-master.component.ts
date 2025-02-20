@@ -5,6 +5,7 @@ import { FormGroup, FormControl, Validators } from '@angular/forms';
 import { LoginComponent } from '../../../auth/login/login.component';
 import { NgbModal } from '@ng-bootstrap/ng-bootstrap';
 import { ToastrService } from 'ngx-toastr';
+import { RoleService } from '../../../../core/service/role.service';
 
 @Component({
   selector: 'app-add-edit-role-master',
@@ -12,41 +13,44 @@ import { ToastrService } from 'ngx-toastr';
   styleUrl: './add-edit-role-master.component.scss',
 })
 export class AddEditRoleMasterComponent {
-  userId: any;
-  signupUser: any = [];
-  loadSpinner: boolean = true;
-  showSaveButton: boolean = true;
-  emailId: string = '';
-  signupUserForm = new FormGroup({
-    name: new FormControl('', Validators.required),
-    emailId: new FormControl('', Validators.required),
-    contactNo: new FormControl('', Validators.required),
-    organisation: new FormControl('', Validators.required),
-    status: new FormControl('', Validators.required),
+  userId: string = '';
+  roleId: string | null = '';
+  roles: any = [];
+  loadSpinner: boolean = false;
+  roleForm = new FormGroup({
+    roleName: new FormControl('', Validators.required),
+    description: new FormControl('', Validators.required),
+    roleKey: new FormControl('', Validators.required),
+    status: new FormControl(''),
   });
 
   constructor(
     private activatedRoute: ActivatedRoute,
-    private userService: UserSignupStatusService,
+    private roleService: RoleService,
     private router: Router,
-    private modalService: NgbModal,
     private toastr: ToastrService
   ) {}
 
   ngOnInit(): void {
-    this.userId = this.activatedRoute.snapshot.paramMap.get('id');
-    this.getSignUpUserListById();
+    this.roleId = this.activatedRoute.snapshot.paramMap.get('id');
+    const data = localStorage.getItem('data');
+    if (data) {
+      const dataObj = JSON.parse(data);
+      this.userId = dataObj.userId;
+    }
+    if(this.roleId){
+      this.getRoleListById();
+    }
   }
 
-  getSignUpUserListById() {
-    this.userService.signupUserStatusDataById(this.userId).subscribe(
+  getRoleListById() {
+    this.loadSpinner = true;
+    this.roleService.roleDataById(this.roleId).subscribe(
       (response: any) => {
-        this.emailId = response.emailId;
-        this.signupUserForm.patchValue({
-          name: response?.name,
-          emailId: response?.emailId,
-          contactNo: response?.contactNo,
-          organisation: response?.organisation,
+        this.roleForm.patchValue({
+          roleName: response?.roleName,
+          description: response?.roleDescription,
+          roleKey: response?.roleKey,
           status: response?.status,
         });
         this.loadSpinner = false;
@@ -69,23 +73,42 @@ export class AddEditRoleMasterComponent {
     // }
   }
 
-  updateUserSignUpStatus() {
-    const data = {
-      status: this.signupUserForm.controls['status']?.value,
-      actionBy: '1',
-      userType: '',
-      userCategory: '',
-      designation: '',
-    };
-    this.userService.signupUserStatusUpdate(this.userId, data).subscribe(
-      (response: any) => {
-        this.loadSpinner = false;
-        this.toastr.success(response.message);
-        this.onCancel();
-      },
-      (error) => {
-        this.loadSpinner = false;
-      }
-    );
+  onSubmit(){
+    this.loadSpinner = true;
+    if(this.roleId){
+      const data = {
+        status: this.roleForm.controls['status']?.value,
+        actionBy: this.userId,
+        description: this.roleForm.controls['description']?.value
+      };
+      this.roleService.roleUpdate(this.roleId, data).subscribe(
+        (response: any) => {
+          this.loadSpinner = false;
+          this.toastr.success('Role ' + response.message);
+          this.onCancel();
+        },
+        (error) => {
+          this.loadSpinner = false;
+        }
+      );
+    } else {
+      const data = {
+        status: 'Active',
+        actionBy: this.userId,
+        roleDescription: this.roleForm.controls['description']?.value,
+        roleName: this.roleForm.controls['roleName']?.value,
+        roleKey: this.roleForm.controls['roleKey']?.value,
+      };
+      this.roleService.roleCreate(data).subscribe(
+        (response: any) => {
+          this.loadSpinner = false;
+          this.toastr.success('Role ' + response.message);
+          this.onCancel();
+        },
+        (error) => {
+          this.loadSpinner = false;
+        }
+      );
+    }
   }
 }

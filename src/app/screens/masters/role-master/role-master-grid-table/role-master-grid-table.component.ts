@@ -6,5 +6,5 @@ import { Component, Input } from '@angular/core';
   styleUrl: './role-master-grid-table.component.scss',
 })
 export class RoleMasterGridTableComponent {
-  @Input() signupUsers: any;
+  @Input() roleData: any;
 }

@@ -8,7 +8,7 @@ import { Router } from '@angular/router';
   styleUrl: './lookup-master.component.scss',
 })
 export class LookupMasterComponent implements OnInit {
-  userId: any = 1;
+  userId: string = '';
   loadSpinner: boolean = true;
   lookups: any = [];
   offset = 0;
@@ -21,6 +21,11 @@ export class LookupMasterComponent implements OnInit {
   constructor(private lookupService: LookupService, private router: Router) {}
 
   ngOnInit() {
+    const data = localStorage.getItem('data');
+    if (data) {
+      const dataObj = JSON.parse(data);
+      this.userId = dataObj.userId;
+    }
     this.getLookupsList();
   }
 
