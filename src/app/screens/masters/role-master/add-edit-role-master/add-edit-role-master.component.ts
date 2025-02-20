@@ -7,11 +7,11 @@ import { NgbModal } from '@ng-bootstrap/ng-bootstrap';
 import { ToastrService } from 'ngx-toastr';
 
 @Component({
-  selector: 'app-add-edit-lookup',
-  templateUrl: './add-edit-lookup.component.html',
-  styleUrl: './add-edit-lookup.component.scss',
+  selector: 'app-add-edit-role-master',
+  templateUrl: './add-edit-role-master.component.html',
+  styleUrl: './add-edit-role-master.component.scss',
 })
-export class AddEditLookupComponent implements OnInit {
+export class AddEditRoleMasterComponent {
   userId: any;
   signupUser: any = [];
   loadSpinner: boolean = true;
@@ -58,7 +58,7 @@ export class AddEditLookupComponent implements OnInit {
   }
 
   onCancel() {
-    this.router.navigate(['/masters/lookup-master']);
+    this.router.navigate(['/masters/role-master']);
   }
 
   onChangeStatus(data: any) {
