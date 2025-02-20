@@ -38,7 +38,7 @@ export class LookupMasterComponent implements OnInit {
       .lookupData(this.userId, offset, count, data)
       .subscribe(
         (response: any) => {
-          this.lookups = response.lookup;
+          this.lookups = response.lookUps;
           this.totalLookups = response.paging.total;
           this.filters = response.filters;
           this.loadSpinner = false;

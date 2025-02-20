@@ -2,7 +2,7 @@
     <div class="page-title">
         <h1>{{ lookupId ? 'Edit Lookup' : 'Create Lookup' }}</h1>
         <div class="action-buttons d-flex align-items-start">
-            <button class="custom-button-regulr" (click)="onSave()">Save</button>
+            <button class="custom-button-regulr" (click)="onSave()" [disabled]="!lookupForm.valid">Save</button>
             <button class="custom-button-secondary ms-3" (click)="onCancel()">
                 Cancel
             </button>
@@ -13,7 +13,7 @@
             <div class="col-lg-3">
                 <div class="custom-form-input">
                     <label>Type<span class="text-danger">*</span></label>
-                    <ng-select formControlName="type">
+                    <ng-select formControlName="type" [readonly]="lookupId">
                         <ng-option *ngFor="let data of lookupType" [value]="data.id">
                            {{data?.type}}
                         </ng-option>
@@ -23,7 +23,7 @@
             <div class="col-lg-3">
                 <div class="custom-form-input">
                     <label>Value<span class="text-danger">*</span></label>
-                    <input formControlName="value" />
+                    <input formControlName="value" [readonly]="lookupId" />
                 </div>
             </div>
             <div class="col-lg-3">

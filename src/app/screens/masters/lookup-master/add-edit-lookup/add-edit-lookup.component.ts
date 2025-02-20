@@ -17,8 +17,8 @@ export class AddEditLookupComponent implements OnInit {
     type: new FormControl('', Validators.required),
     value: new FormControl('', Validators.required),
     description: new FormControl('', Validators.required),
-    url: new FormControl('', Validators.required),
-    status: new FormControl('', Validators.required),
+    url: new FormControl(''),
+    status: new FormControl(''),
   });
 
   constructor(
@@ -32,6 +32,9 @@ export class AddEditLookupComponent implements OnInit {
     this.lookupId = this.activatedRoute.snapshot.paramMap.get('id');
     // this.getLookupById();
     this.lookUpTypeData();
+    if(this.lookupId){
+      this.getLookupById()
+    }
   }
 
   lookUpTypeData(){
@@ -54,10 +57,11 @@ export class AddEditLookupComponent implements OnInit {
     this.lookupService.lookupDataById(this.lookupId).subscribe(
       (response: any) => {
         this.lookupForm.patchValue({
-          type: response?.name,
-          value: response?.emailId,
-          description: response?.contactNo,
+          type: response?.typeId,
+          value: response?.value,
+          description: response?.description,
           status: response?.status,
+          url: response?.url
         });
         this.loadSpinner = false;
       },
@@ -72,18 +76,22 @@ export class AddEditLookupComponent implements OnInit {
   }
 
   onSave(){
+    const typeId = this.lookupForm.controls['type']?.value
+    const typeName = this.lookupType.find((item: any) => item?.id == typeId)?.type
     if(this.lookupId){
-      const data = {
+      const data =  {
         status: this.lookupForm.controls['status']?.value,
-        actionBy: '1',
-        userType: '',
-        userCategory: '',
-        designation: '',
+        typeId: this.lookupForm.controls['type']?.value,
+        type: typeName,
+        value: this.lookupForm.controls['value']?.value,
+        description: this.lookupForm.controls['description']?.value,
+        url: this.lookupForm.controls['url']?.value,
+        actionBy: 'string',
       };
       this.lookupService.lookupUpdate(this.lookupId, data).subscribe(
         (response: any) => {
           this.loadSpinner = false;
-          this.toastr.success(response.message);
+          this.toastr.success('Lookup ' + response.message);
           this.onCancel();
         },
         (error) => {
@@ -91,8 +99,7 @@ export class AddEditLookupComponent implements OnInit {
         }
       );
     } else {
-      const typeId = this.lookupForm.controls['type']?.value
-    const typeName = this.lookupType.find((item: any) => item?.id == typeId)?.type
+ 
     const data = {
       status: 'Active',
       typeId: this.lookupForm.controls['type']?.value,
@@ -105,7 +112,7 @@ export class AddEditLookupComponent implements OnInit {
     this.lookupService.lookupCreate(data).subscribe(
       (response: any) => {
         this.loadSpinner = false;
-        this.toastr.success(response.message);
+        this.toastr.success('Lookup' + response.message);
         this.onCancel();
       },
       (error) => {

@@ -14,8 +14,9 @@ export class LookupFilterComponent {
 
   onSearch() {
     let obj = {
-      name: this.type || '',
+      type: this.type || '',
       status: this.status || '',
+      value: this.value || ''
     };
     this.getData.emit(obj);
   }
