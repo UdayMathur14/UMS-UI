@@ -5,6 +5,8 @@ import { EditUserSignupStatusComponent } from './user-signup-status/edit-user-si
 import { AuthGuard } from '../../core/guards/auth.guard';
 import { LookupMasterComponent } from './lookup-master/lookup-master.component';
 import { AddEditLookupComponent } from './lookup-master/add-edit-lookup/add-edit-lookup.component';
+import { UserMasterComponent } from './user-master/user-master.component';
+import { AddEditUserComponent } from './user-master/add-edit-user/add-edit-user.component';
 import { RoleMasterGridTableComponent } from './role-master/role-master-grid-table/role-master-grid-table.component';
 import { AddEditRoleMasterComponent } from './role-master/add-edit-role-master/add-edit-role-master.component';
 import { RoleMasterComponent } from './role-master/role-master.component';
@@ -31,6 +33,18 @@ const routes: Routes = [
     path: 'add-lookup',
     component: AddEditLookupComponent,
   },
+  {
+    path: 'user-master',
+    component: UserMasterComponent,
+  },
+  {
+    path: 'add-user-master',
+    component: AddEditUserComponent,
+  },
+  {
+    path: 'edit-user-master/:id',
+    component: AddEditUserComponent,
+  }
   {
     path: 'role-master',
     component: RoleMasterComponent,

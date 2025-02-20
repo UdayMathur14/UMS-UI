@@ -1,0 +1,69 @@
+<div class="page-title">
+    <h3>{{ isEditMode ? 'Edit User Master' : 'Create User Master' }}</h3>
+    <div class="action-buttons d-flex align-items-start">
+        <button class="custom-button-regulr" (click)="handleSave()">{{ isEditMode ? 'Update' : 'Submit' }}</button>
+        <button class="custom-button-secondary ms-3" (click)="onCancel()">
+          Cancel
+        </button>
+      </div>
+</div>
+
+<form [formGroup]="createUserform">
+    <div class="row">
+        <div class="col-lg-3">
+            <div class="custom-form-input">
+                <label for="name">Name<span class="text-danger">*</span></label>
+                <input id="name" formControlName="name" [disabled]="isEditMode">
+                <div *ngIf="createUserform.get('name')?.touched && createUserform.get('name')?.invalid" class="text-danger">
+                    <small>Name is required</small>
+                </div>
+            </div>
+        </div>
+        <div class="col-lg-3">
+            <div class="custom-form-input">
+                <label for="email">Email Id<span class="text-danger">*</span></label>
+                <input id="email" formControlName="emailId" [disabled]="isEditMode">
+                <div *ngIf="createUserform.get('email')?.touched && createUserform.get('email')?.invalid" class="text-danger">
+                    <small>Email is required</small>
+                </div>
+            </div>
+        </div>
+        <div class="col-lg-3">
+            <div class="custom-form-input">
+                <label for="contactNo">Contact No.<span class="text-danger">*</span></label>
+                <input id="contactNo" formControlName="contactNo" [disabled]="isEditMode">
+                <div *ngIf="createUserform.get('contactNo')?.touched && createUserform.get('contactNo')?.invalid" class="text-danger">
+                    <small>Contact No. is required</small>
+                </div>
+            </div>
+        </div>
+        <div class="col-lg-3">
+            <div class="custom-form-input">
+                <label for="designation">Designation<span class="text-danger">*</span></label>
+                <input id="designation" formControlName="designation">
+                <div *ngIf="createUserform.get('designation')?.touched && createUserform.get('designation')?.invalid" class="text-danger">
+                    <small>Designation is required</small>
+                </div>
+            </div>
+        </div>
+        <div class="col-lg-3">
+            <div class="custom-form-input">
+                <label for="cont-phone">User Category<span class="text-danger">*</span></label>
+                <ng-select formControlName="userCategory">
+                    <ng-option value="Client">Client</ng-option>
+                    <ng-option value="Employee">Employee</ng-option>
+                </ng-select>
+            </div>
+        </div>
+        <div class="col-lg-3">
+            <div class="custom-form-input">
+                <label for="cont-phone">Organisation<span class="text-danger">*</span></label>
+                <input formControlName="organisation">
+            </div>
+        </div>
+    </div>
+</form>
+
+<div class="spinner" *ngIf="loadSpinner">
+    <h1>Loading...</h1>
+</div>
