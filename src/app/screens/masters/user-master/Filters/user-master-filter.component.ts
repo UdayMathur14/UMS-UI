@@ -11,7 +11,8 @@ export class UserMasterFilterComponent {
   name: any;
   organisation: any;
   status: any;
-
+  userCategory: any;
+  userType: any;
   @Output() getData: EventEmitter<object> = new EventEmitter();
 
   onSearch() {
@@ -19,6 +20,8 @@ export class UserMasterFilterComponent {
       name: this.name || '',
       organisation: this.organisation || '',
       status: this.status || '',
+      userCategory: this.userCategory || '',
+      userType: this.userType || ''
     };
     this.getData.emit(obj);
   }
@@ -27,10 +30,14 @@ export class UserMasterFilterComponent {
     this.name = undefined;
     this.organisation = undefined;
     this.status = undefined;
+    this.userCategory = undefined,
+    this.userType = undefined
     let obj = {
-      "pointName" : undefined,
-      "locationIds" : undefined,
-      "status": undefined
+      name : undefined,
+      organisation : undefined,
+      status: undefined,
+      userCategory: undefined,
+      userType: undefined
     }
     this.getData.emit(obj)
   }

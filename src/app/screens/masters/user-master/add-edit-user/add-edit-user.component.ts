@@ -10,16 +10,9 @@ import { UserMasterService } from '../../../../core/service/user-master.service'
 })
 export class AddEditUserComponent {
   userId: string = '';
-  name: any[] = [];
-  emailId: any[] = [];
-  contactNo: any[] = [];
-  designation: any[] = [];
-  userCategory: any[] = [];
-  oraganisation: any[] = [];
-
   isEditMode: boolean = false;
   loadSpinner: boolean=false
-
+  actionById: string = ''
   createUserform!: FormGroup;
 
   constructor(
@@ -38,9 +31,13 @@ export class AddEditUserComponent {
       userCategory: ['', [Validators.required]],
       organisation: ['', [Validators.required]],
       status: ['Active'],
-      userType: ['External']
+      userType: ['']
     });
-  
+    const data = localStorage.getItem('data');
+    if (data) {
+      const dataObj = JSON.parse(data);
+      this.actionById = dataObj.userId;
+    }
     this.route.params.subscribe(params => {
       this.userId = params['id'];
       if (this.userId) {
@@ -72,6 +69,7 @@ export class AddEditUserComponent {
             designation: response.designation,
             userCategory: response.userCategory,
             organisation: response.organisation,
+            status: response.status
           });
           console.log('Form after patch:', this.createUserform.value);
         }
@@ -93,19 +91,11 @@ export class AddEditUserComponent {
   
     if (this.isEditMode) {
       const updateData = {
-        id: this.userId,
-        signUpId: this.userId,
-        name: formData.name,
-        emailId: formData.emailId,
-        contactNo: formData.contactNo,
         designation: formData.designation,
         userCategory: formData.userCategory,
-        organisation: formData.organisation,
-        status: 'Active',
+        status: this.createUserform.controls['status']?.value,
         userType: formData.emailId.includes('diverseinfotech') ? 'Internal' : 'External',
-        isLocked: 'N',
-        createdBy: '1', // Add appropriate value
-        modifiedBy: '1' // Add appropriate value
+        actionBy: this.actionById
       };
   
       this.userMasterService.userMasterUpdate(this.userId, updateData).subscribe({
@@ -121,19 +111,15 @@ export class AddEditUserComponent {
       });
     } else {
       const createData = {
-        id: '00000000-0000-0000-0000-000000000000', // Default GUID for new record
-        signUpId: '00000000-0000-0000-0000-000000000000', // Default GUID for new record
+        status: 'Active',
         name: formData.name,
         emailId: formData.emailId,
         contactNo: formData.contactNo,
         designation: formData.designation,
         userCategory: formData.userCategory,
         organisation: formData.organisation,
-        status: 'Active',
         userType: formData.emailId.includes('diverseinfotech') ? 'Internal' : 'External',
-        isLocked: 'N',
-        createdBy: '1', // Add appropriate value
-        modifiedBy: '1' // Add appropriate value
+        createdBy: this.actionById,
       };
   
       console.log('Creating user with data:', createData);
