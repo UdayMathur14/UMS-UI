@@ -1,10 +1,8 @@
 import { Component, OnInit } from '@angular/core';
 import { ActivatedRoute, Router } from '@angular/router';
-import { UserSignupStatusService } from '../../../../core/service/user-signup-status.service';
 import { FormGroup, FormControl, Validators } from '@angular/forms';
-import { LoginComponent } from '../../../auth/login/login.component';
-import { NgbModal } from '@ng-bootstrap/ng-bootstrap';
 import { ToastrService } from 'ngx-toastr';
+import { LookupService } from '../../../../core/service/lookup.service';
 
 @Component({
   selector: 'app-add-edit-lookup',
@@ -12,41 +10,53 @@ import { ToastrService } from 'ngx-toastr';
   styleUrl: './add-edit-lookup.component.scss',
 })
 export class AddEditLookupComponent implements OnInit {
-  userId: any;
-  signupUser: any = [];
+  lookupId: any;
   loadSpinner: boolean = true;
-  showSaveButton: boolean = true;
-  emailId: string = '';
-  signupUserForm = new FormGroup({
-    name: new FormControl('', Validators.required),
-    emailId: new FormControl('', Validators.required),
-    contactNo: new FormControl('', Validators.required),
-    organisation: new FormControl('', Validators.required),
+  lookupType: any = [];
+  lookupForm = new FormGroup({
+    type: new FormControl('', Validators.required),
+    value: new FormControl('', Validators.required),
+    description: new FormControl('', Validators.required),
+    url: new FormControl('', Validators.required),
     status: new FormControl('', Validators.required),
   });
 
   constructor(
     private activatedRoute: ActivatedRoute,
-    private userService: UserSignupStatusService,
+    private lookupService: LookupService,
     private router: Router,
-    private modalService: NgbModal,
     private toastr: ToastrService
   ) {}
 
   ngOnInit(): void {
-    this.userId = this.activatedRoute.snapshot.paramMap.get('id');
-    this.getSignUpUserListById();
+    this.lookupId = this.activatedRoute.snapshot.paramMap.get('id');
+    // this.getLookupById();
+    this.lookUpTypeData();
   }
 
-  getSignUpUserListById() {
-    this.userService.signupUserStatusDataById(this.userId).subscribe(
+  lookUpTypeData(){
+    const data = {
+      "status": "",
+      "type": ""
+    }
+    this.lookupService.lookupType(data).subscribe(
       (response: any) => {
-        this.emailId = response.emailId;
-        this.signupUserForm.patchValue({
-          name: response?.name,
-          emailId: response?.emailId,
-          contactNo: response?.contactNo,
-          organisation: response?.organisation,
+        this.lookupType = response?.lookUpTypes
+        this.loadSpinner = false;
+      },
+      (error) => {
+        this.loadSpinner = false;
+      }
+    );
+  }
+
+  getLookupById() {
+    this.lookupService.lookupDataById(this.lookupId).subscribe(
+      (response: any) => {
+        this.lookupForm.patchValue({
+          type: response?.name,
+          value: response?.emailId,
+          description: response?.contactNo,
           status: response?.status,
         });
         this.loadSpinner = false;
@@ -58,26 +68,41 @@ export class AddEditLookupComponent implements OnInit {
   }
 
   onCancel() {
-    this.router.navigate(['/masters/lookup-signup-status']);
+    this.router.navigate(['/masters/lookup-master']);
   }
 
-  onChangeStatus(data: any) {
-    // if (data.toLowerCase() == 'rejected') {
-    //   this.showSaveButton = true;
-    // } else {
-    //   this.showSaveButton = false;
-    // }
-  }
-
-  updateUserSignUpStatus() {
+  onSave(){
+    if(this.lookupId){
+      const data = {
+        status: this.lookupForm.controls['status']?.value,
+        actionBy: '1',
+        userType: '',
+        userCategory: '',
+        designation: '',
+      };
+      this.lookupService.lookupUpdate(this.lookupId, data).subscribe(
+        (response: any) => {
+          this.loadSpinner = false;
+          this.toastr.success(response.message);
+          this.onCancel();
+        },
+        (error) => {
+          this.loadSpinner = false;
+        }
+      );
+    } else {
+      const typeId = this.lookupForm.controls['type']?.value
+    const typeName = this.lookupType.find((item: any) => item?.id == typeId)?.type
     const data = {
-      status: this.signupUserForm.controls['status']?.value,
-      actionBy: '1',
-      userType: '',
-      userCategory: '',
-      designation: '',
+      status: 'Active',
+      typeId: this.lookupForm.controls['type']?.value,
+      type: typeName,
+      value: this.lookupForm.controls['value']?.value,
+      description: this.lookupForm.controls['description']?.value,
+      url: this.lookupForm.controls['url']?.value,
+      actionBy: 'string',
     };
-    this.userService.signupUserStatusUpdate(this.userId, data).subscribe(
+    this.lookupService.lookupCreate(data).subscribe(
       (response: any) => {
         this.loadSpinner = false;
         this.toastr.success(response.message);
@@ -87,5 +112,6 @@ export class AddEditLookupComponent implements OnInit {
         this.loadSpinner = false;
       }
     );
+    }
   }
 }

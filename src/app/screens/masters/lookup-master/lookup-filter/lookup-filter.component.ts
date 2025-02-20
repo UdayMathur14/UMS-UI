@@ -7,28 +7,27 @@ import { Component, EventEmitter, Input, Output } from '@angular/core';
 })
 export class LookupFilterComponent {
   @Input() filters: any;
-  name: any;
-  organization: any;
+  type: any;
   status: any;
+  value: any;
   @Output() getData: EventEmitter<object> = new EventEmitter();
 
   onSearch() {
     let obj = {
-      name: this.name || '',
-      organization: this.organization || '',
+      name: this.type || '',
       status: this.status || '',
     };
     this.getData.emit(obj);
   }
 
   onClearFilter() {
-    this.name = undefined;
-    this.organization = undefined;
+    this.type = undefined;
     this.status = undefined;
+    this.value = undefined;
     let obj = {
-      pointName: undefined,
-      locationIds: undefined,
+      type: undefined,
       status: undefined,
+      value: undefined
     };
 
     this.getData.emit(obj);

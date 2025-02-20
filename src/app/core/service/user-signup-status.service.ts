@@ -14,7 +14,6 @@ export class UserSignupStatusService extends CRUDService<AuthRequest> {
 
    constructor(
       protected override baseService: BaseService,
-      private http: HttpClient
     ) {
       super(baseService, APIConstant.basePath);
     }
