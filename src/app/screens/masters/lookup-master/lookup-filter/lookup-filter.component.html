@@ -1,0 +1,39 @@
+<div class="filters-box">
+    <div class="row">
+        <div class="col-lg-2">
+            <div class="custom-form-input">
+                <label>Name</label>
+                <ng-select class="input-field" [(ngModel)]="name" placeholder="Select Name">
+                    <ng-option *ngFor="let data of filters?.Name" [value]="data">
+                        {{data}}</ng-option>
+                </ng-select>
+            </div>
+        </div>
+
+        <div class="col-lg-2">
+            <div class="custom-form-input">
+                <label>Organization</label>
+                <ng-select class="input-field" [(ngModel)]="organization" placeholder="Select Organization">
+                    <ng-option *ngFor="let data of filters?.Organization" [value]="data">{{data}}</ng-option>
+                </ng-select>
+            </div>
+        </div>
+
+        <div class="col-lg-2">
+            <div class="custom-form-input">
+                <label>Status</label>
+                <ng-select class="input-field" [(ngModel)]="status" placeholder="Select Status">
+                    <ng-option *ngFor="let status of filters?.Status" [value]="status">{{status}}</ng-option>
+                </ng-select>
+            </div>
+        </div>
+
+        <div class="col">
+            <div class="custom-form-input">
+                <label class="d-block">&nbsp;</label>
+                <button class="custom-button-filters" (click)="onSearch()">Search</button>
+                <button class="custom-button-filters ms-2" (click)="onClearFilter()">Clear</button>
+            </div>
+        </div>
+    </div>
+</div>

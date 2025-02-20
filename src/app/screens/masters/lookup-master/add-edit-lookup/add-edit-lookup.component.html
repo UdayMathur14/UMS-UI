@@ -1,0 +1,56 @@
+<div class="container" style="margin-top: 6rem">
+    <div class="page-title">
+        <h1>Edit User Status</h1>
+        <div class="action-buttons d-flex align-items-start">
+            <button class="custom-button-regulr" (click)="updateUserSignUpStatus()">Save</button>
+            <button class="custom-button-secondary ms-3" (click)="onCancel()">
+                Cancel
+            </button>
+        </div>
+    </div>
+    <form [formGroup]="signupUserForm">
+        <div class="row">
+            <div class="col-lg-3">
+                <div class="custom-form-input">
+                    <label for="cont-phone">Name<span class="text-danger">*</span></label>
+                    <input formControlName="name" />
+                </div>
+            </div>
+            <div class="col-lg-3">
+                <div class="custom-form-input">
+                    <label for="cont-phone">Email Id<span class="text-danger">*</span></label>
+                    <input formControlName="emailId" />
+                </div>
+            </div>
+            <div class="col-lg-3">
+                <div class="custom-form-input">
+                    <label for="cont-phone">Contact No.<span class="text-danger">*</span></label>
+                    <input formControlName="contactNo" />
+                </div>
+            </div>
+            <div class="col-lg-3">
+                <div class="custom-form-input">
+                    <label for="cont-phone">Organisation<span class="text-danger">*</span></label>
+                    <input formControlName="organisation" />
+                </div>
+            </div>
+            <div class="col-lg-3">
+                <div class="custom-form-input">
+                    <label for="cont-phone">Status<span class="text-danger">*</span></label>
+                    <ng-select formControlName="status" (change)="onChangeStatus($event)">
+                        <ng-option value="Approved">
+                            Approved
+                        </ng-option>
+                        <ng-option value="Rejected">
+                            Rejected
+                        </ng-option>
+                    </ng-select>
+                </div>
+            </div>
+        </div>
+    </form>
+
+</div>
+<div class="spinner" *ngIf="loadSpinner">
+    Loading...
+</div>
