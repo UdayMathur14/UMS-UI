@@ -22,7 +22,9 @@ export class LoginComponent implements OnInit {
     private msalService: MsalService,
     private http: HttpClient,
     private authService: AuthService
-  ) { }
+  ) { 
+    localStorage.clear();
+  }
 
   ngOnInit() {
     // Subscribe to MSAL events

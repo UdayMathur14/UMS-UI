@@ -1,8 +1,10 @@
 import { environment } from '../../../enviornments/enviornment';
 
 const apiPath = environment.apiPath;
+const umsURL = environment.umsURL;
 
 export const APIConstant = {
+  Ums: umsURL,
   basePath: apiPath,
   signUp: `${apiPath}/api/v1/SignUp/create`,
   signupStatus: `${apiPath}/api/v1/SignUp/search`,
