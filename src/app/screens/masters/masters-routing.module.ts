@@ -44,7 +44,7 @@ const routes: Routes = [
   {
     path: 'edit-user-master/:id',
     component: AddEditUserComponent,
-  }
+  },
   {
     path: 'role-master',
     component: RoleMasterComponent,
