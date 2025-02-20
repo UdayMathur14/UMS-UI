@@ -2,11 +2,11 @@ import { Component, OnInit } from '@angular/core';
 import { UserSignupStatusService } from '../../../core/service/user-signup-status.service';
 
 @Component({
-  selector: 'app-user-signup-status',
-  templateUrl: './user-signup-status.component.html',
-  styleUrl: './user-signup-status.component.scss',
+  selector: 'app-lookup-master',
+  templateUrl: './lookup-master.component.html',
+  styleUrl: './lookup-master.component.scss',
 })
-export class UserSignupStatusComponent implements OnInit {
+export class LookupMasterComponent implements OnInit {
   userId: any = 1;
   loadSpinner: boolean = true;
   signupUsers: any = [];
