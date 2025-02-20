@@ -1,8 +1,8 @@
 <div class="page-title">
-    <h3>{{ isEditMode ? 'Update User Master' : 'Create User Master' }}</h3>
+    <h3>{{ isEditMode ? 'Edit User Master' : 'Create User Master' }}</h3>
     <div class="action-buttons d-flex align-items-start">
         <button class="custom-button-regulr" (click)="handleSave()">{{ isEditMode ? 'Update' : 'Submit' }}</button>
-        <button class="custom-button-secondary ms-3" (click)="cancel()">
+        <button class="custom-button-secondary ms-3" (click)="onCancel()">
           Cancel
         </button>
       </div>
@@ -12,26 +12,38 @@
     <div class="row">
         <div class="col-lg-3">
             <div class="custom-form-input">
-                <label for="cont-phone">Name<span class="text-danger">*</span></label>
-                <input formControlName="name" [disabled]="isEditMode">
+                <label for="name">Name<span class="text-danger">*</span></label>
+                <input id="name" formControlName="name" [disabled]="isEditMode">
+                <div *ngIf="createUserform.get('name')?.touched && createUserform.get('name')?.invalid" class="text-danger">
+                    <small>Name is required</small>
+                </div>
             </div>
         </div>
         <div class="col-lg-3">
             <div class="custom-form-input">
-                <label for="cont-phone">Email Id<span class="text-danger">*</span></label>
-                <input formControlName="emailId" [disabled]="isEditMode">
+                <label for="email">Email Id<span class="text-danger">*</span></label>
+                <input id="email" formControlName="emailId" [disabled]="isEditMode">
+                <div *ngIf="createUserform.get('email')?.touched && createUserform.get('email')?.invalid" class="text-danger">
+                    <small>Email is required</small>
+                </div>
             </div>
         </div>
         <div class="col-lg-3">
             <div class="custom-form-input">
-                <label for="cont-phone">Contact No.<span class="text-danger">*</span></label>
-                <input formControlName="contactNo" [disabled]="isEditMode">
+                <label for="contactNo">Contact No.<span class="text-danger">*</span></label>
+                <input id="contactNo" formControlName="contactNo" [disabled]="isEditMode">
+                <div *ngIf="createUserform.get('contactNo')?.touched && createUserform.get('contactNo')?.invalid" class="text-danger">
+                    <small>Contact No. is required</small>
+                </div>
             </div>
         </div>
         <div class="col-lg-3">
             <div class="custom-form-input">
-                <label for="cont-phone">Designation<span class="text-danger">*</span></label>
-                <input formControlName="designation">
+                <label for="designation">Designation<span class="text-danger">*</span></label>
+                <input id="designation" formControlName="designation">
+                <div *ngIf="createUserform.get('designation')?.touched && createUserform.get('designation')?.invalid" class="text-danger">
+                    <small>Designation is required</small>
+                </div>
             </div>
         </div>
         <div class="col-lg-3">
@@ -51,3 +63,7 @@
         </div>
     </div>
 </form>
+
+<div class="spinner" *ngIf="loadSpinner">
+    <h1>Loading...</h1>
+</div>

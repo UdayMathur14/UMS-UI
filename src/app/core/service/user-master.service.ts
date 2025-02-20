@@ -3,6 +3,7 @@ import { BaseService } from './base.service';
 import { APIConstant } from '../constants/api.constant';
 import { AuthRequest } from '../models/auth';
 import { CRUDService } from './crud.service';
+import { catchError, throwError } from 'rxjs';
 
 @Injectable({
   providedIn: 'root',
@@ -25,7 +26,23 @@ export class UserMasterService extends CRUDService<AuthRequest> {
   }
 
   getUserMasterById(id: string = '') {
-    const url = `${APIConstant.getUserMasterById}${id}`;
+    const url = `${APIConstant.getUserMasterById}/${id}`;
     return this.baseService.get(url);
+  }
+
+  userMasterUpdate(id: string = '', data: any) {
+    const url = `${APIConstant.userMasterUpdate}/${id}`;
+    return this.baseService.put(url, data);
+  }
+
+  userMasterCreate(data: any) {
+    const url = `${APIConstant.createUserMaster}`;
+
+    return this.baseService.post(url, data).pipe(
+      catchError((error) => {
+        console.error('Service Error:', error);
+        return throwError(() => error);
+      })
+    );
   }
 }
