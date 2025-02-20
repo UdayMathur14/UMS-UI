@@ -1,0 +1,27 @@
+<div class="custom-table">
+    <table>
+        <thead>
+            <tr class="header">
+                <th>Roll Name</th>
+                <th>Description</th>
+                <th>Roll Key</th>
+                <th>Status</th>
+                <th>Action</th>
+            </tr>
+        </thead>
+        <tbody *ngFor="let users of signupUsers">
+            <tr>
+                <td>{{users?.name || '-'}}</td>
+                <td>{{users?.emailId || '-'}}</td>
+                <td>{{users?.contactNo || '-'}}</td>
+                <td>{{users?.status || '-'}}</td>
+                <td style="cursor: pointer">
+                    <button class="icon-button">
+                        <img class="ms-3" src="../../../../assets/images/icons/editPencil.svg" alt=""
+                            [routerLink]="['/masters/add-edit-role-master', users.id]">
+                    </button>
+                </td>
+            </tr>
+        </tbody>
+    </table>
+</div>
