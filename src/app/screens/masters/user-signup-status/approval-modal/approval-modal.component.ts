@@ -1,4 +1,4 @@
-import { Component, Input } from '@angular/core';
+import { Component, Input, OnInit } from '@angular/core';
 import { NgbActiveModal } from '@ng-bootstrap/ng-bootstrap';
 import { UserSignupStatusService } from '../../../../core/service/user-signup-status.service';
 import { Router } from '@angular/router';
@@ -9,7 +9,7 @@ import { ToastrService } from 'ngx-toastr';
   templateUrl: './approval-modal.component.html',
   styleUrl: './approval-modal.component.scss',
 })
-export class ApprovalModalComponent {
+export class ApprovalModalComponent implements OnInit {
   userType: string = '';
   userCategory: string = '';
   designation: string = '';
@@ -26,10 +26,18 @@ export class ApprovalModalComponent {
     private router: Router
   ) {}
 
+  ngOnInit(): void {
+    const data = localStorage.getItem('data');
+    if (data) {
+      const dataObj = JSON.parse(data);
+      this.userId = dataObj.userId;
+    }
+  }
+
   updateUserSignUpStatus() {
     const data = {
       status: this.status,
-      actionBy: '1',
+      actionBy: this.userId,
       userType: this.emailId.includes('diverseinfotech')
         ? 'Internal'
         : 'External',

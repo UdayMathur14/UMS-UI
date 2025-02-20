@@ -13,7 +13,8 @@ import { ToastrService } from 'ngx-toastr';
   styleUrl: './edit-user-signup-status.component.scss',
 })
 export class EditUserSignupStatusComponent implements OnInit {
-  userId: any;
+  signupUserId: any;
+  userId: string = '';
   signupUser: any = [];
   loadSpinner: boolean = true;
   showSaveButton: boolean = false;
@@ -35,12 +36,17 @@ export class EditUserSignupStatusComponent implements OnInit {
   ) {}
 
   ngOnInit(): void {
-    this.userId = this.activatedRoute.snapshot.paramMap.get('id');
+    const data = localStorage.getItem('data');
+    if (data) {
+      const dataObj = JSON.parse(data);
+      this.userId = dataObj.userId;
+    }
+    this.signupUserId = this.activatedRoute.snapshot.paramMap.get('id');
     this.getSignUpUserListById();
   }
 
   getSignUpUserListById() {
-    this.userService.signupUserStatusDataById(this.userId).subscribe(
+    this.userService.signupUserStatusDataById(this.signupUserId).subscribe(
       (response: any) => {
         this.emailId = response.emailId;
         this.signupUserForm.patchValue({
@@ -76,7 +82,7 @@ export class EditUserSignupStatusComponent implements OnInit {
     });
     documentModal.componentInstance.status = data;
     documentModal.componentInstance.id = data;
-    documentModal.componentInstance.userId = this.userId;
+    documentModal.componentInstance.userId = this.signupUserId;
     documentModal.componentInstance.emailId = this.emailId;
     documentModal.result.then(
       (result) => {
@@ -91,12 +97,12 @@ export class EditUserSignupStatusComponent implements OnInit {
 updateUserSignUpStatus() {
   const data = {
     status: this.signupUserForm.controls['status']?.value,
-    actionBy: '1',
+    actionBy: this.userId,
     userType: '',
     userCategory: '',
     designation: '',
   };
-  this.userService.signupUserStatusUpdate(this.userId, data).subscribe(
+  this.userService.signupUserStatusUpdate(this.signupUserId, data).subscribe(
     (response: any) => {
       this.loadSpinner = false;
       this.toastr.success(response.message);

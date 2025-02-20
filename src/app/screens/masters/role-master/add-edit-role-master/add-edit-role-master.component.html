@@ -1,42 +1,42 @@
 <div class="container" style="margin-top: 6rem">
     <div class="page-title">
-        <h1>Edit User Status</h1>
+        <h1>{{roleId ? 'Edit' : 'Add'}} Role</h1>
         <div class="action-buttons d-flex align-items-start">
-            <button class="custom-button-regulr" (click)="updateUserSignUpStatus()">Save</button>
+            <button class="custom-button-regulr" (click)="onSubmit()">Save</button>
             <button class="custom-button-secondary ms-3" (click)="onCancel()">
                 Cancel
             </button>
         </div>
     </div>
-    <form [formGroup]="signupUserForm">
+    <form [formGroup]="roleForm">
         <div class="row">
             <div class="col-lg-3">
                 <div class="custom-form-input">
-                    <label for="cont-phone">Role Name<span class="text-danger">*</span></label>
-                    <input formControlName="name" />
+                    <label>Role Name<span class="text-danger">*</span></label>
+                    <input formControlName="roleName" />
                 </div>
             </div>
             <div class="col-lg-3">
                 <div class="custom-form-input">
-                    <label for="cont-phone">Description<span class="text-danger">*</span></label>
-                    <input formControlName="emailId" />
+                    <label>Description<span class="text-danger">*</span></label>
+                    <input formControlName="description" />
                 </div>
             </div>
             <div class="col-lg-3">
                 <div class="custom-form-input">
-                    <label for="cont-phone">Role Key<span class="text-danger">*</span></label>
-                    <input formControlName="contactNo" />
+                    <label>Role Key<span class="text-danger">*</span></label>
+                    <input formControlName="roleKey" [readOnly]="roleId"/>
                 </div>
-            </div>
-            <div class="col-lg-3">
+            </div> 
+            <div class="col-lg-3" *ngIf="roleId">
                 <div class="custom-form-input">
-                    <label for="cont-phone">Status<span class="text-danger">*</span></label>
-                    <ng-select formControlName="status" (change)="onChangeStatus($event)">
-                        <ng-option value="Approved">
-                            Approved
+                    <label>Status<span class="text-danger">*</span></label>
+                    <ng-select formControlName="status">
+                        <ng-option value="Active">
+                            Active
                         </ng-option>
-                        <ng-option value="Rejected">
-                            Rejected
+                        <ng-option value="Inactive">
+                            Inactive
                         </ng-option>
                     </ng-select>
                 </div>

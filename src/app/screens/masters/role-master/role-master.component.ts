@@ -1,5 +1,7 @@
 import { Component, OnInit } from '@angular/core';
 import { UserSignupStatusService } from '../../../core/service/user-signup-status.service';
+import { RoleService } from '../../../core/service/role.service';
+import { Router } from '@angular/router';
 
 @Component({
   selector: 'app-role-master',
@@ -7,37 +9,42 @@ import { UserSignupStatusService } from '../../../core/service/user-signup-statu
   styleUrl: './role-master.component.scss',
 })
 export class RoleMasterComponent {
-  userId: any = 1;
+  userId: string = '';
   loadSpinner: boolean = true;
-  signupUsers: any = [];
+  roleData: any = [];
   offset = 0;
   count: number = 10;
-  totalSignupUsers: number = 0;
+  totalRoles: number = 0;
   filters: any = [];
   appliedFilters: any = [];
   currentPage: number = 1;
 
-  constructor(private userService: UserSignupStatusService) {}
+  constructor(private roleService: RoleService, private router: Router) {}
 
   ngOnInit() {
-    this.getSignUpUserList();
+    const data = localStorage.getItem('data');
+    if (data) {
+      const dataObj = JSON.parse(data);
+      this.userId = dataObj.userId;
+    }
+    this.getRolesList();
   }
 
-  getSignUpUserList(
+  getRolesList(
     offset: number = 0,
     count: number = this.count,
     filters: any = this.appliedFilters
   ) {
     const data = {
-      name: filters?.name || '',
       status: filters?.status || '',
+      roleName: filters?.roleName || '',
     };
-    this.userService
-      .signupUserStatus(this.userId, offset, count, data)
+    this.roleService
+      .roleData(this.userId, offset, count, data)
       .subscribe(
         (response: any) => {
-          this.signupUsers = response.signUpUserList;
-          this.totalSignupUsers = response.paging.total;
+          this.roleData = response.roles;
+          this.totalRoles = response.paging.total;
           this.filters = response.filters;
           this.loadSpinner = false;
         },
@@ -50,18 +57,22 @@ export class RoleMasterComponent {
   getData(e: any) {
     this.appliedFilters = e;
     this.currentPage = 1;
-    this.getSignUpUserList(0, this.count, this.appliedFilters);
+    this.getRolesList(0, this.count, this.appliedFilters);
   }
 
   onPageChange(page: number) {
     this.currentPage = page;
     const offset = (this.currentPage - 1) * this.count;
-    this.getSignUpUserList(offset, this.count, this.appliedFilters);
+    this.getRolesList(offset, this.count, this.appliedFilters);
   }
 
   onPageSizeChange(data: any) {
     this.count = data;
     this.currentPage = 1;
-    this.getSignUpUserList(0, this.count, this.appliedFilters);
+    this.getRolesList(0, this.count, this.appliedFilters);
+  }
+
+  onCreate(){
+    this.router.navigate(['masters/add-role']);
   }
 }

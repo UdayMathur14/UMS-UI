@@ -11,6 +11,7 @@ import { LookupService } from '../../../../core/service/lookup.service';
 })
 export class AddEditLookupComponent implements OnInit {
   lookupId: any;
+  userId: string = ''
   loadSpinner: boolean = true;
   lookupType: any = [];
   lookupForm = new FormGroup({
@@ -30,6 +31,11 @@ export class AddEditLookupComponent implements OnInit {
 
   ngOnInit(): void {
     this.lookupId = this.activatedRoute.snapshot.paramMap.get('id');
+    const data = localStorage.getItem('data');
+    if (data) {
+      const dataObj = JSON.parse(data);
+      this.userId = dataObj.userId;
+    }
     // this.getLookupById();
     this.lookUpTypeData();
     if(this.lookupId){
@@ -86,7 +92,7 @@ export class AddEditLookupComponent implements OnInit {
         value: this.lookupForm.controls['value']?.value,
         description: this.lookupForm.controls['description']?.value,
         url: this.lookupForm.controls['url']?.value,
-        actionBy: 'string',
+        actionBy: this.userId,
       };
       this.lookupService.lookupUpdate(this.lookupId, data).subscribe(
         (response: any) => {
@@ -107,7 +113,7 @@ export class AddEditLookupComponent implements OnInit {
       value: this.lookupForm.controls['value']?.value,
       description: this.lookupForm.controls['description']?.value,
       url: this.lookupForm.controls['url']?.value,
-      actionBy: 'string',
+      actionBy: this.userId,
     };
     this.lookupService.lookupCreate(data).subscribe(
       (response: any) => {
