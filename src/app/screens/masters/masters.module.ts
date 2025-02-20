@@ -14,6 +14,10 @@ import { LookupMasterComponent } from './lookup-master/lookup-master.component';
 import { LookupFilterComponent } from './lookup-master/lookup-filter/lookup-filter.component';
 import { LookupGridTableComponent } from './lookup-master/lookup-grid-table/lookup-grid-table.component';
 import { AddEditLookupComponent } from './lookup-master/add-edit-lookup/add-edit-lookup.component';
+import { RoleMasterComponent } from './role-master/role-master.component';
+import { RoleMasterGridTableComponent } from './role-master/role-master-grid-table/role-master-grid-table.component';
+import { AddEditRoleMasterComponent } from './role-master/add-edit-role-master/add-edit-role-master.component';
+import { RoleMasterFilterComponent } from './role-master/role-master-filter/role-master-filter.component';
 @NgModule({
   declarations: [
     UserSignupStatusComponent,
@@ -25,6 +29,10 @@ import { AddEditLookupComponent } from './lookup-master/add-edit-lookup/add-edit
     LookupFilterComponent,
     LookupGridTableComponent,
     AddEditLookupComponent,
+    RoleMasterComponent,
+    RoleMasterGridTableComponent,
+    AddEditRoleMasterComponent,
+    RoleMasterFilterComponent,
   ],
   imports: [
     CommonModule,
