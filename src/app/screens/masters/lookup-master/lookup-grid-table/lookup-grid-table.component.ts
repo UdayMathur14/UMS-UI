@@ -6,5 +6,5 @@ import { Component, Input } from '@angular/core';
   styleUrl: './lookup-grid-table.component.scss',
 })
 export class LookupGridTableComponent {
-  @Input() signupUsers: any;
+  @Input() lookups: any;
 }

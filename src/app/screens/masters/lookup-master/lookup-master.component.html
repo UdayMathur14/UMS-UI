@@ -1,5 +1,8 @@
 <div class="page-title">
     <h3>Lookup Master</h3>
+    <div class="action-buttons">
+        <button class="custom-button-regulr" (click)="onCreate()">Create</button>
+      </div>
 </div>
 <div class="filter-section">
     <app-lookup-filter [filters]="filters" (getData)="getData($event)"></app-lookup-filter>
@@ -7,11 +10,11 @@
 <div class="content-section">
     <div class="grid-table">
         <div class="table-container">
-            <app-lookup-grid-table [signupUsers]="signupUsers"></app-lookup-grid-table>
+            <app-lookup-grid-table [lookups]="lookups"></app-lookup-grid-table>
         </div>
 
         <div class="d-flex justify-content-center mt-3">
-            <ngb-pagination [collectionSize]="totalSignupUsers" [(page)]="currentPage" [pageSize]="count"
+            <ngb-pagination [collectionSize]="totalLookups" [(page)]="currentPage" [pageSize]="count"
                 (pageChange)="onPageChange($event)" [boundaryLinks]="true" [maxSize]="5"
                 [rotate]="true"></ngb-pagination>
             <p class="mt-2 ms-3"> Items per page:</p>

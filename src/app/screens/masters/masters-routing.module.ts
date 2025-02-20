@@ -24,7 +24,11 @@ const routes: Routes = [
     component: LookupMasterComponent,
   },
   {
-    path: 'add-edit-lookup/:id',
+    path: 'edit-lookup/:id',
+    component: AddEditLookupComponent,
+  },
+  {
+    path: 'add-lookup',
     component: AddEditLookupComponent,
   },
   {
