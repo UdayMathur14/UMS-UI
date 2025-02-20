@@ -1,0 +1,53 @@
+<div class="page-title">
+    <h3>{{ isEditMode ? 'Update User Master' : 'Create User Master' }}</h3>
+    <div class="action-buttons d-flex align-items-start">
+        <button class="custom-button-regulr" (click)="handleSave()">{{ isEditMode ? 'Update' : 'Submit' }}</button>
+        <button class="custom-button-secondary ms-3" (click)="cancel()">
+          Cancel
+        </button>
+      </div>
+</div>
+
+<form [formGroup]="createUserform">
+    <div class="row">
+        <div class="col-lg-3">
+            <div class="custom-form-input">
+                <label for="cont-phone">Name<span class="text-danger">*</span></label>
+                <input formControlName="name" [disabled]="isEditMode">
+            </div>
+        </div>
+        <div class="col-lg-3">
+            <div class="custom-form-input">
+                <label for="cont-phone">Email Id<span class="text-danger">*</span></label>
+                <input formControlName="emailId" [disabled]="isEditMode">
+            </div>
+        </div>
+        <div class="col-lg-3">
+            <div class="custom-form-input">
+                <label for="cont-phone">Contact No.<span class="text-danger">*</span></label>
+                <input formControlName="contactNo" [disabled]="isEditMode">
+            </div>
+        </div>
+        <div class="col-lg-3">
+            <div class="custom-form-input">
+                <label for="cont-phone">Designation<span class="text-danger">*</span></label>
+                <input formControlName="designation">
+            </div>
+        </div>
+        <div class="col-lg-3">
+            <div class="custom-form-input">
+                <label for="cont-phone">User Category<span class="text-danger">*</span></label>
+                <ng-select formControlName="userCategory">
+                    <ng-option value="Client">Client</ng-option>
+                    <ng-option value="Employee">Employee</ng-option>
+                </ng-select>
+            </div>
+        </div>
+        <div class="col-lg-3">
+            <div class="custom-form-input">
+                <label for="cont-phone">Organisation<span class="text-danger">*</span></label>
+                <input formControlName="organisation">
+            </div>
+        </div>
+    </div>
+</form>

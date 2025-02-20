@@ -11,4 +11,6 @@ export const APIConstant = {
   signupStatusDataById: `${apiPath}/api/v1/SignUp`,
   signupStatusUpdate: `${apiPath}/api/v1/SignUp/update`,
   login: `${apiPath}/api/v1/login/login`,
+  userMaster: `${apiPath}/api/v1/user/search/`,
+  getUserMasterById: `${apiPath}/api/v1/user/`,
 };
