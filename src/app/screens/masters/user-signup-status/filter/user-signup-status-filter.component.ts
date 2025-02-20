@@ -27,9 +27,9 @@ export class UserSignupStatusFilterComponent {
     this.organisation = undefined;
     this.status = undefined;
     let obj = {
-      "pointName" : undefined,
-      "locationIds" : undefined,
-      "status": undefined
+      name : undefined,
+      organisation : undefined,
+      status: undefined
     }
     this.getData.emit(obj)
   }

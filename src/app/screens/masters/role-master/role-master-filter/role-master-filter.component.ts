@@ -1,34 +1,30 @@
 import { Component, EventEmitter, Input, Output } from '@angular/core';
 
 @Component({
-  selector: 'app-lookup-filter',
-  templateUrl: './lookup-filter.component.html',
-  styleUrl: './lookup-filter.component.scss',
+  selector: 'app-role-master-filter',
+  templateUrl: './role-master-filter.component.html',
+  styleUrl: './role-master-filter.component.scss',
 })
-export class LookupFilterComponent {
+export class RoleMasterFilterComponent {
   @Input() filters: any;
-  type: any;
+  roleName: any;
   status: any;
-  value: any;
   @Output() getData: EventEmitter<object> = new EventEmitter();
 
   onSearch() {
     let obj = {
-      type: this.type || '',
+      roleName: this.roleName || '',
       status: this.status || '',
-      value: this.value || ''
     };
     this.getData.emit(obj);
   }
 
   onClearFilter() {
-    this.type = undefined;
+    this.roleName = undefined;
     this.status = undefined;
-    this.value = undefined;
     let obj = {
-      type: undefined,
+      roleName: undefined,
       status: undefined,
-      value: undefined
     };
 
     this.getData.emit(obj);

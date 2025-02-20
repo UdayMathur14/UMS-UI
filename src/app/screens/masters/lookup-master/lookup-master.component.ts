@@ -1,5 +1,6 @@
 import { Component, OnInit } from '@angular/core';
-import { UserSignupStatusService } from '../../../core/service/user-signup-status.service';
+import { LookupService } from '../../../core/service/lookup.service';
+import { Router } from '@angular/router';
 
 @Component({
   selector: 'app-lookup-master',
@@ -7,38 +8,43 @@ import { UserSignupStatusService } from '../../../core/service/user-signup-statu
   styleUrl: './lookup-master.component.scss',
 })
 export class LookupMasterComponent implements OnInit {
-  userId: any = 1;
+  userId: string = '';
   loadSpinner: boolean = true;
-  signupUsers: any = [];
+  lookups: any = [];
   offset = 0;
   count: number = 10;
-  totalSignupUsers: number = 0;
+  totalLookups: number = 0;
   filters: any = [];
   appliedFilters: any = [];
   currentPage: number = 1;
 
-  constructor(private userService: UserSignupStatusService) {}
+  constructor(private lookupService: LookupService, private router: Router) {}
 
   ngOnInit() {
-    this.getSignUpUserList();
+    const data = localStorage.getItem('data');
+    if (data) {
+      const dataObj = JSON.parse(data);
+      this.userId = dataObj.userId;
+    }
+    this.getLookupsList();
   }
 
-  getSignUpUserList(
+  getLookupsList(
     offset: number = 0,
     count: number = this.count,
     filters: any = this.appliedFilters
   ) {
     const data = {
-      name: filters?.name || '',
-      organisation: filters?.organisation || '',
+      type: filters?.type || '',
+      value: filters?.value || '',
       status: filters?.status || '',
     };
-    this.userService
-      .signupUserStatus(this.userId, offset, count, data)
+    this.lookupService
+      .lookupData(this.userId, offset, count, data)
       .subscribe(
         (response: any) => {
-          this.signupUsers = response.signUpUserList;
-          this.totalSignupUsers = response.paging.total;
+          this.lookups = response.lookUps;
+          this.totalLookups = response.paging.total;
           this.filters = response.filters;
           this.loadSpinner = false;
         },
@@ -51,18 +57,22 @@ export class LookupMasterComponent implements OnInit {
   getData(e: any) {
     this.appliedFilters = e;
     this.currentPage = 1;
-    this.getSignUpUserList(0, this.count, this.appliedFilters);
+    this.getLookupsList(0, this.count, this.appliedFilters);
   }
 
   onPageChange(page: number) {
     this.currentPage = page;
     const offset = (this.currentPage - 1) * this.count;
-    this.getSignUpUserList(offset, this.count, this.appliedFilters);
+    this.getLookupsList(offset, this.count, this.appliedFilters);
   }
 
   onPageSizeChange(data: any) {
     this.count = data;
     this.currentPage = 1;
-    this.getSignUpUserList(0, this.count, this.appliedFilters);
+    this.getLookupsList(0, this.count, this.appliedFilters);
+  }
+
+  onCreate(){
+    this.router.navigate(['masters/add-lookup']);
   }
 }

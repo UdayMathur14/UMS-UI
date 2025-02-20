@@ -7,6 +7,9 @@ import { LookupMasterComponent } from './lookup-master/lookup-master.component';
 import { AddEditLookupComponent } from './lookup-master/add-edit-lookup/add-edit-lookup.component';
 import { UserMasterComponent } from './user-master/user-master.component';
 import { AddEditUserComponent } from './user-master/add-edit-user/add-edit-user.component';
+import { RoleMasterGridTableComponent } from './role-master/role-master-grid-table/role-master-grid-table.component';
+import { AddEditRoleMasterComponent } from './role-master/add-edit-role-master/add-edit-role-master.component';
+import { RoleMasterComponent } from './role-master/role-master.component';
 
 const routes: Routes = [
   {
@@ -18,9 +21,16 @@ const routes: Routes = [
     path: 'edit-user-signup-status/:id',
     component: EditUserSignupStatusComponent,
   },
-  { path: 'lookup-master', component: LookupMasterComponent },
   {
-    path: 'add-edit-lookup/:id',
+    path: 'lookup-master',
+    component: LookupMasterComponent,
+  },
+  {
+    path: 'edit-lookup/:id',
+    component: AddEditLookupComponent,
+  },
+  {
+    path: 'add-lookup',
     component: AddEditLookupComponent,
   },
   {
@@ -35,6 +45,18 @@ const routes: Routes = [
     path: 'edit-user-master/:id',
     component: AddEditUserComponent,
   }
+  {
+    path: 'role-master',
+    component: RoleMasterComponent,
+  },
+  {
+    path: 'edit-role/:id',
+    component: AddEditRoleMasterComponent,
+  },
+  {
+    path: 'add-role',
+    component: AddEditRoleMasterComponent,
+  },
 ];
 
 @NgModule({

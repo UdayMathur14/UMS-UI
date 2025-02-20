@@ -2,26 +2,23 @@
     <table>
         <thead>
             <tr class="header">
-                <th>Type</th>
-                <th>Value</th>
+                <th>Role Name</th>
                 <th>Description</th>
+                <th>Role Key</th>
                 <th>Status</th>
-                <th>Url</th>
                 <th>Action</th>
             </tr>
         </thead>
-
-        <tbody *ngFor="let lookup of lookups">
+        <tbody *ngFor="let data of roleData">
             <tr>
-                <td>{{lookup?.type || '-'}}</td>
-                <td>{{lookup?.value || '-'}}</td>
-                <td>{{lookup?.description || '-'}}</td>
-                <td>{{lookup?.status || '-'}}</td>
-                <td>{{lookup?.url || '-'}}</td>
+                <td>{{data?.roleName || '-'}}</td>
+                <td>{{data?.roleDescription || '-'}}</td>
+                <td>{{data?.roleKey || '-'}}</td>
+                <td>{{data?.status || '-'}}</td>
                 <td style="cursor: pointer">
                     <button class="icon-button">
                         <img class="ms-3" src="../../../../assets/images/icons/editPencil.svg" alt=""
-                            [routerLink]="['/masters/edit-lookup', lookup.id]">
+                            [routerLink]="['/masters/edit-role', data.id]">
                     </button>
                 </td>
             </tr>

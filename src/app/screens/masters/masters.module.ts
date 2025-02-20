@@ -18,6 +18,10 @@ import { UserMasterComponent } from './user-master/user-master.component';
 import { UserMasterGridTableComponent } from './user-master/grid-table/user-master-grid-table/user-master-grid-table.component';
 import { AddEditUserComponent } from './user-master/add-edit-user/add-edit-user.component';
 import { UserMasterFilterComponent } from './user-master/Filters/user-master-filter.component';
+import { RoleMasterComponent } from './role-master/role-master.component';
+import { RoleMasterGridTableComponent } from './role-master/role-master-grid-table/role-master-grid-table.component';
+import { AddEditRoleMasterComponent } from './role-master/add-edit-role-master/add-edit-role-master.component';
+import { RoleMasterFilterComponent } from './role-master/role-master-filter/role-master-filter.component';
 @NgModule({
   declarations: [
     UserSignupStatusComponent,
@@ -32,7 +36,11 @@ import { UserMasterFilterComponent } from './user-master/Filters/user-master-fil
     UserMasterComponent,
     UserMasterGridTableComponent,
     AddEditUserComponent,
-    UserMasterFilterComponent
+    UserMasterFilterComponent,
+    RoleMasterComponent,
+    RoleMasterGridTableComponent,
+    AddEditRoleMasterComponent,
+    RoleMasterFilterComponent,
   ],
   imports: [
     CommonModule,

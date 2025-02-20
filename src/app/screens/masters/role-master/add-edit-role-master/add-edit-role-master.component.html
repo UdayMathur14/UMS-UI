@@ -1,29 +1,19 @@
 <div class="container" style="margin-top: 6rem">
     <div class="page-title">
-        <h1>{{ lookupId ? 'Edit Lookup' : 'Create Lookup' }}</h1>
+        <h1>{{roleId ? 'Edit' : 'Add'}} Role</h1>
         <div class="action-buttons d-flex align-items-start">
-            <button class="custom-button-regulr" (click)="onSave()" [disabled]="!lookupForm.valid">Save</button>
+            <button class="custom-button-regulr" (click)="onSubmit()">Save</button>
             <button class="custom-button-secondary ms-3" (click)="onCancel()">
                 Cancel
             </button>
         </div>
     </div>
-    <form [formGroup]="lookupForm">
+    <form [formGroup]="roleForm">
         <div class="row">
             <div class="col-lg-3">
                 <div class="custom-form-input">
-                    <label>Type<span class="text-danger">*</span></label>
-                    <ng-select formControlName="type" [readonly]="lookupId">
-                        <ng-option *ngFor="let data of lookupType" [value]="data.id">
-                           {{data?.type}}
-                        </ng-option>
-                    </ng-select>
-                </div>
-            </div>
-            <div class="col-lg-3">
-                <div class="custom-form-input">
-                    <label>Value<span class="text-danger">*</span></label>
-                    <input formControlName="value" [readonly]="lookupId" />
+                    <label>Role Name<span class="text-danger">*</span></label>
+                    <input formControlName="roleName" />
                 </div>
             </div>
             <div class="col-lg-3">
@@ -34,11 +24,11 @@
             </div>
             <div class="col-lg-3">
                 <div class="custom-form-input">
-                    <label>Url<span class="text-danger">*</span></label>
-                    <input formControlName="url" />
+                    <label>Role Key<span class="text-danger">*</span></label>
+                    <input formControlName="roleKey" [readOnly]="roleId"/>
                 </div>
-            </div>
-            <div class="col-lg-3" *ngIf="lookupId">
+            </div> 
+            <div class="col-lg-3" *ngIf="roleId">
                 <div class="custom-form-input">
                     <label>Status<span class="text-danger">*</span></label>
                     <ng-select formControlName="status">

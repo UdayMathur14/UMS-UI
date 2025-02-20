@@ -30,6 +30,45 @@
   </table>
 </div>
 
-<!-- <div class="spinner" *ngIf="isLoading">
+
+          <div class="custom-table">
+            <table>
+              <thead>
+                <tr class="header">
+                  <th>Name</th>
+                  <th>Email Id</th>
+                  <th>Contact No</th>
+                  <th>Organisation</th>
+                  <th>Verified</th>
+                  <th>Status</th>
+                  <th>Action</th>
+                </tr>
+              </thead>
+              <tbody *ngFor="let users of signupUsers">   
+                <tr>
+                  <td>{{users?.name || '-'}}</td>
+                  <td>{{users?.emailId || '-'}}</td>
+                  <td>{{users?.contactNo || '-'}}</td>
+                  <td>{{users?.organisation || '-'}}</td>
+                  <td>{{users?.verified || '-'}}</td>
+                  <td>
+                  <span class="badge rounded-pill" [ngClass]="{
+                    'bg-danger': users?.status === 'Rejected',
+                    'bg-primary': users?.status === 'New',
+                    'bg-warning' :users?.status === 'Pending',
+                  }">
+                  {{users?.status}}
+                </span>
+                  <td style="cursor: pointer">
+                    <button class="icon-button" [disabled]="users?.status == 'New'">
+                      <img class="ms-3" src="../../../../assets/images/icons/editPencil.svg" alt=""  [routerLink]="['/masters/edit-user-signup-status', users.id]">
+                    </button>   
+                    </td>
+                </tr>
+              </tbody>
+            </table>
+          </div>
+
+  <!-- <div class="spinner" *ngIf="isLoading">
     Loading...
   </div> -->
