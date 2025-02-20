@@ -10,7 +10,6 @@
                 <th>User Category</th>
                 <th>Organisation</th>
                 <th>Status</th>
-                <th>Verified</th>
                 <th>Action</th>
             </tr>
         </thead>
@@ -24,7 +23,6 @@
                 <td>{{users?.userCategory || '-'}}</td>
                 <td>{{users?.organisation || '-'}}</td>
                 <td>{{users?.status || '-'}}</td>
-                <td>{{users?.verified || '-'}}</td>
                 <td style="cursor: pointer">
                     <button class="icon-button" [disabled]="users?.status == 'New'">
                         <img class="ms-3" src="../../../../assets/images/icons/editPencil.svg" alt=""
