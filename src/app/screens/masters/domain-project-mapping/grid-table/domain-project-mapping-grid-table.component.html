@@ -1,0 +1,26 @@
+<div class="custom-table">
+    <table>
+        <thead>
+            <tr class="header">
+                <th>Domain Name</th>
+                <th>Project Name</th>
+                <th>Status</th>
+                <th>Action</th>
+            </tr>
+        </thead>
+
+        <tbody *ngFor="let data of domainProjects">
+            <tr>
+                <td>{{data?.domainName || '-'}}</td>
+                <td>{{data?.projectName || '-'}}</td>
+                <td>{{data?.status || '-'}}</td>
+                <td style="cursor: pointer">
+                    <button class="icon-button">
+                        <img class="ms-3" src="../../../../assets/images/icons/editPencil.svg" alt=""
+                            [routerLink]="['/masters/edit-domain-project-mapping', data.id]">
+                    </button>
+                </td>
+            </tr>
+        </tbody>
+    </table>
+</div>

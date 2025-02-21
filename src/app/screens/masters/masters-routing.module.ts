@@ -10,6 +10,8 @@ import { AddEditUserComponent } from './user-master/add-edit-user/add-edit-user.
 import { RoleMasterGridTableComponent } from './role-master/role-master-grid-table/role-master-grid-table.component';
 import { AddEditRoleMasterComponent } from './role-master/add-edit-role-master/add-edit-role-master.component';
 import { RoleMasterComponent } from './role-master/role-master.component';
+import { DomainProjectMappingComponent } from './domain-project-mapping/domain-project-mapping.component';
+import { AddEditDomainProjectMappingComponent } from './domain-project-mapping/add-edit-domain-project-mapping/add-edit-domain-project-mapping.component';
 
 const routes: Routes = [
   {
@@ -56,6 +58,18 @@ const routes: Routes = [
   {
     path: 'add-role',
     component: AddEditRoleMasterComponent,
+  },
+  {
+    path: 'domain-project-mapping',
+    component: DomainProjectMappingComponent,
+  },
+  {
+    path: 'edit-domain-project-mapping/:id',
+    component: AddEditDomainProjectMappingComponent,
+  },
+  {
+    path: 'add-domain-project-mapping',
+    component: AddEditDomainProjectMappingComponent,
   },
 ];
 

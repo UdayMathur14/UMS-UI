@@ -22,6 +22,10 @@ import { RoleMasterComponent } from './role-master/role-master.component';
 import { RoleMasterGridTableComponent } from './role-master/role-master-grid-table/role-master-grid-table.component';
 import { AddEditRoleMasterComponent } from './role-master/add-edit-role-master/add-edit-role-master.component';
 import { RoleMasterFilterComponent } from './role-master/role-master-filter/role-master-filter.component';
+import { DomainProjectMappingComponent } from './domain-project-mapping/domain-project-mapping.component';
+import { DomainProjectMappingGridTableComponent } from './domain-project-mapping/grid-table/domain-project-mapping-grid-table.component';
+import { DomainProjectMappingFiltersComponent } from './domain-project-mapping/filters/domain-project-mapping-filters.component';
+import { AddEditDomainProjectMappingComponent } from './domain-project-mapping/add-edit-domain-project-mapping/add-edit-domain-project-mapping.component';
 @NgModule({
   declarations: [
     UserSignupStatusComponent,
@@ -41,6 +45,10 @@ import { RoleMasterFilterComponent } from './role-master/role-master-filter/role
     RoleMasterGridTableComponent,
     AddEditRoleMasterComponent,
     RoleMasterFilterComponent,
+    DomainProjectMappingComponent,
+    DomainProjectMappingGridTableComponent,
+    DomainProjectMappingFiltersComponent,
+    AddEditDomainProjectMappingComponent,
   ],
   imports: [
     CommonModule,
