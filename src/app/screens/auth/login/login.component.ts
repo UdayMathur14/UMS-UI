@@ -4,6 +4,7 @@ import { Router } from '@angular/router';
 import { MsalService } from '@azure/msal-angular';
 import { AccountInfo, EventMessage, EventType } from '@azure/msal-browser';
 import { AuthService } from '../../../core/service/auth.service';
+import { ToastrService } from 'ngx-toastr';
 
 @Component({
   selector: 'app-login',
@@ -21,7 +22,8 @@ export class LoginComponent implements OnInit {
     private router: Router,
     private msalService: MsalService,
     private http: HttpClient,
-    private authService: AuthService
+    private authService: AuthService,
+    private toastr: ToastrService
   ) { 
     localStorage.clear();
   }
@@ -129,9 +131,15 @@ export class LoginComponent implements OnInit {
       (response: any) => {
         const encrRes = btoa(JSON.stringify(response));
         localStorage.setItem('data', atob(encrRes));
-        this.router.navigate(['/masters'])
+        const storedData = localStorage.getItem('data');
+        if(storedData){
+          const dataObj = JSON.parse(storedData);
+          this.router.navigate(['/masters'])
+          this.toastr.success('Logged In Successfully');
+        }
       },
       (error) => {
+        this.toastr.error('Something Went Wrong')
       }
     );
   }

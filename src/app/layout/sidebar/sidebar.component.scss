@@ -15,7 +15,6 @@
     background: linear-gradient(180deg, #0077b6, #0096c7, #48cae4);
     border-right: 2px solid #00b4d8;
     color: #e0f7fa;
-
     position: fixed;
     padding: 5px;
     left: 0;
@@ -25,15 +24,12 @@
     overflow: hidden;
     z-index: 1000;
     margin-top: 6%;
-
 }
-
-
 
 .menu-list {
     list-style: none;
     padding: 0;
-    margin-top: 40px;
+    margin-top: 20px;
     width: 100%;
     text-align: center;
 
@@ -53,9 +49,9 @@
         cursor: pointer;
 
         img {
-            width: 30px;
-            height: 30px;
-            margin-bottom: 8px;
+            width: 20px;
+            height: 20px;
+            margin-bottom: 5px;
             margin-right: 0;
             filter: brightness(1);
             transition: transform 0.2s ease, filter 0.3s ease;
@@ -63,7 +59,7 @@
 
         span {
             white-space: nowrap;
-            font-size: 14px;
+            font-size: 12px;
             font-family: Arial, Helvetica, sans-serif;
         }
 
@@ -79,11 +75,10 @@
     color: #005f73;
 }
 
-
 .menu-list li img {
-    width: 30px;
-    height: 30px;
-    margin-bottom: 8px;
+    width: 20px;
+    height: 20px;
+    margin-bottom: 5px;
     margin-right: 0;
     filter: brightness(1);
     transition: transform 0.2s ease, filter 0.3s ease;

@@ -14,9 +14,10 @@ export class ApprovalModalComponent implements OnInit {
   userCategory: string = '';
   designation: string = '';
   loadSpinner: boolean = true;
+  userId: string = '';
 
   @Input() status: string = '';
-  @Input() userId: string = '';
+  @Input() recordId: string = '';
   @Input() emailId: string = '';
 
   constructor(
@@ -44,7 +45,7 @@ export class ApprovalModalComponent implements OnInit {
       userCategory: this.userCategory,
       designation: this.designation,
     };
-    this.userService.signupUserStatusUpdate(this.userId, data).subscribe(
+    this.userService.signupUserStatusUpdate(this.recordId, data).subscribe(
       (response: any) => {
         this.loadSpinner = false;
         this.toastr.success(response.message);

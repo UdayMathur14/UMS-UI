@@ -9,7 +9,7 @@ import { AuthGuard } from '../../core/guards/auth.guard';
 const routes: Routes = [
   { path: 'login', component: LoginComponent },
   { path: 'signup', component: SignupComponent },
-  { path: 'otpValidation', component: OtpValidationComponent, canActivate: [AuthGuard] },
+  { path: 'otpValidation', component: OtpValidationComponent },
 //   { path: 'reset-password', component: ResetPasswordComponent },
 ];
 

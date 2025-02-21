@@ -82,7 +82,7 @@ export class EditUserSignupStatusComponent implements OnInit {
     });
     documentModal.componentInstance.status = data;
     documentModal.componentInstance.id = data;
-    documentModal.componentInstance.userId = this.signupUserId;
+    documentModal.componentInstance.recordId = this.signupUserId;
     documentModal.componentInstance.emailId = this.emailId;
     documentModal.result.then(
       (result) => {

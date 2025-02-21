@@ -26,6 +26,9 @@ import { DomainProjectMappingComponent } from './domain-project-mapping/domain-p
 import { DomainProjectMappingGridTableComponent } from './domain-project-mapping/grid-table/domain-project-mapping-grid-table.component';
 import { DomainProjectMappingFiltersComponent } from './domain-project-mapping/filters/domain-project-mapping-filters.component';
 import { AddEditDomainProjectMappingComponent } from './domain-project-mapping/add-edit-domain-project-mapping/add-edit-domain-project-mapping.component';
+import { AppMenuMappingComponent } from './app-menu-mapping/app-menu-mapping.component';
+import { AddEditAppMenuMappingComponent } from './app-menu-mapping/add-edit-app-menu-mapping/add-edit-app-menu-mapping.component';
+import { NgMultiSelectDropDownModule } from 'ng-multiselect-dropdown';
 @NgModule({
   declarations: [
     UserSignupStatusComponent,
@@ -49,6 +52,8 @@ import { AddEditDomainProjectMappingComponent } from './domain-project-mapping/a
     DomainProjectMappingGridTableComponent,
     DomainProjectMappingFiltersComponent,
     AddEditDomainProjectMappingComponent,
+    AppMenuMappingComponent,
+    AddEditAppMenuMappingComponent,
   ],
   imports: [
     CommonModule,
@@ -58,6 +63,7 @@ import { AddEditDomainProjectMappingComponent } from './domain-project-mapping/a
     FormsModule,
     NgbPaginationModule,
     NgbModule,
+    NgMultiSelectDropDownModule
   ],
 })
 export class MastersModule {}
