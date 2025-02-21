@@ -126,21 +126,30 @@ export class LoginComponent implements OnInit {
     this.router.navigate(['']);
   }
 
-  onSignIn(){
+  onSignIn() {
     this.authService.login({ username: this.emailId, password: this.password }).subscribe(
       (response: any) => {
-        const encrRes = btoa(JSON.stringify(response));
-        localStorage.setItem('data', atob(encrRes));
+        const encrRes = JSON.stringify(response);
+        console.log(encrRes);
+        
+        localStorage.setItem('data',encrRes);
+  
         const storedData = localStorage.getItem('data');
-        if(storedData){
+        if (storedData) {
           const dataObj = JSON.parse(storedData);
-          this.router.navigate(['/masters'])
           this.toastr.success('Logged In Successfully');
+          const appRoute = dataObj.apps[0].route;
+          const token = dataObj.accessToken;
+          const appId = dataObj.apps[0].id;
+          window.location.href = `${appRoute}?data=${token}&appId=${appId}`;
+          
         }
       },
       (error) => {
-        this.toastr.error('Something Went Wrong')
+        this.toastr.error('Invalid Email Id or Password');
       }
     );
   }
+  
+  
 }
