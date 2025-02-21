@@ -2,6 +2,7 @@ import { Component } from '@angular/core';
 import { FormBuilder, FormGroup, Validators } from '@angular/forms';
 import { ActivatedRoute, Router } from '@angular/router';
 import { UserMasterService } from '../../../../core/service/user-master.service';
+import { ToastrService } from 'ngx-toastr';
 
 @Component({
   selector: 'app-add-edit-user',
@@ -19,7 +20,8 @@ export class AddEditUserComponent {
     private formBuilder: FormBuilder,
     private router: Router,
     private route: ActivatedRoute,
-    private userMasterService: UserMasterService
+    private userMasterService: UserMasterService,
+    private toastr:ToastrService
   ) {}
 
   ngOnInit(): void {
@@ -56,7 +58,7 @@ export class AddEditUserComponent {
       return;
     }
 
-    this.loadSpinner = true; // Start the loader
+    this.loadSpinner = true;
     console.log('Fetching user data for ID:', this.userId);
     this.userMasterService.getUserMasterById(this.userId).subscribe({
       next: (response: any) => {
@@ -86,7 +88,7 @@ export class AddEditUserComponent {
     if (!this.createUserform.valid) {
       return;
     }
-    this.loadSpinner = true; // Start the loader
+    this.loadSpinner = true;
     const formData = this.createUserform.getRawValue();
   
     if (this.isEditMode) {
@@ -99,13 +101,14 @@ export class AddEditUserComponent {
       };
   
       this.userMasterService.userMasterUpdate(this.userId, updateData).subscribe({
-        next: (response) => {
-          this.loadSpinner = false; // Start the loader
+        next: (response: any) => {
+          this.toastr.success(response.message)
+          this.loadSpinner = false;
           this.router.navigate(['/masters/user-master']);
         },
         error: (error) => {
           console.error('Error updating user:', error);
-          this.loadSpinner = false; // Stop the loader even if an error occurs
+          this.loadSpinner = false;
 
         }
       });
@@ -126,13 +129,13 @@ export class AddEditUserComponent {
   
       this.userMasterService.userMasterCreate(createData).subscribe({
         next: (response) => {
-          this.loadSpinner = false; // Stop the loader even if an error occurs
+          this.loadSpinner = false;
 
           this.router.navigate(['/masters/user-master']);
         },
         error: (error) => {
           console.error('Error creating user:', error);
-          this.loadSpinner = false; // Stop the loader even if an error occurs
+          this.loadSpinner = false;
 
         }
       });
