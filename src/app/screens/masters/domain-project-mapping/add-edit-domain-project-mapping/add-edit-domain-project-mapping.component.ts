@@ -1,0 +1,150 @@
+import { Component } from '@angular/core';
+import { FormGroup, FormControl, Validators } from '@angular/forms';
+import { ActivatedRoute, Router } from '@angular/router';
+import { ToastrService } from 'ngx-toastr';
+import { LookupService } from '../../../../core/service/lookup.service';
+import { DomainProjectMappingService } from '../../../../core/service/domain-project-mapping.service';
+
+@Component({
+  selector: 'app-add-edit-domain-project-mapping',
+  templateUrl: './add-edit-domain-project-mapping.component.html',
+  styleUrl: './add-edit-domain-project-mapping.component.scss',
+})
+export class AddEditDomainProjectMappingComponent {
+  domainProjectId: any;
+  userId: string = '';
+  loadSpinner: boolean = true;
+  lookupType: any = [];
+  domainNames: any = [];
+  projectNames: any = [];
+  offset = 0;
+  count: number = Number.MAX_VALUE;
+  domainProjectForm = new FormGroup({
+    domain: new FormControl('', Validators.required),
+    project: new FormControl('', Validators.required),
+    status: new FormControl(''),
+  });
+
+  constructor(
+    private activatedRoute: ActivatedRoute,
+    private lookupService: LookupService,
+    private domainService: DomainProjectMappingService,
+    private router: Router,
+    private toastr: ToastrService
+  ) {}
+
+  ngOnInit(): void {
+    this.domainProjectId = this.activatedRoute.snapshot.paramMap.get('id');
+    const data = localStorage.getItem('data');
+    if (data) {
+      const dataObj = JSON.parse(data);
+      this.userId = dataObj.userId;
+    }
+    // this.getLookupById();
+    this.projectNameLookup();
+    this.domainNameLookup();
+    if (this.domainProjectId) {
+      this.getDomainProjectById();
+    }
+  }
+
+  domainNameLookup() {
+    const data = {
+      status: '',
+      type: 'domainName',
+      value: ''
+    };
+    this.lookupService.lookupData(this.userId, this.offset, this.count, data).subscribe(
+      (response: any) => {
+        this.domainNames = response?.lookUps;
+        this.loadSpinner = false;
+      },
+      (error) => {
+        this.loadSpinner = false;
+      }
+    );
+  }
+
+  projectNameLookup() {
+    const data = {
+      status: '',
+      type: 'projectName',
+      value: ''
+    };
+    this.lookupService.lookupData(this.userId, this.offset, this.count, data).subscribe(
+      (response: any) => {
+        this.projectNames = response?.lookUps;
+        this.loadSpinner = false;
+      },
+      (error) => {
+        this.loadSpinner = false;
+      }
+    );
+  }
+
+  getDomainProjectById() {
+    this.domainService.domainProjectById(this.domainProjectId).subscribe(
+      (response: any) => {
+        this.domainProjectForm.patchValue({
+          domain: response?.domainId,
+          project: response?.projectId,
+          status: response?.status
+        });
+        this.loadSpinner = false;
+      },
+      (error) => {
+        this.loadSpinner = false;
+      }
+    );
+  }
+
+  onCancel() {
+    this.router.navigate(['/masters/domain-project-mapping']);
+  }
+
+  onSave() {
+    const projectId = this.domainProjectForm.controls['project']?.value;
+    const projectNames = this.projectNames.find(
+      (item: any) => item?.id == projectId
+    )?.value;
+    const domainId = this.domainProjectForm.controls['domain']?.value;
+    const domainNames = this.domainNames.find(
+      (item: any) => item?.id == domainId
+    )?.value;
+    if (this.domainProjectId) {
+      const data = {
+        status: this.domainProjectForm.controls['status']?.value,
+        actionBy: this.userId,
+      };
+      this.domainService.domainProjectUpdate(this.domainProjectId, data).subscribe(
+        (response: any) => {
+          this.loadSpinner = false;
+          this.toastr.success('Domain Project Mapping ' + response.message);
+          this.onCancel();
+        },
+        (error) => {
+          this.loadSpinner = false;
+        }
+      );
+    } else {
+      const data = {
+        status: 'Active',
+        domainId: this.domainProjectForm.controls['domain']?.value,
+        domainName: domainNames,
+        projectId: this.domainProjectForm.controls['project']?.value,
+        projectName: projectNames,
+        actionBy: this.userId,
+      };
+      this.domainService.domainProjectCreate(data).subscribe(
+        (response: any) => {
+          this.loadSpinner = false;
+          this.toastr.success('Domain Project Mapping ' + response.message);
+          this.onCancel();
+        },
+        (error) => {
+          this.loadSpinner = false;
+        }
+      );
+    }
+  }
+}

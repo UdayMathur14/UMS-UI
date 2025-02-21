@@ -25,4 +25,9 @@ export const APIConstant = {
   createRole: `${apiPath}/api/v1/role/create`,
   updateRole: `${apiPath}/api/v1/role/update`,
   roleById: `${apiPath}/api/v1/role`,
+
+  domainProject: `${apiPath}/api/v1/domain-Project/search`,
+  domainProjectCreate: `${apiPath}/api/v1/domain-Project/create`,
+  updateDomainProject: `${apiPath}/api/v1/domain-Project/update`,
+  domainProjectById: `${apiPath}/api/v1/domain-Project`,
 };
