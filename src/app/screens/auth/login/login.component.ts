@@ -17,7 +17,7 @@ export class LoginComponent implements OnInit {
   loginDisplay = false;
   emailId: string = '';
   password: string = '';
-
+  loadSpinner: boolean = false;
   constructor(
     private router: Router,
     private msalService: MsalService,
@@ -127,6 +127,7 @@ export class LoginComponent implements OnInit {
   }
 
   onSignIn() {
+    this.loadSpinner = true;
     this.authService.login({ username: this.emailId, password: this.password }).subscribe(
       (response: any) => {
         const encrRes = JSON.stringify(response);
@@ -142,11 +143,12 @@ export class LoginComponent implements OnInit {
           const token = dataObj.accessToken;
           const appId = dataObj.apps[0].id;
           window.location.href = `${appRoute}?data=${token}&appId=${appId}`;
-          
+          this.loadSpinner = false;
         }
       },
       (error) => {
-        this.toastr.error('Invalid Email Id or Password');
+        this.toastr.error('Something Went Wrong');
+        this.loadSpinner = false;
       }
     );
   }
