@@ -12,6 +12,8 @@ import { AddEditRoleMasterComponent } from './role-master/add-edit-role-master/a
 import { RoleMasterComponent } from './role-master/role-master.component';
 import { DomainProjectMappingComponent } from './domain-project-mapping/domain-project-mapping.component';
 import { AddEditDomainProjectMappingComponent } from './domain-project-mapping/add-edit-domain-project-mapping/add-edit-domain-project-mapping.component';
+import { AppMenuMappingComponent } from './app-menu-mapping/app-menu-mapping.component';
+import { AddEditAppMenuMappingComponent } from './app-menu-mapping/add-edit-app-menu-mapping/add-edit-app-menu-mapping.component';
 
 const routes: Routes = [
   {
@@ -70,6 +72,14 @@ const routes: Routes = [
   {
     path: 'add-domain-project-mapping',
     component: AddEditDomainProjectMappingComponent,
+  },
+  {
+    path: 'app-menu-mapping',
+    component: AppMenuMappingComponent,
+  },
+  {
+    path: 'add-app-menu-mapping',
+    component: AddEditAppMenuMappingComponent,
   },
 ];
 
