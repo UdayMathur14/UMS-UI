@@ -79,16 +79,12 @@
     <div class="col-lg-3">
       <div class="custom-form-input">
         <label>Permissions</label>
-        <ng-multiselect-dropdown
-          [placeholder]="'Select Permissions'"
-          [data]="permissions"
-          [(ngModel)]="selectedPermissions"
-          [settings]="dropdownSettings"
-          formControlName="permission">
+        <ng-multiselect-dropdown [placeholder]="'Select Permissions'" [data]="permissions"
+          [(ngModel)]="selectedPermissions" [settings]="dropdownSettings" formControlName="permission">
         </ng-multiselect-dropdown>
       </div>
     </div>
-    
+
 
     <!-- Status -->
     <div class="col-lg-3">
@@ -109,35 +105,35 @@
     <h3>Add Submenu</h3>
     <div class="row" *ngFor="let submenu of submenus.controls; let i = index" [formGroup]="submenu">
       <div class="col-lg-3">
-          <div class="custom-form-input">
+        <div class="custom-form-input">
           <label>Name<span class="text-danger">*</span></label>
           <input formControlName="name">
         </div>
       </div>
 
       <div class="col-lg-3">
-          <div class="custom-form-input">
+        <div class="custom-form-input">
           <label>Routing<span class="text-danger">*</span></label>
           <input formControlName="routing">
         </div>
       </div>
 
       <div class="col-lg-3">
-          <div class="custom-form-input">
+        <div class="custom-form-input">
           <label>Description</label>
           <input formControlName="description">
         </div>
       </div>
 
       <div class="col-lg-3">
-          <div class="custom-form-input">
+        <div class="custom-form-input">
           <label>Order By<span class="text-danger">*</span></label>
           <input type="number" formControlName="orderBy">
         </div>
       </div>
 
       <div class="col-lg-3">
-          <div class="custom-form-input">
+        <div class="custom-form-input">
           <label>Level<span class="text-danger">*</span></label>
           <input type="number" formControlName="level">
         </div>
@@ -146,18 +142,14 @@
       <div class="col-lg-3">
         <div class="custom-form-input">
           <label>Permissions</label>
-          <ng-multiselect-dropdown
-            [placeholder]="'Select Permissions'"
-            [data]="permissions"
-            [(ngModel)]="selectedPermissions"
-            [settings]="dropdownSettings"
-            formControlName="permission">
+          <ng-multiselect-dropdown [placeholder]="'Select Permissions'" [data]="permissions"
+            [(ngModel)]="selectedPermissions" [settings]="dropdownSettings" formControlName="permission">
           </ng-multiselect-dropdown>
         </div>
       </div>
 
       <div class="col-lg-3">
-          <div class="custom-form-input">
+        <div class="custom-form-input">
           <label>Status<span class="text-danger">*</span></label>
           <ng-select formControlName="status">
             <ng-option *ngFor="let status of statusOptions" [value]="status">{{ status }}</ng-option>
