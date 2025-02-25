@@ -70,7 +70,8 @@ export class LoginComponent implements OnInit {
           const appRoute = dataObj.apps[0].route;
           const token = dataObj.accessToken;
           const appId = dataObj.apps[0].id;
-          window.location.href = `${appRoute}?data=${token}&appId=${appId}`;
+          
+          this.router.navigate(['/masters'])
           this.loadSpinner = false;
         }
       },
