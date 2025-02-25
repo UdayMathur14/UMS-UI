@@ -9,21 +9,8 @@ import { Router } from '@angular/router';
 })
 export class AppMenuMappingComponent {
 
-  menuForm: FormGroup;
-
-  constructor(private router: Router,  private formBuilder: FormBuilder,){
-    this.menuForm = this.formBuilder.group({
-      applicationId: ['', Validators.required],
-      menuName: ['', Validators.required],
-      menuRouting: '',
-      menuKey: ['', Validators.required],
-      description: ['', Validators.required],
-      permissions: [],
-      level: 0,
-      status: 'Active',
-      order: ['', [Validators.required]],
-      subMenu: this.formBuilder.array([]),
-    });
+  constructor(private router: Router){
+    
   }
 
   onCreate(){
