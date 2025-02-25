@@ -14,6 +14,8 @@ import { DomainProjectMappingComponent } from './domain-project-mapping/domain-p
 import { AddEditDomainProjectMappingComponent } from './domain-project-mapping/add-edit-domain-project-mapping/add-edit-domain-project-mapping.component';
 import { AppMenuMappingComponent } from './app-menu-mapping/app-menu-mapping.component';
 import { AddEditAppMenuMappingComponent } from './app-menu-mapping/add-edit-app-menu-mapping/add-edit-app-menu-mapping.component';
+import { AppRoleMenuMappingComponent } from './app-role-menu-mapping/app-role-menu-mapping.component';
+import { AppEditRoleMenuComponent } from './app-role-menu-mapping/app-edit-role-menu/app-edit-role-menu.component';
 
 const routes: Routes = [
   {
@@ -80,6 +82,14 @@ const routes: Routes = [
   {
     path: 'add-app-menu-mapping',
     component: AddEditAppMenuMappingComponent,
+  },
+  {
+    path: 'app-role-menu-mapping',
+    component: AppRoleMenuMappingComponent,
+  },
+  {
+    path: 'add-app-role-menu-mapping',
+    component: AppEditRoleMenuComponent,
   },
 ];
 

@@ -29,8 +29,11 @@ import { AddEditDomainProjectMappingComponent } from './domain-project-mapping/a
 import { AppMenuMappingComponent } from './app-menu-mapping/app-menu-mapping.component';
 import { AddEditAppMenuMappingComponent } from './app-menu-mapping/add-edit-app-menu-mapping/add-edit-app-menu-mapping.component';
 import { NgMultiSelectDropDownModule } from 'ng-multiselect-dropdown';
+import { AppRoleMenuMappingComponent } from './app-role-menu-mapping/app-role-menu-mapping.component';
 import { FiltersComponent } from './app-menu-mapping/filters/filters.component';
-import { GridTableComponent } from './app-menu-mapping/grid-table/grid-table.component';
+import { AppEditRoleMenuComponent } from './app-role-menu-mapping/app-edit-role-menu/app-edit-role-menu.component';
+import { FilterComponent } from './app-role-menu-mapping/filter/filter.component';
+import { GridtablesComponent } from './app-role-menu-mapping/gridtables/gridtables.component';
 @NgModule({
   declarations: [
     UserSignupStatusComponent,
@@ -56,8 +59,11 @@ import { GridTableComponent } from './app-menu-mapping/grid-table/grid-table.com
     AddEditDomainProjectMappingComponent,
     AppMenuMappingComponent,
     AddEditAppMenuMappingComponent,
+    AppRoleMenuMappingComponent,
     FiltersComponent,
-    GridTableComponent,
+    AppEditRoleMenuComponent,
+    FilterComponent,
+    GridtablesComponent,
   ],
   imports: [
     CommonModule,
