@@ -67,41 +67,41 @@
     margin-bottom: 0;
   }
 
-  // .action-buttons {
-  //     display: flex;
-  //     align-items: center;
-  //     column-gap: var(--spacer-10);
+  .action-buttons {
+      display: flex;
+      align-items: center;
+      column-gap: var(--spacer-10);
 
-  //     .search-field {
-  //         position: relative;
-  //         display: inline-block;
+      .search-field {
+          position: relative;
+          display: inline-block;
 
-  //         input {
-  //             padding: 7px 28px 7px 18px;
-  //             border-radius: var(--spacer-20);
-  //             border: 1px solid var(--inputBorder);
+          input {
+              padding: 7px 28px 7px 18px;
+              border-radius: var(--spacer-20);
+              border: 1px solid var(--inputBorder);
 
-  //             &:disabled {
-  //                 background-color: var(--gray2);
-  //             }
+              &:disabled {
+                  background-color: var(--gray2);
+              }
 
-  //             &:focus {
-  //                 outline: none;
-  //                 border-color: var(--secondaryColor);
-  //             }
-  //         }
+              &:focus {
+                  outline: none;
+                  border-color: var(--secondaryColor);
+              }
+          }
 
-  //         span {
-  //             position: absolute;
-  //             right: 16px;
-  //             top: 9px;
+          span {
+              position: absolute;
+              right: 16px;
+              top: 9px;
 
-  //             img {
-  //                 width: 14px;
-  //             }
-  //         }
-  //     }
-  // }
+              img {
+                  width: 14px;
+              }
+          }
+      }
+  }
 }
 
 ::-webkit-scrollbar {

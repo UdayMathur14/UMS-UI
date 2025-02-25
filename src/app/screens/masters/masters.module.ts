@@ -29,6 +29,8 @@ import { AddEditDomainProjectMappingComponent } from './domain-project-mapping/a
 import { AppMenuMappingComponent } from './app-menu-mapping/app-menu-mapping.component';
 import { AddEditAppMenuMappingComponent } from './app-menu-mapping/add-edit-app-menu-mapping/add-edit-app-menu-mapping.component';
 import { NgMultiSelectDropDownModule } from 'ng-multiselect-dropdown';
+import { FiltersComponent } from './app-menu-mapping/filters/filters.component';
+import { GridTableComponent } from './app-menu-mapping/grid-table/grid-table.component';
 @NgModule({
   declarations: [
     UserSignupStatusComponent,
@@ -54,6 +56,8 @@ import { NgMultiSelectDropDownModule } from 'ng-multiselect-dropdown';
     AddEditDomainProjectMappingComponent,
     AppMenuMappingComponent,
     AddEditAppMenuMappingComponent,
+    FiltersComponent,
+    GridTableComponent,
   ],
   imports: [
     CommonModule,

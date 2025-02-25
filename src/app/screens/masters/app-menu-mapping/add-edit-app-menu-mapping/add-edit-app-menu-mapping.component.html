@@ -1,10 +1,173 @@
 <div class="page-title">
-    <h1>Add App Menu Mapping</h1>
-    <div class="action-buttons">
-      <button class="custom-button-regulr">Save</button>
-      <button class="custom-button-regulr">Add Submenu</button>
-      <button class="custom-button-secondary" (click)="onCancelPress()">Cancel</button>
+  <h1>Add App Menu Mapping</h1>
+  <div class="action-buttons">
+    <button class="custom-button-regulr" (click)="submitForm()">Save</button>
+    <button class="custom-button-regulr" (click)="addSubmenu()">Add Submenu</button>
+    <button class="custom-button-secondary" (click)="onCancelPress()">Cancel</button>
+  </div>
+</div>
+
+
+<form [formGroup]="menuForm">
+  <div class="row">
+    <!-- App Name -->
+    <div class="col-lg-3">
+      <div class="custom-form-input">
+        <label>App Name<span class="text-danger">*</span></label>
+        <ng-select formControlName="appName">
+          <ng-option *ngFor="let app of appNames" [value]="app">{{ app }}</ng-option>
+        </ng-select>
+        <div *ngIf="menuForm.get('appName')?.touched && menuForm.get('appName')?.invalid" class="text-danger">
+          <small>App Name is required</small>
+        </div>
+      </div>
+    </div>
+
+    <!-- Menu Name -->
+    <div class="col-lg-3">
+      <div class="custom-form-input">
+        <label>Menu Name<span class="text-danger">*</span></label>
+        <input formControlName="menuName">
+        <div *ngIf="menuForm.get('menuName')?.touched && menuForm.get('menuName')?.invalid" class="text-danger">
+          <small>Menu Name is required</small>
+        </div>
+      </div>
+    </div>
+
+    <!-- Routing -->
+    <div class="col-lg-3">
+      <div class="custom-form-input">
+        <label>Routing<span class="text-danger">*</span></label>
+        <input formControlName="routing">
+        <div *ngIf="menuForm.get('routing')?.touched && menuForm.get('routing')?.invalid" class="text-danger">
+          <small>Routing is required</small>
+        </div>
+      </div>
+    </div>
+
+    <!-- Description -->
+    <div class="col-lg-3">
+      <div class="custom-form-input">
+        <label>Description</label>
+        <input formControlName="description">
+      </div>
+    </div>
+
+    <!-- Order By -->
+    <div class="col-lg-3">
+      <div class="custom-form-input">
+        <label>Order By<span class="text-danger">*</span></label>
+        <input type="number" formControlName="orderBy">
+        <div *ngIf="menuForm.get('orderBy')?.touched && menuForm.get('orderBy')?.invalid" class="text-danger">
+          <small>Order By is required</small>
+        </div>
+      </div>
+    </div>
+
+    <!-- Level -->
+    <div class="col-lg-3">
+      <div class="custom-form-input">
+        <label>Level<span class="text-danger">*</span></label>
+        <input type="number" formControlName="level">
+        <div *ngIf="menuForm.get('level')?.touched && menuForm.get('level')?.invalid" class="text-danger">
+          <small>Level is required</small>
+        </div>
+      </div>
+    </div>
+
+    <!-- Permission (Multi-select) -->
+    <div class="col-lg-3">
+      <div class="custom-form-input">
+        <label>Permissions</label>
+        <ng-multiselect-dropdown
+          [placeholder]="'Select Permissions'"
+          [data]="permissions"
+          [(ngModel)]="selectedPermissions"
+          [settings]="dropdownSettings"
+          formControlName="permission">
+        </ng-multiselect-dropdown>
+      </div>
+    </div>
+    
+
+    <!-- Status -->
+    <div class="col-lg-3">
+      <div class="custom-form-input">
+        <label>Status<span class="text-danger">*</span></label>
+        <ng-select formControlName="status">
+          <ng-option *ngFor="let status of statusOptions" [value]="status">{{ status }}</ng-option>
+        </ng-select>
+        <div *ngIf="menuForm.get('status')?.touched && menuForm.get('status')?.invalid" class="text-danger">
+          <small>Status is required</small>
+        </div>
+      </div>
     </div>
   </div>
 
-  
+  <!-- Submenu Section -->
+  <div *ngIf="submenus.controls.length > 0">
+    <h3>Add Submenu</h3>
+    <div class="row" *ngFor="let submenu of submenus.controls; let i = index" [formGroup]="submenu">
+      <div class="col-lg-3">
+          <div class="custom-form-input">
+          <label>Name<span class="text-danger">*</span></label>
+          <input formControlName="name">
+        </div>
+      </div>
+
+      <div class="col-lg-3">
+          <div class="custom-form-input">
+          <label>Routing<span class="text-danger">*</span></label>
+          <input formControlName="routing">
+        </div>
+      </div>
+
+      <div class="col-lg-3">
+          <div class="custom-form-input">
+          <label>Description</label>
+          <input formControlName="description">
+        </div>
+      </div>
+
+      <div class="col-lg-3">
+          <div class="custom-form-input">
+          <label>Order By<span class="text-danger">*</span></label>
+          <input type="number" formControlName="orderBy">
+        </div>
+      </div>
+
+      <div class="col-lg-3">
+          <div class="custom-form-input">
+          <label>Level<span class="text-danger">*</span></label>
+          <input type="number" formControlName="level">
+        </div>
+      </div>
+
+      <div class="col-lg-3">
+        <div class="custom-form-input">
+          <label>Permissions</label>
+          <ng-multiselect-dropdown
+            [placeholder]="'Select Permissions'"
+            [data]="permissions"
+            [(ngModel)]="selectedPermissions"
+            [settings]="dropdownSettings"
+            formControlName="permission">
+          </ng-multiselect-dropdown>
+        </div>
+      </div>
+
+      <div class="col-lg-3">
+          <div class="custom-form-input">
+          <label>Status<span class="text-danger">*</span></label>
+          <ng-select formControlName="status">
+            <ng-option *ngFor="let status of statusOptions" [value]="status">{{ status }}</ng-option>
+          </ng-select>
+        </div>
+      </div>
+
+      <!-- <div class="col-lg-1">
+        <button class="btn btn-danger" (click)="removeSubmenu(i)">🗑</button>
+      </div> -->
+    </div>
+  </div>
+</form>
