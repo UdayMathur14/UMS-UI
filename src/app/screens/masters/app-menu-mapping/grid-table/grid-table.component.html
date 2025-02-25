@@ -1,0 +1,33 @@
+<div class="custom-table">
+    <table>
+        <thead>
+            <tr class="header">
+                <th>App Name</th>
+                <th>Menu Name</th>
+                <th>Status</th>
+                <th>Designation</th>
+                <th>Level</th>
+                <th>Order By</th>
+                <th>Status</th>
+                <th>Action</th>
+            </tr>
+        </thead>
+        <tbody>
+            <tr *ngFor="let item of tableData">
+              <td>{{ item.appName }}</td>
+              <td>{{ item.menuName }}</td>
+              <td>{{ item.status }}</td>
+              <td>{{ item.designation }}</td>
+              <td>{{ item.level }}</td>
+              <td>{{ item.orderBy }}</td>
+              <td>{{ item.status2 }}</td>
+              <td style="cursor: pointer">
+                <button class="icon-button">
+                  <img class="ms-3" src="../../../../assets/images/icons/editPencil.svg" alt="Edit">
+                </button>
+              </td>
+            </tr>
+          </tbody>
+          
+    </table>
+</div>

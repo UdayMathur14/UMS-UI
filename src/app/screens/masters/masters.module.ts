@@ -30,6 +30,8 @@ import { AppMenuMappingComponent } from './app-menu-mapping/app-menu-mapping.com
 import { AddEditAppMenuMappingComponent } from './app-menu-mapping/add-edit-app-menu-mapping/add-edit-app-menu-mapping.component';
 import { NgMultiSelectDropDownModule } from 'ng-multiselect-dropdown';
 import { AppRoleMenuMappingComponent } from './app-role-menu-mapping/app-role-menu-mapping.component';
+import { FiltersComponent } from './app-menu-mapping/filters/filters.component';
+import { GridTableComponent } from './app-menu-mapping/grid-table/grid-table.component';
 @NgModule({
   declarations: [
     UserSignupStatusComponent,
@@ -56,6 +58,8 @@ import { AppRoleMenuMappingComponent } from './app-role-menu-mapping/app-role-me
     AppMenuMappingComponent,
     AddEditAppMenuMappingComponent,
     AppRoleMenuMappingComponent,
+    FiltersComponent,
+    GridTableComponent,
   ],
   imports: [
     CommonModule,
