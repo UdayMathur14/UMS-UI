@@ -1,4 +1,5 @@
 import { Component, ElementRef, HostListener, OnInit, ViewChild } from '@angular/core';
+import { Router } from '@angular/router';
 
 @Component({
   selector: 'app-header',
@@ -12,6 +13,8 @@ export class HeaderComponent implements OnInit {
   isProfileOpen = false;
   isNotifyOpen = false;
   isSidebarCollapsed = false;
+
+  constructor(private router: Router){}
 
   notifications: string[] = [
     'Ticket #12352 has been created. Our support team will get back to you soon.',
@@ -93,5 +96,10 @@ export class HeaderComponent implements OnInit {
   // Add this method to receive sidebar state
   onSidebarToggle(isCollapsed: boolean) {
     this.isSidebarCollapsed = isCollapsed;
+  }
+
+  logout(){
+    localStorage.clear();
+    this.router.navigate(['/auth/login'])
   }
 }

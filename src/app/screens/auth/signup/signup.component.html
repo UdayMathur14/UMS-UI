@@ -19,18 +19,6 @@
         Enter a valid email address.
       </small>
 
-      <label for="password" class="form-label">{{ passwordLabel }}</label>
-      <input type="password" class="form-control" id="password" formControlName="password">
-      <small class="text-danger" *ngIf="signUpForm.controls['password'].hasError('required') && signUpForm.controls['password'].touched">
-        {{ passwordLabel }} is required.
-      </small>
-      <small class="text-danger" *ngIf="signUpForm.controls['password'].hasError('minLength') && signUpForm.controls['password'].touched">
-        {{ passwordLabel }} must be at least 6 characters long.
-      </small>
-      <small class="text-danger" *ngIf="signUpForm.controls['password'].hasError('invalidCombination') && signUpForm.controls['password'].touched">
-        {{ passwordLabel }} must include at least one uppercase letter, one number, and one special character.
-      </small>
-
       <label for="number" class="form-label">Phone Number</label>
       <input type="tel" class="form-control" id="number" formControlName="contactNo">
       <small class="text-danger" *ngIf="signUpForm.controls['contactNo'].hasError('required') && signUpForm.controls['contactNo'].touched">

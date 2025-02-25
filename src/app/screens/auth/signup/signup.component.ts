@@ -33,7 +33,7 @@ export class SignupComponent implements OnInit {
       userName: new FormControl('', Validators.required),
       emailId: new FormControl({ value: email || '', disabled: this.isMicrosoftLogin }, Validators.required),
       contactNo: new FormControl('', Validators.required),
-      password: new FormControl('', [Validators.required, Validators.minLength(6), this.passwordValidator()]),
+      // password: new FormControl('', [Validators.required, Validators.minLength(6), this.passwordValidator()]),
       organisation: new FormControl('', Validators.required),
     });
 
@@ -48,7 +48,7 @@ export class SignupComponent implements OnInit {
         name: this.signUpForm.controls['userName']?.value,
         emailId: this.signUpForm.controls['emailId']?.value,
         contactNo: this.signUpForm.controls['contactNo']?.value,
-        password: this.signUpForm.controls['password']?.value,
+        // password: this.signUpForm.controls['password']?.value,
         organisation: this.signUpForm.controls['organisation']?.value,
         otp: '',
       };
@@ -69,26 +69,26 @@ export class SignupComponent implements OnInit {
     }
   }
 
-  passwordValidator() {
-    return (control: any) => {
-      const password = control.value;
-      if (!password) {
-        return null;
-      }
+  // passwordValidator() {
+  //   return (control: any) => {
+  //     const password = control.value;
+  //     if (!password) {
+  //       return null;
+  //     }
 
-      if (password.length < 6) {
-        return { minLength: true };
-      }
+  //     if (password.length < 6) {
+  //       return { minLength: true };
+  //     }
 
-      const hasSpecial = /[!@#$%^&*(),.?":{}|<>]/.test(password);
-      const hasUpperCase = /[A-Z]/.test(password);
-      const hasNumber = /\d/.test(password);
+  //     const hasSpecial = /[!@#$%^&*(),.?":{}|<>]/.test(password);
+  //     const hasUpperCase = /[A-Z]/.test(password);
+  //     const hasNumber = /\d/.test(password);
 
-      if (!hasSpecial || !hasUpperCase || !hasNumber) {
-        return { invalidCombination: true };
-      }
+  //     if (!hasSpecial || !hasUpperCase || !hasNumber) {
+  //       return { invalidCombination: true };
+  //     }
 
-      return null;
-    };
-  }
+  //     return null;
+  //   };
+  // }
 }

@@ -81,6 +81,7 @@ export class OtpValidationComponent {
   }
 
   submit() {
+    console.log(this.passwordData)
       const data = {
         "name": this.passwordData.controls?.name,
         "emailId": this.passwordData.emailId,
