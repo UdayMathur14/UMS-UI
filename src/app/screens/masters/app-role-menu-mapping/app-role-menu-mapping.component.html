@@ -1,0 +1,116 @@
+<!-- menu-creation.component.html -->
+<div class="menu-creation-container">
+    <div class="header">
+        <h2>Create Menu</h2>
+        <div class="action-buttons">
+            <button class="save-btn" (click)="onSave()">Save</button>
+            <button class="add-submenu-btn" (click)="onAddSubmenu()">Add Submenu</button>
+            <button class="cancel-btn" (click)="onCancel()">Cancel</button>
+        </div>
+    </div>
+
+    <div class="menu-form">
+        <div class="form-row">
+            <div class="form-group">
+                <label for="applicationName">Application Name</label>
+                <div class="select-container">
+                    <select id="applicationName" [(ngModel)]="menuData.applicationName">
+                        <option value="">Select Application</option>
+                        <option value="Net Sales Split System">Net Sales Split System</option>
+                        <option value="Inventory Management">Inventory Management</option>
+                        <option value="Customer Portal">Customer Portal</option>
+                    </select>
+                    <span class="dropdown-icon">▼</span>
+                </div>
+            </div>
+
+            <div class="form-group">
+                <label for="menuName">Menu Name</label>
+                <input type="text" id="menuName" [(ngModel)]="menuData.menuName" placeholder="Enter menu name">
+            </div>
+
+            <div class="form-group">
+                <label for="rollName">Role Name</label>
+                <div class="select-container">
+                    <select id="rollName" [(ngModel)]="menuData.rollName">
+                        <option value="">Select Roll</option>
+                        <option value="Admin">Admin</option>
+                        <option value="Manager">Manager</option>
+                        <option value="User">User</option>
+                    </select>
+                    <span class="dropdown-icon">▼</span>
+                </div>
+            </div>
+
+            <div class="form-group">
+                <label for="status">Status</label>
+                <div class="select-container">
+                    <select id="status" [(ngModel)]="menuData.status">
+                        <option value="">Select Status</option>
+                        <option value="Active">Active</option>
+                        <option value="Inactive">Inactive</option>
+                        <option value="Pending">Pending</option>
+                    </select>
+                    <span class="dropdown-icon">▼</span>
+                </div>
+            </div>
+        </div>
+
+        <div class="form-row">
+        </div>
+    </div>
+
+    <!-- Submenu Section - Shown only when Add Submenu is clicked and form data is filled -->
+    <div class="submenu-section" *ngIf="showSubmenuSection">
+        <div class="submenu-header">
+            <h3>Add Submenu</h3>
+            <button class="add-sub-sub-menu-btn" (click)="onAddSubSubMenu()">Add Sub Sub Menu</button>
+        </div>
+
+        <div class="submenu-table">
+            <div class="table-header">
+                <div class="header-cell">Sub Menu Name</div>
+                <div class="header-cell">Parent Menu Name</div>
+                <div class="header-cell">Permissions</div>
+                <div class="header-cell">Status</div>
+                <div class="header-cell">Action</div>
+            </div>
+
+            <div class="table-row" *ngFor="let submenu of submenuItems; let i = index">
+                <div class="table-cell">
+                    <input type="text" [(ngModel)]="submenu.name" placeholder="Enter submenu name">
+                </div>
+                <div class="table-cell">
+                    <div class="select-container">
+                        <select [(ngModel)]="submenu.parentMenu">
+                            <option value="">Select Parent Menu</option>
+                            <option [value]="menuData.menuName">{{menuData.menuName}}</option>
+                        </select>
+                        <span class="dropdown-icon">▼</span>
+                    </div>
+                </div>
+                <div class="table-cell">
+                    <ng-multiselect-dropdown [placeholder]="'Select'" [settings]="submenuDropdownSettings"
+                        [data]="permissionsList" [(ngModel)]="submenu.selectedPermissions">
+                    </ng-multiselect-dropdown>
+                </div>
+                <div class="table-cell">
+                    <div class="select-container">
+                        <select [(ngModel)]="submenu.status">
+                            <option value="">Select Status</option>
+                            <option value="Active">Active</option>
+                            <option value="Inactive">Inactive</option>
+                            <option value="Pending">Pending</option>
+                        </select>
+                        <span class="dropdown-icon">▼</span>
+                    </div>
+                </div>
+                <div class="table-cell action-cell">
+                    <button class="delete-btn" (click)="deleteSubmenu(i)">
+                        <i class="delete-icon">🗑️</i>
+                    </button>
+                </div>
+            </div>
+        </div>
+    </div>
+</div>
