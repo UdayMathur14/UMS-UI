@@ -8,15 +8,23 @@
         </h3>
     </div>
     <div class="row">
+
         <div class="col-lg-4 col-md-4">
             <div class="custom-form-input">
-                <label for="cont-phone">User category<span class="text-danger">*</span></label>
+                <label for="user-category">User category<span class="text-danger">*</span></label>
                 <ng-select [(ngModel)]="userCategory">
-                    <ng-option value='Client'>
-                        Client
+                    <ng-option *ngFor="let role of roleData" [value]="role">
+                        {{ role }}
                     </ng-option>
-                    <ng-option value='Employee'>
-                        Employee
+                </ng-select>
+            </div>
+        </div>
+        <div class="col-lg-4 col-md-4">
+            <div class="custom-form-input">
+                <label for="application">Application<span class="text-danger">*</span></label>
+                <ng-select [(ngModel)]="userCategory">
+                    <ng-option *ngFor="let lookup of lookups" [value]="lookup.value">
+                        {{ lookup.value }}
                     </ng-option>
                 </ng-select>
             </div>
