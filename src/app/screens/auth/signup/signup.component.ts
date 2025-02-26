@@ -23,38 +23,53 @@ export class SignupComponent implements OnInit {
   ) { }
 
   ngOnInit() {
-    // Check if user logged in via Microsoft
-    const userProfile = JSON.parse(localStorage.getItem('userProfile') || '{}');
+    // Retrieve user profile from localStorage
+    const storedProfile = localStorage.getItem('userProfile');
+    let userProfile: any = {};
+  
+    if (storedProfile) {
+      try {
+        userProfile = JSON.parse(storedProfile);
+      } catch (error) {
+        console.error("Error parsing userProfile from localStorage:", error);
+      }
+    }
+  
     const email = userProfile?.mail || '';
     const name = userProfile?.displayName || '';
     const contactNo = userProfile?.mobilePhone || '';
-
-    this.isMicrosoftLogin = !!email; // If email exists, user logged in via Microsoft
-
+  
+    this.isMicrosoftLogin = !!email;
+  
+    // Initialize the form
     this.signUpForm = new FormGroup({
-      userName: new FormControl(
-        { value: name, disabled: this.isMicrosoftLogin },
-        Validators.required
-      ),
-      emailId: new FormControl(
-        { value: email, disabled: this.isMicrosoftLogin },
-        Validators.required
-      ), 
-      contactNo: new FormControl(
-        { value: contactNo, disabled: this.isMicrosoftLogin },
-        Validators.required
-      ), // Prefill & disable if Microsoft login
+      userName: new FormControl({ value: name, disabled: this.isMicrosoftLogin }, Validators.required),
+      emailId: new FormControl({ value: email, disabled: this.isMicrosoftLogin }, Validators.required),
+      contactNo: new FormControl({ value: contactNo, disabled: this.isMicrosoftLogin }, Validators.required),
       organisation: new FormControl('', Validators.required),
-      // password: new FormControl('', [Validators.required, Validators.minLength(6), this.passwordValidator()]),
     });
-
+  
     if (this.isMicrosoftLogin) {
       this.passwordLabel = 'New Password';
     }
+  
+    // Wait for localStorage data and update form
+    setTimeout(() => {
+      const updatedProfile = JSON.parse(localStorage.getItem('userProfile') || '{}');
+      if (updatedProfile.mail || updatedProfile.displayName || updatedProfile.mobilePhone) {
+        this.signUpForm.patchValue({
+          userName: updatedProfile.displayName || '',
+          emailId: updatedProfile.mail || '',
+          contactNo: updatedProfile.mobilePhone || ''
+        });
+      }
+    }, 500); // Delay to ensure localStorage is updated
   }
 
   onSubmit() {
     if (this.signUpForm.valid) {
+      console.log(this.isMicrosoftLogin, "trueorfalse");
+      
       const data = {
         name: this.signUpForm.controls['userName']?.value,
         emailId: this.signUpForm.controls['emailId']?.value,
@@ -62,6 +77,7 @@ export class SignupComponent implements OnInit {
         // password: this.signUpForm.controls['password']?.value,
         organisation: this.signUpForm.controls['organisation']?.value,
         otp: '',
+        Type: this.isMicrosoftLogin ? 'Microsoft' : 'Portal',
       };
 
       this.passwordService.setPasswordData(data);
