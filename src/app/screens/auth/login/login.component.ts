@@ -59,19 +59,27 @@ export class LoginComponent implements OnInit {
     this.authService.login({ username: this.emailId, password: this.password }).subscribe(
       (response: any) => {
         const encrRes = JSON.stringify(response);
-        console.log(encrRes);
-        
-        localStorage.setItem('data',encrRes);
-  
+        localStorage.setItem('data', encrRes);
+    
         const storedData = localStorage.getItem('data');
         if (storedData) {
           const dataObj = JSON.parse(storedData);
           this.toastr.success('Logged In Successfully');
-          const appRoute = dataObj.apps[0].route;
+          console.log(dataObj);
+  
           const token = dataObj.accessToken;
-          const appId = dataObj.apps[0].id;
-          
-          this.router.navigate(['/masters'])
+          const userApp = dataObj.apps.find((app: any) => 
+            app.name.toLowerCase().replace(/\s/g, '') === "usermanagamentsystem"
+          );
+  
+          if (userApp) {
+            this.router.navigate(['/masters'])
+          } else {
+            const appRoute = dataObj.apps[0].route;
+            const appId = dataObj.apps[0].id;
+            window.location.href = `${appRoute}?data=${token}&appId=${appId}`;
+          }
+  
           this.loadSpinner = false;
         }
       },
@@ -81,6 +89,5 @@ export class LoginComponent implements OnInit {
       }
     );
   }
-  
   
 }
