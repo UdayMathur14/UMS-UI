@@ -124,7 +124,7 @@ export class AddEditUserComponent {
           this.router.navigate(['/masters/user-master']);
         },
         error: (error) => {
-          console.error('Error updating user:', error);
+          this.toastr.error(error?.error?.message, 'Error');
           this.loadSpinner = false;
 
         }
@@ -159,7 +159,7 @@ export class AddEditUserComponent {
           this.router.navigate(['/masters/user-master']);
         },
         error: (error) => {
-          console.error('Error creating user:', error);
+          this.toastr.error(error?.error?.message, 'Error');
           this.loadSpinner = false;
 
         }

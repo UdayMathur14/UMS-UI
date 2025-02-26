@@ -21,7 +21,6 @@ const routes: Routes = [
   {
     path: 'user-signup-status',
     component: UserSignupStatusComponent,
-    canActivate: [AuthGuard],
   },
   {
     path: 'edit-user-signup-status/:id',
