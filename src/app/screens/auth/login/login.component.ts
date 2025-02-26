@@ -73,7 +73,7 @@ export class LoginComponent implements OnInit {
           );
   
           if (userApp) {
-            this.router.navigate(['/masters'])
+            this.router.navigateByUrl(userApp.route);
           } else {
             const appRoute = dataObj.apps[0].route;
             const appId = dataObj.apps[0].id;

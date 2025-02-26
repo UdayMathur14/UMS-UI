@@ -41,8 +41,8 @@ export class AddEditUserComponent {
       designation: ['', [Validators.required]],
       userCategory: ['', [Validators.required]],
       organisation: ['', [Validators.required]],
-      methodType: ['', [Validators.required]],
-      app: ['', [Validators.required]],
+      methodType: [''],
+      app: [''],
       status: ['Active'],
       userType: ['']
     });
