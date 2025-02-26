@@ -25,7 +25,7 @@ export class LoginComponent implements OnInit {
     private http: HttpClient,
     private authService: AuthService,
     private toastr: ToastrService
-  ) { 
+  ) {
     localStorage.clear();
   }
 
@@ -39,7 +39,9 @@ export class LoginComponent implements OnInit {
         this.fetchUserProfile();
 
         // Redirect after successful Microsoft login
-        this.router.navigate(['/auth/signup']);
+        setTimeout(() => {
+          this.router.navigate(['/auth/signup']);
+        }, 1000)
       }
 
       if (event.eventType === EventType.LOGOUT_SUCCESS) {

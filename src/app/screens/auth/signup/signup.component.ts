@@ -53,8 +53,6 @@ export class SignupComponent implements OnInit {
       this.passwordLabel = 'New Password';
     }
   
-    // Wait for localStorage data and update form
-    setTimeout(() => {
       const updatedProfile = JSON.parse(localStorage.getItem('userProfile') || '{}');
       if (updatedProfile.mail || updatedProfile.displayName || updatedProfile.mobilePhone) {
         this.signUpForm.patchValue({
@@ -63,7 +61,6 @@ export class SignupComponent implements OnInit {
           contactNo: updatedProfile.mobilePhone || ''
         });
       }
-    }, 500); // Delay to ensure localStorage is updated
   }
 
   onSubmit() {
