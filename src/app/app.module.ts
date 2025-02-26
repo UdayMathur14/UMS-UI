@@ -9,6 +9,9 @@ import { LayoutModule } from './layout/layout.module';
 import { ToastrModule } from 'ngx-toastr';
 import { BrowserAnimationsModule } from '@angular/platform-browser/animations';
 import { AuthInterceptor } from './core/interceptor';
+import { MsalInterceptor, MsalModule, MsalRedirectComponent } from '@azure/msal-angular';
+import { PublicClientApplication } from '@azure/msal-browser';
+import { msalConfig, msalGuardConfig, msalInterceptorConfig } from './auth-config';
 @NgModule({
   declarations: [
     AppComponent,
@@ -20,7 +23,12 @@ import { AuthInterceptor } from './core/interceptor';
     HttpClientModule,
     LayoutModule,
     ToastrModule.forRoot(),
-    BrowserAnimationsModule
+    BrowserAnimationsModule,
+    MsalModule.forRoot(
+      new PublicClientApplication(msalConfig),
+      msalGuardConfig,
+      msalInterceptorConfig
+    ),
   ],
   providers: [
     {
@@ -28,7 +36,12 @@ import { AuthInterceptor } from './core/interceptor';
       useClass: AuthInterceptor,
       multi: true,
     },
+    {
+      provide: HTTP_INTERCEPTORS,
+      useClass: MsalInterceptor,
+      multi: true,
+    },
   ],
-  bootstrap: [AppComponent]
+  bootstrap: [AppComponent, MsalRedirectComponent]
 })
 export class AppModule { }

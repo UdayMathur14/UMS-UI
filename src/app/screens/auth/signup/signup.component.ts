@@ -16,25 +16,36 @@ export class SignupComponent implements OnInit {
   passwordLabel = 'Password';
 
   constructor(
-    private authService: AuthService, 
-    private router: Router,   
+    private authService: AuthService,
+    private router: Router,
     private passwordService: PasswordDataShareService,
     private toastr: ToastrService
-  ) {}
+  ) { }
 
   ngOnInit() {
     // Check if user logged in via Microsoft
     const userProfile = JSON.parse(localStorage.getItem('userProfile') || '{}');
-    const email = userProfile?.mail;
+    const email = userProfile?.mail || '';
+    const name = userProfile?.displayName || '';
+    const contactNo = userProfile?.mobilePhone || '';
 
     this.isMicrosoftLogin = !!email; // If email exists, user logged in via Microsoft
 
     this.signUpForm = new FormGroup({
-      userName: new FormControl('', Validators.required),
-      emailId: new FormControl({ value: email || '', disabled: this.isMicrosoftLogin }, Validators.required),
-      contactNo: new FormControl('', Validators.required),
-      // password: new FormControl('', [Validators.required, Validators.minLength(6), this.passwordValidator()]),
+      userName: new FormControl(
+        { value: name, disabled: this.isMicrosoftLogin },
+        Validators.required
+      ),
+      emailId: new FormControl(
+        { value: email, disabled: this.isMicrosoftLogin },
+        Validators.required
+      ), 
+      contactNo: new FormControl(
+        { value: contactNo, disabled: this.isMicrosoftLogin },
+        Validators.required
+      ), // Prefill & disable if Microsoft login
       organisation: new FormControl('', Validators.required),
+      // password: new FormControl('', [Validators.required, Validators.minLength(6), this.passwordValidator()]),
     });
 
     if (this.isMicrosoftLogin) {
