@@ -22,7 +22,7 @@
         <div class="col-lg-4 col-md-4">
             <div class="custom-form-input">
                 <label for="application">Application<span class="text-danger">*</span></label>
-                <ng-select [(ngModel)]="userCategory">
+                <ng-select [(ngModel)]="app">
                     <ng-option *ngFor="let lookup of lookups" [value]="lookup.value">
                         {{ lookup.value }}
                     </ng-option>

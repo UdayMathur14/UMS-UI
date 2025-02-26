@@ -50,8 +50,9 @@
             <div class="custom-form-input">
                 <label for="cont-phone">User Category<span class="text-danger">*</span></label>
                 <ng-select formControlName="userCategory">
-                    <ng-option value="Client">Client</ng-option>
-                    <ng-option value="Employee">Employee</ng-option>
+                    <ng-option *ngFor="let role of roleData" [value]="role">
+                        {{ role }}
+                    </ng-option>
                 </ng-select>
             </div>
         </div>
@@ -59,6 +60,32 @@
             <div class="custom-form-input">
                 <label for="cont-phone">Organisation<span class="text-danger">*</span></label>
                 <input formControlName="organisation">
+            </div>
+        </div>
+        <div class="col-lg-3 col-md-3">
+            <div class="custom-form-input">
+                <label for="application">Application<span class="text-danger">*</span></label>
+                <ng-select formControlName="app" [readonly]="userId">
+                    <ng-option *ngFor="let lookup of lookups" [value]="lookup.value">
+                        {{ lookup.value }}
+                    </ng-option>
+                </ng-select>
+            </div>
+        </div>
+        <div class="col-lg-3">
+            <div class="custom-form-input">
+                <label>Method Type<span class="text-danger">*</span></label>
+                <ng-select formControlName="methodType" [readonly]="userId">
+                    <ng-option value="Portal">
+                        Portal
+                    </ng-option>
+                    <ng-option value="Microsoft">
+                        Microsoft
+                    </ng-option>
+                    <ng-option value="Google">
+                        Google
+                    </ng-option>
+                </ng-select>
             </div>
         </div>
         <div class="col-lg-3" *ngIf="userId">

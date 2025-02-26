@@ -20,6 +20,8 @@ export class ApprovalModalComponent implements OnInit {
   maxCount: number = Number.MAX_VALUE;
   roleData: any = [];
   lookups: any = [];
+  roleList: any;
+  app: any;
 
   @Input() status: string = '';
   @Input() recordId: string = '';
@@ -52,6 +54,7 @@ export class ApprovalModalComponent implements OnInit {
 
     this.roleService.roleData(this.userId, offset, count, data).subscribe(
       (response: any) => {
+        this.roleList  = response?.roles
         if (response && response.roles) {
           this.roleData = response.roles.map((role: any) => role.roleName);
         }
@@ -85,6 +88,8 @@ export class ApprovalModalComponent implements OnInit {
   
 
   updateUserSignUpStatus() {
+    const roleid = this.roleList.find((item:any) => item?.roleName == this.userCategory)?.id;
+    const appId = this.lookups.find((item:any) => item?.value == this.app)?.id;
     const data = {
       status: this.status,
       actionBy: this.userId,
@@ -93,6 +98,13 @@ export class ApprovalModalComponent implements OnInit {
         : 'External',
       userCategory: this.userCategory,
       designation: this.designation,
+      roleId: roleid,
+      appList: [
+        {
+          id: appId,
+          name: this.app,
+        },
+      ],
     };
     this.userService.signupUserStatusUpdate(this.recordId, data).subscribe(
       (response: any) => {
@@ -103,6 +115,7 @@ export class ApprovalModalComponent implements OnInit {
       },
       (error) => {
         this.loadSpinner = false;
+        this.toastr.error(error?.error?.message, 'Error');
       }
     );
   }
