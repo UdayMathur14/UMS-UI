@@ -8,7 +8,7 @@ const routes: Routes = [
   { path: 'auth', loadChildren: () => import('./screens/auth/auth.module').then(m => m.AuthModule) },
   {
     path: '',
-    component: LayoutComponent, canActivate: [AuthGuard],
+    component: LayoutComponent,
     children: [
       // { path: '', loadChildren: () => import('./screens/demo.module').then(m => m.demoModule) },
       // { path: '', loadChildren: () => import('./screens/demo.module').then(m => m.demoModule) },

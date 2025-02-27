@@ -89,6 +89,7 @@ export class OtpValidationComponent {
         "password": this.passwordData.password,
         "organisation": this.passwordData.organisation,
         "otp":this.otp,
+        "methodType": "portal",
       };
       this.authService.signUp(data).subscribe(
         (response: any) => {

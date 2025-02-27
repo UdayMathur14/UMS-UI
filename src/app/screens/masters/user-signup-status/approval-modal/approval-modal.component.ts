@@ -3,6 +3,8 @@ import { NgbActiveModal } from '@ng-bootstrap/ng-bootstrap';
 import { UserSignupStatusService } from '../../../../core/service/user-signup-status.service';
 import { Router } from '@angular/router';
 import { ToastrService } from 'ngx-toastr';
+import { RoleService } from '../../../../core/service/role.service';
+import { LookupService } from '../../../../core/service/lookup.service';
 
 @Component({
   selector: 'app-approval-modal',
@@ -15,6 +17,11 @@ export class ApprovalModalComponent implements OnInit {
   designation: string = '';
   loadSpinner: boolean = true;
   userId: string = '';
+  maxCount: number = Number.MAX_VALUE;
+  roleData: any = [];
+  lookups: any = [];
+  roleList: any;
+  app: any;
 
   @Input() status: string = '';
   @Input() recordId: string = '';
@@ -24,7 +31,9 @@ export class ApprovalModalComponent implements OnInit {
     public activeModal: NgbActiveModal,
     private userService: UserSignupStatusService,
     private toastr: ToastrService,
-    private router: Router
+    private router: Router,
+    private roleService: RoleService,
+    private lookupService: LookupService
   ) {}
 
   ngOnInit(): void {
@@ -33,9 +42,54 @@ export class ApprovalModalComponent implements OnInit {
       const dataObj = JSON.parse(data);
       this.userId = dataObj.userId;
     }
+    this.getRolesList();
+    this.getLookupsList();
   }
 
+  getRolesList(offset: number = 0, count: number = this.maxCount) {
+    const data = {
+      status: '',
+      roleName: '',
+    };
+
+    this.roleService.roleData(this.userId, offset, count, data).subscribe(
+      (response: any) => {
+        this.roleList  = response?.roles
+        if (response && response.roles) {
+          this.roleData = response.roles.map((role: any) => role.roleName);
+        }
+        this.loadSpinner = false;
+      },
+      (error) => {
+        this.loadSpinner = false;
+      }
+    );
+  }
+
+  getLookupsList(offset: number = 0, count: number = this.maxCount) {
+    const data = {
+      type: 'app',
+      value: '',
+      status: '',
+    };
+  
+    this.lookupService.lookupData(this.userId, offset, count, data).subscribe(
+      (response: any) => {
+        if (response && response.lookUps) {
+          this.lookups = response.lookUps.filter((item: any) => item.status === 'Active');
+        }
+        this.loadSpinner = false;
+      },
+      (error) => {
+        this.loadSpinner = false;
+      }
+    );
+  }
+  
+
   updateUserSignUpStatus() {
+    const roleid = this.roleList.find((item:any) => item?.roleName == this.userCategory)?.id;
+    const appId = this.lookups.find((item:any) => item?.value == this.app)?.id;
     const data = {
       status: this.status,
       actionBy: this.userId,
@@ -44,6 +98,13 @@ export class ApprovalModalComponent implements OnInit {
         : 'External',
       userCategory: this.userCategory,
       designation: this.designation,
+      roleId: roleid,
+      appList: [
+        {
+          id: appId,
+          name: this.app,
+        },
+      ],
     };
     this.userService.signupUserStatusUpdate(this.recordId, data).subscribe(
       (response: any) => {
@@ -54,6 +115,7 @@ export class ApprovalModalComponent implements OnInit {
       },
       (error) => {
         this.loadSpinner = false;
+        this.toastr.error(error?.error?.message, 'Error');
       }
     );
   }

@@ -3,6 +3,8 @@ import { FormBuilder, FormGroup, Validators } from '@angular/forms';
 import { ActivatedRoute, Router } from '@angular/router';
 import { UserMasterService } from '../../../../core/service/user-master.service';
 import { ToastrService } from 'ngx-toastr';
+import { LookupService } from '../../../../core/service/lookup.service';
+import { RoleService } from '../../../../core/service/role.service';
 
 @Component({
   selector: 'app-add-edit-user',
@@ -15,13 +17,20 @@ export class AddEditUserComponent {
   loadSpinner: boolean=false
   actionById: string = ''
   createUserform!: FormGroup;
+  roleData: any = [];
+  lookups: any = [];
+  roleList: any;
+  app: any;
+  maxCount: number = Number.MAX_VALUE;
 
   constructor(
     private formBuilder: FormBuilder,
     private router: Router,
     private route: ActivatedRoute,
     private userMasterService: UserMasterService,
-    private toastr:ToastrService
+    private toastr:ToastrService,
+    private roleService: RoleService,
+    private lookupService: LookupService
   ) {}
 
   ngOnInit(): void {
@@ -32,6 +41,8 @@ export class AddEditUserComponent {
       designation: ['', [Validators.required]],
       userCategory: ['', [Validators.required]],
       organisation: ['', [Validators.required]],
+      methodType: [''],
+      app: [''],
       status: ['Active'],
       userType: ['']
     });
@@ -50,6 +61,8 @@ export class AddEditUserComponent {
         this.loadUserMasterDataById();
       }
     });
+    this.getRolesList();
+    this.getLookupsList();
   }
 
   loadUserMasterDataById() {
@@ -90,14 +103,18 @@ export class AddEditUserComponent {
     }
     this.loadSpinner = true;
     const formData = this.createUserform.getRawValue();
-  
+    const userCategory = this.createUserform.controls['userCategory']?.value;
+    const appName = this.createUserform.controls['app']?.value;
+    const roleid = this.roleList.find((item:any) => item?.roleName == userCategory)?.id;
+    const appId = this.lookups.find((item:any) => item?.value == appName)?.id;
     if (this.isEditMode) {
       const updateData = {
         designation: formData.designation,
         userCategory: formData.userCategory,
         status: this.createUserform.controls['status']?.value,
         userType: formData.emailId.includes('diverseinfotech') ? 'Internal' : 'External',
-        actionBy: this.actionById
+        actionBy: this.actionById,
+        methodType: this.createUserform.controls['methodType']?.value,
       };
   
       this.userMasterService.userMasterUpdate(this.userId, updateData).subscribe({
@@ -107,7 +124,7 @@ export class AddEditUserComponent {
           this.router.navigate(['/masters/user-master']);
         },
         error: (error) => {
-          console.error('Error updating user:', error);
+          this.toastr.error(error?.error?.message, 'Error');
           this.loadSpinner = false;
 
         }
@@ -123,6 +140,14 @@ export class AddEditUserComponent {
         organisation: formData.organisation,
         userType: formData.emailId.includes('diverseinfotech') ? 'Internal' : 'External',
         createdBy: this.actionById,
+        roleId: roleid, 
+        methodType: this.createUserform.controls['methodType']?.value,
+        appList: [
+          {
+            id: appId,
+            name: formData.app,
+          },
+        ]
       };
   
       console.log('Creating user with data:', createData);
@@ -134,12 +159,52 @@ export class AddEditUserComponent {
           this.router.navigate(['/masters/user-master']);
         },
         error: (error) => {
-          console.error('Error creating user:', error);
+          this.toastr.error(error?.error?.message, 'Error');
           this.loadSpinner = false;
 
         }
       });
     }
+  }
+
+  getRolesList(offset: number = 0, count: number = this.maxCount) {
+    const data = {
+      status: '',
+      roleName: '',
+    };
+
+    this.roleService.roleData(this.userId, offset, count, data).subscribe(
+      (response: any) => {
+        this.roleList  = response?.roles
+        if (response && response.roles) {
+          this.roleData = response.roles.map((role: any) => role.roleName);
+        }
+        this.loadSpinner = false;
+      },
+      (error) => {
+        this.loadSpinner = false;
+      }
+    );
+  }
+
+  getLookupsList(offset: number = 0, count: number = this.maxCount) {
+    const data = {
+      type: 'app',
+      value: '',
+      status: '',
+    };
+  
+    this.lookupService.lookupData(this.userId, offset, count, data).subscribe(
+      (response: any) => {
+        if (response && response.lookUps) {
+          this.lookups = response.lookUps.filter((item: any) => item.status === 'Active');
+        }
+        this.loadSpinner = false;
+      },
+      (error) => {
+        this.loadSpinner = false;
+      }
+    );
   }
 
   onCancel() {

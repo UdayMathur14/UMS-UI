@@ -60,7 +60,6 @@ export class LoginComponent implements OnInit {
       (response: any) => {
         const encrRes = JSON.stringify(response);
         localStorage.setItem('data', encrRes);
-
         const storedData = localStorage.getItem('data');
         if (storedData) {
           const dataObj = JSON.parse(storedData);
