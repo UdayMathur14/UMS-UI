@@ -20,14 +20,13 @@ export const APIConstant = {
   lookupUpdate: `${apiPath}/api/v1/lookup/update`,
   lookupById: `${apiPath}/api/v1/lookup`,
   lookupType: `${apiPath}/api/v1/lookup-type/search`,
-
   role: `${apiPath}/api/v1/role/search`,
   createRole: `${apiPath}/api/v1/role/create`,
   updateRole: `${apiPath}/api/v1/role/update`,
   roleById: `${apiPath}/api/v1/role`,
-
   domainProject: `${apiPath}/api/v1/domain-Project/search`,
   domainProjectCreate: `${apiPath}/api/v1/domain-Project/create`,
   updateDomainProject: `${apiPath}/api/v1/domain-Project/update`,
   domainProjectById: `${apiPath}/api/v1/domain-Project`,
+  appMenuMapping:`${apiPath}/api/v1/app-menu/search`
 };

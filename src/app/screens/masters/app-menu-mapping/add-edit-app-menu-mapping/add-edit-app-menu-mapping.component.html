@@ -7,14 +7,13 @@
   </div>
 </div>
 
-
 <form [formGroup]="menuForm">
   <div class="row">
     <!-- App Name -->
     <div class="col-lg-3">
       <div class="custom-form-input">
         <label>App Name<span class="text-danger">*</span></label>
-        <ng-select formControlName="appName">
+        <ng-select>
           <ng-option *ngFor="let app of appNames" [value]="app">{{ app }}</ng-option>
         </ng-select>
         <div *ngIf="menuForm.get('appName')?.touched && menuForm.get('appName')?.invalid" class="text-danger">
@@ -27,7 +26,7 @@
     <div class="col-lg-3">
       <div class="custom-form-input">
         <label>Menu Name<span class="text-danger">*</span></label>
-        <input formControlName="menuName">
+        <input>
         <div *ngIf="menuForm.get('menuName')?.touched && menuForm.get('menuName')?.invalid" class="text-danger">
           <small>Menu Name is required</small>
         </div>
@@ -38,7 +37,7 @@
     <div class="col-lg-3">
       <div class="custom-form-input">
         <label>Routing<span class="text-danger">*</span></label>
-        <input formControlName="routing">
+        <input>
         <div *ngIf="menuForm.get('routing')?.touched && menuForm.get('routing')?.invalid" class="text-danger">
           <small>Routing is required</small>
         </div>
@@ -49,7 +48,7 @@
     <div class="col-lg-3">
       <div class="custom-form-input">
         <label>Description</label>
-        <input formControlName="description">
+        <input>
       </div>
     </div>
 
@@ -57,7 +56,7 @@
     <div class="col-lg-3">
       <div class="custom-form-input">
         <label>Order By<span class="text-danger">*</span></label>
-        <input type="number" formControlName="orderBy">
+        <input type="number">
         <div *ngIf="menuForm.get('orderBy')?.touched && menuForm.get('orderBy')?.invalid" class="text-danger">
           <small>Order By is required</small>
         </div>
@@ -68,29 +67,30 @@
     <div class="col-lg-3">
       <div class="custom-form-input">
         <label>Level<span class="text-danger">*</span></label>
-        <input type="number" formControlName="level">
+        <input type="number">
         <div *ngIf="menuForm.get('level')?.touched && menuForm.get('level')?.invalid" class="text-danger">
           <small>Level is required</small>
         </div>
       </div>
     </div>
 
-    <!-- Permission (Multi-select) -->
+    <!-- Main Menu Permission (Multi-select) -->
     <div class="col-lg-3">
       <div class="custom-form-input">
         <label>Permissions</label>
-        <ng-multiselect-dropdown [placeholder]="'Select Permissions'" [data]="permissions"
-          [(ngModel)]="selectedPermissions" [settings]="dropdownSettings" formControlName="permission">
+        <ng-multiselect-dropdown [placeholder]="'Select Permissions'" [data]="permissions" [settings]="dropdownSettings"
+          (onSelect)="onMainPermissionChange($event)"
+          (onDeSelect)="onMainPermissionChange($event)" (onSelectAll)="onMainPermissionChange($event)"
+          (onDeSelectAll)="onMainPermissionChange($event)">
         </ng-multiselect-dropdown>
       </div>
     </div>
-
 
     <!-- Status -->
     <div class="col-lg-3">
       <div class="custom-form-input">
         <label>Status<span class="text-danger">*</span></label>
-        <ng-select formControlName="status">
+        <ng-select>
           <ng-option *ngFor="let status of statusOptions" [value]="status">{{ status }}</ng-option>
         </ng-select>
         <div *ngIf="menuForm.get('status')?.touched && menuForm.get('status')?.invalid" class="text-danger">
@@ -101,65 +101,83 @@
   </div>
 
   <!-- Submenu Section -->
-  <div *ngIf="submenus.controls.length > 0">
-    <h3>Add Submenu</h3>
-    <div class="row" *ngFor="let submenu of submenus.controls; let i = index" [formGroup]="submenu">
-      <div class="col-lg-3">
-        <div class="custom-form-input">
-          <label>Name<span class="text-danger">*</span></label>
-          <input formControlName="name">
+  <div *ngIf="submenus.length > 0" class="submenu-section">
+    <h3>Add Sub Menu</h3>
+
+    <div *ngFor="let submenu of submenus.controls; let i = index" [formGroupName]="i"
+      class="submenu-item mt-3 p-3 border rounded">
+      <div class="row">
+        <div class="col-lg-3">
+          <div class="custom-form-input">
+            <label>Name<span class="text-danger">*</span></label>
+            <input >
+            <div *ngIf="submenu.get('name')?.touched && submenu.get('name')?.invalid" class="text-danger">
+              <small>Name is required</small>
+            </div>
+          </div>
+        </div>
+
+        <div class="col-lg-3">
+          <div class="custom-form-input">
+            <label>Routing<span class="text-danger">*</span></label>
+            <input>
+            <div *ngIf="submenu.get('routing')?.touched && submenu.get('routing')?.invalid" class="text-danger">
+              <small>Routing is required</small>
+            </div>
+          </div>
+        </div>
+
+        <div class="col-lg-3">
+          <div class="custom-form-input">
+            <label>Description</label>
+            <input >
+          </div>
+        </div>
+
+        <div class="col-lg-3">
+          <div class="custom-form-input">
+            <label>Order By<span class="text-danger">*</span></label>
+            <input type="number" >
+            <div *ngIf="submenu.get('orderBy')?.touched && submenu.get('orderBy')?.invalid" class="text-danger">
+              <small>Order By is required</small>
+            </div>
+          </div>
+        </div>
+
+        <div class="col-lg-3">
+          <div class="custom-form-input">
+            <label>Level<span class="text-danger">*</span></label>
+            <input type="number">
+            <div *ngIf="submenu.get('level')?.touched && submenu.get('level')?.invalid" class="text-danger">
+              <small>Level is required</small>
+            </div>
+          </div>
+        </div>
+
+        <div class="col-lg-3">
+          <div class="custom-form-input">
+            <label>Permissions</label>
+            <ng-multiselect-dropdown [placeholder]="'Select Permissions'" [data]="permissions"
+              [settings]="dropdownSettings"
+              (onSelect)="onSubmenuPermissionChange(i, $event)" (onDeSelect)="onSubmenuPermissionChange(i, $event)"
+              (onSelectAll)="onSubmenuPermissionChange(i, $event)"
+              (onDeSelectAll)="onSubmenuPermissionChange(i, $event)">
+            </ng-multiselect-dropdown>
+          </div>
+        </div>
+
+        <div class="col-lg-3">
+          <div class="custom-form-input">
+            <label>Status<span class="text-danger">*</span></label>
+            <ng-select>
+              <ng-option *ngFor="let status of statusOptions" [value]="status">{{ status }}</ng-option>
+            </ng-select>
+            <div *ngIf="submenu.get('status')?.touched && submenu.get('status')?.invalid" class="text-danger">
+              <small>Status is required</small>
+            </div>
+          </div>
         </div>
       </div>
-
-      <div class="col-lg-3">
-        <div class="custom-form-input">
-          <label>Routing<span class="text-danger">*</span></label>
-          <input formControlName="routing">
-        </div>
-      </div>
-
-      <div class="col-lg-3">
-        <div class="custom-form-input">
-          <label>Description</label>
-          <input formControlName="description">
-        </div>
-      </div>
-
-      <div class="col-lg-3">
-        <div class="custom-form-input">
-          <label>Order By<span class="text-danger">*</span></label>
-          <input type="number" formControlName="orderBy">
-        </div>
-      </div>
-
-      <div class="col-lg-3">
-        <div class="custom-form-input">
-          <label>Level<span class="text-danger">*</span></label>
-          <input type="number" formControlName="level">
-        </div>
-      </div>
-
-      <div class="col-lg-3">
-        <div class="custom-form-input">
-          <label>Permissions</label>
-          <ng-multiselect-dropdown [placeholder]="'Select Permissions'" [data]="permissions"
-            [(ngModel)]="selectedPermissions" [settings]="dropdownSettings" formControlName="permission">
-          </ng-multiselect-dropdown>
-        </div>
-      </div>
-
-      <div class="col-lg-3">
-        <div class="custom-form-input">
-          <label>Status<span class="text-danger">*</span></label>
-          <ng-select formControlName="status">
-            <ng-option *ngFor="let status of statusOptions" [value]="status">{{ status }}</ng-option>
-          </ng-select>
-        </div>
-      </div>
-
-      <!-- <div class="col-lg-1">
-        <button class="btn btn-danger" (click)="removeSubmenu(i)">🗑</button>
-      </div> -->
     </div>
   </div>
 </form>
