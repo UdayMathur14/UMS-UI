@@ -38,7 +38,7 @@ export class AddEditRoleMasterComponent {
       const dataObj = JSON.parse(data);
       this.userId = dataObj.userId;
     }
-    if(this.roleId){
+    if (this.roleId) {
       this.getRoleListById();
     }
   }
@@ -73,13 +73,13 @@ export class AddEditRoleMasterComponent {
     // }
   }
 
-  onSubmit(){
+  onSubmit() {
     this.loadSpinner = true;
-    if(this.roleId){
+    if (this.roleId) {
       const data = {
         status: this.roleForm.controls['status']?.value,
         actionBy: this.userId,
-        description: this.roleForm.controls['description']?.value
+        description: this.roleForm.controls['description']?.value,
       };
       this.roleService.roleUpdate(this.roleId, data).subscribe(
         (response: any) => {
@@ -88,6 +88,7 @@ export class AddEditRoleMasterComponent {
           this.onCancel();
         },
         (error) => {
+          this.toastr.error(error?.error?.message, 'Error');
           this.loadSpinner = false;
         }
       );
@@ -106,6 +107,7 @@ export class AddEditRoleMasterComponent {
           this.onCancel();
         },
         (error) => {
+          this.toastr.error(error?.error?.message, 'Error');
           this.loadSpinner = false;
         }
       );

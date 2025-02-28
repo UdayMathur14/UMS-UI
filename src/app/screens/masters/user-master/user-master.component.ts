@@ -22,17 +22,22 @@ export class UserMasterComponent implements OnInit {
     this.getUserMasterData();
   }
 
-  getUserMasterData(offset: number = 0, count: number = this.count ,filters: any = this.appliedFilters) {
+  getUserMasterData(
+    offset: number = 0,
+    count: number = this.count,
+    filters: any = this.appliedFilters
+  ) {
+    this.loadSpinner = true;
     const data = {
-      status:filters?.status || '',
-      name:filters?.name || '',
-      emailId:filters?.emailId || '',
-      userType:filters?.userType || '',
-      userCategory:filters?.userCategory || '',
-      organisation:filters?.organisation || '',
+      status: filters?.status || '',
+      name: filters?.name || '',
+      emailId: filters?.emailId || '',
+      userType: filters?.userType || '',
+      userCategory: filters?.userCategory || '',
+      organisation: filters?.organisation || '',
     };
     this.userMasterService
-      .userMasterData(this.userId, offset, count, data,)
+      .userMasterData(this.userId, offset, count, data)
       .subscribe(
         (response: any) => {
           this.userMaster = response.users;

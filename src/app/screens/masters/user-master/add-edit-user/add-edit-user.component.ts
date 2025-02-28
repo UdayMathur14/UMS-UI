@@ -14,8 +14,8 @@ import { RoleService } from '../../../../core/service/role.service';
 export class AddEditUserComponent {
   userId: string = '';
   isEditMode: boolean = false;
-  loadSpinner: boolean=false
-  actionById: string = ''
+  loadSpinner: boolean = true;
+  actionById: string = '';
   createUserform!: FormGroup;
   roleData: any = [];
   lookups: any = [];
@@ -28,7 +28,7 @@ export class AddEditUserComponent {
     private router: Router,
     private route: ActivatedRoute,
     private userMasterService: UserMasterService,
-    private toastr:ToastrService,
+    private toastr: ToastrService,
     private roleService: RoleService,
     private lookupService: LookupService
   ) {}
@@ -44,14 +44,14 @@ export class AddEditUserComponent {
       methodType: [''],
       app: [''],
       status: ['Active'],
-      userType: ['']
+      userType: [''],
     });
     const data = localStorage.getItem('data');
     if (data) {
       const dataObj = JSON.parse(data);
       this.actionById = dataObj.userId;
     }
-    this.route.params.subscribe(params => {
+    this.route.params.subscribe((params) => {
       this.userId = params['id'];
       if (this.userId) {
         this.isEditMode = true;
@@ -84,12 +84,11 @@ export class AddEditUserComponent {
             designation: response.designation,
             userCategory: response.userCategory,
             organisation: response.organisation,
-            status: response.status
+            status: response.status,
           });
           console.log('Form after patch:', this.createUserform.value);
         }
-        this.loadSpinner = false; 
-
+        this.loadSpinner = false;
       },
       error: (error) => {
         console.error('Error loading user data:', error);
@@ -105,30 +104,35 @@ export class AddEditUserComponent {
     const formData = this.createUserform.getRawValue();
     const userCategory = this.createUserform.controls['userCategory']?.value;
     const appName = this.createUserform.controls['app']?.value;
-    const roleid = this.roleList.find((item:any) => item?.roleName == userCategory)?.id;
-    const appId = this.lookups.find((item:any) => item?.value == appName)?.id;
+    const roleid = this.roleList.find(
+      (item: any) => item?.roleName == userCategory
+    )?.id;
+    const appId = this.lookups.find((item: any) => item?.value == appName)?.id;
     if (this.isEditMode) {
       const updateData = {
         designation: formData.designation,
         userCategory: formData.userCategory,
         status: this.createUserform.controls['status']?.value,
-        userType: formData.emailId.includes('diverseinfotech') ? 'Internal' : 'External',
+        userType: formData.emailId.includes('diverseinfotech')
+          ? 'Internal'
+          : 'External',
         actionBy: this.actionById,
         methodType: this.createUserform.controls['methodType']?.value,
       };
-  
-      this.userMasterService.userMasterUpdate(this.userId, updateData).subscribe({
-        next: (response: any) => {
-          this.toastr.success(response.message)
-          this.loadSpinner = false;
-          this.router.navigate(['/masters/user-master']);
-        },
-        error: (error) => {
-          this.toastr.error(error?.error?.message, 'Error');
-          this.loadSpinner = false;
 
-        }
-      });
+      this.userMasterService
+        .userMasterUpdate(this.userId, updateData)
+        .subscribe({
+          next: (response: any) => {
+            this.toastr.success('User ' + response.message);
+            this.loadSpinner = false;
+            this.router.navigate(['/masters/user-master']);
+          },
+          error: (error) => {
+            this.toastr.error(error?.error?.message, 'Error');
+            this.loadSpinner = false;
+          },
+        });
     } else {
       const createData = {
         status: 'Active',
@@ -138,31 +142,33 @@ export class AddEditUserComponent {
         designation: formData.designation,
         userCategory: formData.userCategory,
         organisation: formData.organisation,
-        userType: formData.emailId.includes('diverseinfotech') ? 'Internal' : 'External',
+        userType: formData.emailId.includes('diverseinfotech')
+          ? 'Internal'
+          : 'External',
         createdBy: this.actionById,
-        roleId: roleid, 
+        roleId: roleid,
         methodType: this.createUserform.controls['methodType']?.value,
         appList: [
           {
             id: appId,
             name: formData.app,
           },
-        ]
+        ],
       };
-  
+
       console.log('Creating user with data:', createData);
-  
+
       this.userMasterService.userMasterCreate(createData).subscribe({
         next: (response) => {
           this.loadSpinner = false;
+          this.toastr.success(response.message);
 
           this.router.navigate(['/masters/user-master']);
         },
         error: (error) => {
           this.toastr.error(error?.error?.message, 'Error');
           this.loadSpinner = false;
-
-        }
+        },
       });
     }
   }
@@ -175,7 +181,7 @@ export class AddEditUserComponent {
 
     this.roleService.roleData(this.userId, offset, count, data).subscribe(
       (response: any) => {
-        this.roleList  = response?.roles
+        this.roleList = response?.roles;
         if (response && response.roles) {
           this.roleData = response.roles.map((role: any) => role.roleName);
         }
@@ -193,11 +199,13 @@ export class AddEditUserComponent {
       value: '',
       status: '',
     };
-  
+
     this.lookupService.lookupData(this.userId, offset, count, data).subscribe(
       (response: any) => {
         if (response && response.lookUps) {
-          this.lookups = response.lookUps.filter((item: any) => item.status === 'Active');
+          this.lookups = response.lookUps.filter(
+            (item: any) => item.status === 'Active'
+          );
         }
         this.loadSpinner = false;
       },

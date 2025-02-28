@@ -35,23 +35,22 @@ export class RoleMasterComponent {
     count: number = this.count,
     filters: any = this.appliedFilters
   ) {
+    this.loadSpinner = true;
     const data = {
       status: filters?.status || '',
       roleName: filters?.roleName || '',
     };
-    this.roleService
-      .roleData(this.userId, offset, count, data)
-      .subscribe(
-        (response: any) => {
-          this.roleData = response.roles;
-          this.totalRoles = response.paging.total;
-          this.filters = response.filters;
-          this.loadSpinner = false;
-        },
-        (error) => {
-          this.loadSpinner = false;
-        }
-      );
+    this.roleService.roleData(this.userId, offset, count, data).subscribe(
+      (response: any) => {
+        this.roleData = response.roles;
+        this.totalRoles = response.paging.total;
+        this.filters = response.filters;
+        this.loadSpinner = false;
+      },
+      (error) => {
+        this.loadSpinner = false;
+      }
+    );
   }
 
   getData(e: any) {
@@ -72,7 +71,7 @@ export class RoleMasterComponent {
     this.getRolesList(0, this.count, this.appliedFilters);
   }
 
-  onCreate(){
+  onCreate() {
     this.router.navigate(['masters/add-role']);
   }
 }
