@@ -40,8 +40,11 @@ export class LoginComponent implements OnInit, AfterViewInit {
         this.updateLoginDisplay();
         this.fetchUserProfile();
 
+        this.loadSpinner = true;
+
         // Redirect after successful Microsoft login
         setTimeout(() => {
+          this.loadSpinner = false;
           this.router.navigate(['/auth/signup']);
         }, 1000)
       }
