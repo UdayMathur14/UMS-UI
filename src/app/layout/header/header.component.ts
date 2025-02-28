@@ -35,31 +35,33 @@ export class HeaderComponent implements OnInit {
   constructor(private router: Router) { }
 
   ngOnInit(): void {
-    this.userName = JSON.parse(localStorage.getItem('userName') || '');
-    console.log(this.userName);
     this.setGreetingMessage();
-    this.getUserDetails()
+    this.getUserDetails();
   }
 
   getUserDetails(): void {
     try {
-      // Retrieve profile data from localStorage
-      const profileData = localStorage.getItem('profile');
-      if (profileData) {
-        const profile = JSON.parse(profileData); // Parse JSON object
-
-        // Ensure that userName is properly formatted
-        this.userName = profile.userName ? profile.userName.trim() : 'N/A';
-        this.userEmailId = profile.userEmailId || 'N/A';
-        this.organisation = profile.organisation || 'N/A';
+      const dataStr = localStorage.getItem('data');
+      if (dataStr) {
+        const userData = JSON.parse(dataStr);
+        this.userName = userData.username || 'N/A';
+        this.userEmailId = userData.userEmailId || 'N/A';
+        this.organisation = userData.organisation || 'N/A';
+      } else {
+        console.log('No data found in localStorage');
+        // Set default values
+        this.userName = 'N/A';
+        this.userEmailId = 'N/A';
+        this.organisation = 'N/A';
       }
-
-      console.log('User Details:', { userName: this.userName, userEmail: this.userEmailId, organisation: this.organisation });
     } catch (error) {
       console.error('Error parsing localStorage:', error);
+      // Set default values on error
+      this.userName = 'N/A';
+      this.userEmailId = 'N/A';
+      this.organisation = 'N/A';
     }
   }
-
 
   getFromLocalStorage(key: string): string {
     const value = localStorage.getItem(key);
