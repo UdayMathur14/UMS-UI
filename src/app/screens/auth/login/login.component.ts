@@ -10,7 +10,7 @@ import { GoogleAuthService } from '../../../core/service/google-auth.service';
 @Component({
   selector: 'app-login',
   templateUrl: './login.component.html',
-  styleUrl: './login.component.scss'
+  styleUrl: './login.component.scss',
 })
 export class LoginComponent implements OnInit, AfterViewInit {
   showPassword: boolean = false;
@@ -65,23 +65,60 @@ export class LoginComponent implements OnInit, AfterViewInit {
   // 🔹 Manual Login
   onSignIn() {
     this.loadSpinner = true;
-    this.authService.login({ username: this.emailId, password: this.password }).subscribe(
-      (response: any) => {
-        const encrRes = JSON.stringify(response);
-        localStorage.setItem('data', encrRes);
-        const storedData = localStorage.getItem('data');
-        if (storedData) {
-          const dataObj = JSON.parse(storedData);
-          this.toastr.success('Logged In Successfully');
-          this.router.navigate(['/auth/signup']);
+    // this.authService.login({ username: this.emailId, password: this.password }).subscribe(
+    //   (response: any) => {
+    //     const encrRes = JSON.stringify(response);
+    //     localStorage.setItem('data', encrRes);
+    //     const storedData = localStorage.getItem('data');
+    //     if (storedData) {
+    //       const dataObj = JSON.parse(storedData);
+    //       this.toastr.success('Logged In Successfully');
+    //       this.router.navigate(['/auth/signup']);
+    //     }
+    //     this.loadSpinner = false;
+    //   },
+    //   (error) => {
+    //     this.toastr.error('Something Went Wrong');
+    //     this.loadSpinner = false;
+    //   }
+    // );
+    this.authService
+      .login({ username: this.emailId, password: this.password })
+      .subscribe(
+        (response: any) => {
+          const encrRes = JSON.stringify(response);
+          localStorage.setItem('data', encrRes);
+
+          const storedData = localStorage.getItem('data');
+          if (storedData) {
+            const dataObj = JSON.parse(storedData);
+            this.toastr.success('Logged In Successfully', response.message);
+            console.log(dataObj);
+
+            const token = dataObj.accessToken;
+            const userApp = dataObj.apps.find(
+              (app: any) =>
+                app.name.toLowerCase().replace(/\s/g, '') ===
+                'usermanagamentsystem'
+            );
+
+            if (userApp) {
+              console.log(userApp.route);
+              window.location.href = userApp.route;
+            } else {
+              const appRoute = dataObj.apps[0].route;
+              const appId = dataObj.apps[0].id;
+              window.location.href = `${appRoute}?data=${token}&appId=${appId}`;
+            }
+
+            this.loadSpinner = false;
+          }
+        },
+        (error) => {
+          this.toastr.error(error?.error?.message, 'Error');
+          this.loadSpinner = false;
         }
-        this.loadSpinner = false;
-      },
-      (error) => {
-        this.toastr.error('Something Went Wrong');
-        this.loadSpinner = false;
-      }
-    );
+      );
   }
 
   // 🔹 Microsoft Login

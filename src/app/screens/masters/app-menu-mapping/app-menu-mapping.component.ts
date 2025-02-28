@@ -11,7 +11,6 @@ import { AppMenuMappingService } from '../../../core/service/app-menu-mapping.se
 export class AppMenuMappingComponent {
   loadSpinner: boolean = true;
 
-
   totalMenuUsers: number = 500; // Total number of users (example value)
   currentPage: number = 1; // Current active page
   count: number = 10; // Default items per page
@@ -36,6 +35,7 @@ export class AppMenuMappingComponent {
     count: number = this.count,
     filters: any = this.appliedFilters
   ) {
+    this.loadSpinner = true;
     const data = {
       status: filters?.status || '',
       menuName: filters?.menuName || '',

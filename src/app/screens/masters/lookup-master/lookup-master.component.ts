@@ -34,6 +34,7 @@ export class LookupMasterComponent implements OnInit {
     count: number = this.count,
     filters: any = this.appliedFilters
   ) {
+    this.loadSpinner=true;
     const data = {
       type: filters?.type || '',
       value: filters?.value || '',

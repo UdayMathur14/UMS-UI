@@ -85,6 +85,7 @@ export class AddEditLookupComponent implements OnInit {
     const typeId = this.lookupForm.controls['type']?.value
     const typeName = this.lookupType.find((item: any) => item?.id == typeId)?.type
     if(this.lookupId){
+      this.loadSpinner=true;
       const data =  {
         status: this.lookupForm.controls['status']?.value,
         typeId: this.lookupForm.controls['type']?.value,
@@ -102,6 +103,7 @@ export class AddEditLookupComponent implements OnInit {
         },
         (error) => {
           this.loadSpinner = false;
+          this.toastr.error(error?.error?.message,'Error')
         }
       );
     } else {
@@ -118,11 +120,12 @@ export class AddEditLookupComponent implements OnInit {
     this.lookupService.lookupCreate(data).subscribe(
       (response: any) => {
         this.loadSpinner = false;
-        this.toastr.success('Lookup' + response.message);
+        this.toastr.success('Lookup ' + response.message);
         this.onCancel();
       },
       (error) => {
         this.loadSpinner = false;
+        this.toastr.error(error?.error?.message,'Error')
       }
     );
     }
