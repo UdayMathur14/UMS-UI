@@ -1,13 +1,9 @@
-<div class="header d-flex bd-highlight" [class.sidebar-collapsed]="isSidebarCollapsed">
-    <h3 class="message">{{greetingMessage}}</h3>
-    <div class="p-2 flex-grow-1 bd-highlight">
-        <div class="search-container">
-            <i class="bi bi-search search-icon"></i>
-            <input type="text" placeholder="Search" class="search-bar">
-        </div>
-    </div>
-
-    <div class="p-2 bd-highlight">
+<div class="header d-flex bd-highlight">
+    <h3 class="message">{{greetingMessage}} {{userName}} !</h3>
+    <!-- <div class="home">
+        <img src="../../../assets/images/icons/home.svg" alt="" routerLink="/home">
+    </div> -->
+    <!-- <div class="bd-highlight">
         <div class="notifications" (click)="toggleNotifications()">
             <i class="bi bi-bell">
                 <span *ngIf="notifications.length"
@@ -33,12 +29,13 @@
                 </ng-template>
             </div>
         </div>
-    </div>
-
+    </div> -->
 
     <div class="user-profile" (click)="toggleProfile()">
-        <img src="../../../assets/images/user-pic.png" class="user-pic">
-        <span class="user-name">User Name
+        <div class="user-avatar">
+            <span class="avatar-initials">{{getUserInitials()}}</span>
+        </div>
+        <span class="user-name">{{userName}}
             <img src="../../../assets/images/icons/down.svg" alt="" [class.rotate-up]="isProfileOpen"
                 class="toggle-icon">
         </span>
@@ -47,15 +44,22 @@
     <div #subProfileWrap class="sub-profile-wrap">
         <div class="sub-profile">
             <div class="user-info">
-                <img src="../../../assets/images/user-pic.png">
-                <h3>User Name</h3>
+                <div class="user-avatar-large">
+                    <span class="avatar-initials-large">{{getUserInitials()}}</span>
+                </div>
+                <h3>{{userName}}</h3>
+                <p class="user-email">{{userEmailId}}</p>
             </div>
-            <!-- <hr> -->
-            <h5>UMS</h5>
-            <h6>Project Name: User Management</h6>
-            <h4 style="cursor: pointer;" routerLink="home" (click)="logout()">Logout
-                <img src="../../../assets/images/icons/signOutblack.svg" class="signout">
-            </h4>
+            <div class="organization-info">
+                <h5>Organisation</h5>
+                <p class="organization-name">{{organisation}}</p>
+            </div>
+            <div class="profile-actions">
+                <button class="action-button logout" (click)="logout()">
+                    <img src="../../../assets/images/icons/signOutblack.svg" alt="Logout" class="signout">
+                    Logout
+                </button>
+            </div>
         </div>
     </div>
 </div>
