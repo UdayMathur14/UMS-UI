@@ -1,17 +1,18 @@
 import { HttpClient, HttpHeaders } from '@angular/common/http';
-import { Component, OnInit } from '@angular/core';
+import { AfterViewInit, Component, OnInit } from '@angular/core';
 import { Router } from '@angular/router';
 import { MsalService } from '@azure/msal-angular';
 import { AccountInfo, EventMessage, EventType } from '@azure/msal-browser';
 import { AuthService } from '../../../core/service/auth.service';
 import { ToastrService } from 'ngx-toastr';
+import { GoogleAuthService } from '../../../core/service/google-auth.service';
 
 @Component({
   selector: 'app-login',
   templateUrl: './login.component.html',
   styleUrl: './login.component.scss'
 })
-export class LoginComponent implements OnInit {
+export class LoginComponent implements OnInit, AfterViewInit {
   showPassword: boolean = false;
   userProfile: any;
   loginDisplay = false;
@@ -24,7 +25,8 @@ export class LoginComponent implements OnInit {
     private msalService: MsalService,
     private http: HttpClient,
     private authService: AuthService,
-    private toastr: ToastrService
+    private toastr: ToastrService,
+    private googleAuthService: GoogleAuthService
   ) {
     localStorage.clear();
   }
@@ -53,6 +55,10 @@ export class LoginComponent implements OnInit {
     this.checkLoginStatus();
   }
 
+  ngAfterViewInit() {
+    this.googleAuthService.initializeGoogleSignIn();
+  }
+
   // 🔹 Manual Login
   onSignIn() {
     this.loadSpinner = true;
@@ -64,7 +70,7 @@ export class LoginComponent implements OnInit {
         if (storedData) {
           const dataObj = JSON.parse(storedData);
           this.toastr.success('Logged In Successfully');
-          this.router.navigate(['/dashboard']);
+          this.router.navigate(['/auth/signup']);
         }
         this.loadSpinner = false;
       },
