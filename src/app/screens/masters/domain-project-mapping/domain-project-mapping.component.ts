@@ -35,6 +35,7 @@ export class DomainProjectMappingComponent {
     count: number = this.count,
     filters: any = this.appliedFilters
   ) {
+    this.loadSpinner=true;
     const data = {
       status: filters?.status || '',
       projectName: filters?.projectName || '',

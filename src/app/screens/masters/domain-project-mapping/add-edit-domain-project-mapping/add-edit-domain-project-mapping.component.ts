@@ -52,34 +52,38 @@ export class AddEditDomainProjectMappingComponent {
     const data = {
       status: '',
       type: 'domainName',
-      value: ''
+      value: '',
     };
-    this.lookupService.lookupData(this.userId, this.offset, this.count, data).subscribe(
-      (response: any) => {
-        this.domainNames = response?.lookUps;
-        this.loadSpinner = false;
-      },
-      (error) => {
-        this.loadSpinner = false;
-      }
-    );
+    this.lookupService
+      .lookupData(this.userId, this.offset, this.count, data)
+      .subscribe(
+        (response: any) => {
+          this.domainNames = response?.lookUps;
+          this.loadSpinner = false;
+        },
+        (error) => {
+          this.loadSpinner = false;
+        }
+      );
   }
 
   projectNameLookup() {
     const data = {
       status: '',
       type: 'projectName',
-      value: ''
+      value: '',
     };
-    this.lookupService.lookupData(this.userId, this.offset, this.count, data).subscribe(
-      (response: any) => {
-        this.projectNames = response?.lookUps;
-        this.loadSpinner = false;
-      },
-      (error) => {
-        this.loadSpinner = false;
-      }
-    );
+    this.lookupService
+      .lookupData(this.userId, this.offset, this.count, data)
+      .subscribe(
+        (response: any) => {
+          this.projectNames = response?.lookUps;
+          this.loadSpinner = false;
+        },
+        (error) => {
+          this.loadSpinner = false;
+        }
+      );
   }
 
   getDomainProjectById() {
@@ -88,7 +92,7 @@ export class AddEditDomainProjectMappingComponent {
         this.domainProjectForm.patchValue({
           domain: response?.domainId,
           project: response?.projectId,
-          status: response?.status
+          status: response?.status,
         });
         this.loadSpinner = false;
       },
@@ -112,20 +116,24 @@ export class AddEditDomainProjectMappingComponent {
       (item: any) => item?.id == domainId
     )?.value;
     if (this.domainProjectId) {
+      this.loadSpinner = true;
       const data = {
         status: this.domainProjectForm.controls['status']?.value,
         actionBy: this.userId,
       };
-      this.domainService.domainProjectUpdate(this.domainProjectId, data).subscribe(
-        (response: any) => {
-          this.loadSpinner = false;
-          this.toastr.success('Domain Project Mapping ' + response.message);
-          this.onCancel();
-        },
-        (error) => {
-          this.loadSpinner = false;
-        }
-      );
+      this.domainService
+        .domainProjectUpdate(this.domainProjectId, data)
+        .subscribe(
+          (response: any) => {
+            this.loadSpinner = false;
+            this.toastr.success('Domain Project Mapping ' + response.message);
+            this.onCancel();
+          },
+          (error) => {
+            this.toastr.error(error?.error?.message, 'Error');
+            this.loadSpinner = false;
+          }
+        );
     } else {
       const data = {
         status: 'Active',
@@ -142,6 +150,7 @@ export class AddEditDomainProjectMappingComponent {
           this.onCancel();
         },
         (error) => {
+          this.toastr.error(error?.error?.message, 'Error');
           this.loadSpinner = false;
         }
       );

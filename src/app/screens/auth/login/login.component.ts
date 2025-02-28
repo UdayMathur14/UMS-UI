@@ -7,7 +7,7 @@ import { ToastrService } from 'ngx-toastr';
 @Component({
   selector: 'app-login',
   templateUrl: './login.component.html',
-  styleUrl: './login.component.scss'
+  styleUrl: './login.component.scss',
 })
 export class LoginComponent implements OnInit {
   showPassword: boolean = false;
@@ -21,24 +21,20 @@ export class LoginComponent implements OnInit {
     private http: HttpClient,
     private authService: AuthService,
     private toastr: ToastrService
-  ) { 
+  ) {
     localStorage.clear();
   }
 
   ngOnInit() {
     // Subscribe to MSAL events
     console.log('Login Display:', this.userProfile);
-
   }
 
-  login(): void {
-  }
+  login(): void {}
 
   logout(): void {
     localStorage.removeItem('userProfile');
   }
-
-
 
   // login(event: Event) {
   //   event.preventDefault();  // Prevent form's default submit behavior
@@ -56,39 +52,42 @@ export class LoginComponent implements OnInit {
 
   onSignIn() {
     this.loadSpinner = true;
-    this.authService.login({ username: this.emailId, password: this.password }).subscribe(
-      (response: any) => {
-        const encrRes = JSON.stringify(response);
-        localStorage.setItem('data', encrRes);
-    
-        const storedData = localStorage.getItem('data');
-        if (storedData) {
-          const dataObj = JSON.parse(storedData);
-          this.toastr.success('Logged In Successfully');
-          console.log(dataObj);
-  
-          const token = dataObj.accessToken;
-          const userApp = dataObj.apps.find((app: any) => 
-            app.name.toLowerCase().replace(/\s/g, '') === "usermanagamentsystem"
-          );
-  
-          if (userApp) {
-            console.log(userApp.route);
-            window.location.href = userApp.route;
-          } else {
-            const appRoute = dataObj.apps[0].route;
-            const appId = dataObj.apps[0].id;
-            window.location.href = `${appRoute}?data=${token}&appId=${appId}`;
+    this.authService
+      .login({ username: this.emailId, password: this.password })
+      .subscribe(
+        (response: any) => {
+          const encrRes = JSON.stringify(response);
+          localStorage.setItem('data', encrRes);
+
+          const storedData = localStorage.getItem('data');
+          if (storedData) {
+            const dataObj = JSON.parse(storedData);
+            this.toastr.success('Logged In Successfully', response.message);
+            console.log(dataObj);
+
+            const token = dataObj.accessToken;
+            const userApp = dataObj.apps.find(
+              (app: any) =>
+                app.name.toLowerCase().replace(/\s/g, '') ===
+                'usermanagamentsystem'
+            );
+
+            if (userApp) {
+              console.log(userApp.route);
+              window.location.href = userApp.route;
+            } else {
+              const appRoute = dataObj.apps[0].route;
+              const appId = dataObj.apps[0].id;
+              window.location.href = `${appRoute}?data=${token}&appId=${appId}`;
+            }
+
+            this.loadSpinner = false;
           }
-  
+        },
+        (error) => {
+          this.toastr.error(error?.error?.message, 'Error');
           this.loadSpinner = false;
         }
-      },
-      (error) => {
-        this.toastr.error('Something Went Wrong');
-        this.loadSpinner = false;
-      }
-    );
+      );
   }
-  
 }
