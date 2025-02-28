@@ -42,17 +42,17 @@ export class GoogleAuthService {
     handleCredentialResponse(response: any) {
         const credential = JSON.parse(atob(response.credential.split('.')[1])); // Decode JWT
         console.log("User Info:", credential);
-    
+
         // Store user data in localStorage
         localStorage.setItem('googleUser', JSON.stringify({
-          email: credential.email,
-          fullName: credential.name
+            email: credential.email,
+            fullName: credential.name
         }));
-    
+
         // Redirect to sign-up page
         setTimeout(() => this.ngZone.run(() => this.router.navigate(['/auth/signup'])), 1000);
         // window.location.href = "/auth/signup";
-      }
+    }
 
     // signOut() {
     //     window.google.accounts.id.disableAutoSelect(); // Use window.google
@@ -65,7 +65,7 @@ export class GoogleAuthService {
         } else {
             console.warn('Google SDK not loaded, skipping sign out');
         }
-    
+
         localStorage.removeItem('google_token');
         this.router.navigate(['']);
     }
