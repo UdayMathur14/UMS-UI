@@ -24,6 +24,27 @@
     overflow: hidden;
     z-index: 1000;
     margin-top: 6%;
+    overflow-y: auto;
+    overflow-x: hidden;
+    max-height: calc(100vh - 20px);
+    padding-right: 15px;
+    scrollbar-gutter: stable;
+}
+
+/* Fix scrollbar width and positioning */
+.sidebar-container::-webkit-scrollbar {
+    width: 6px;
+}
+
+.sidebar-container::-webkit-scrollbar-track {
+    background: transparent;
+    border-radius: 22px;
+    margin-top: 20px;
+}
+
+.sidebar-container::-webkit-scrollbar-thumb {
+    background: #48cae4;
+    border-radius: 10px;
 }
 
 .menu-list {
@@ -67,6 +88,10 @@
             background-color: #0096c7;
             color: #ffffff;
         }
+    }
+
+    li:last-child {
+        margin-bottom: 80px;
     }
 }
 
