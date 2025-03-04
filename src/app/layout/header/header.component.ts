@@ -151,6 +151,6 @@ export class HeaderComponent implements OnInit {
   logout() {
     localStorage.clear();
     // window.location.href = APIConstant.Ums + `/login`;
-    this.router.navigate(['/home']);
+    this.router.navigate(['/login']);
   }
 }

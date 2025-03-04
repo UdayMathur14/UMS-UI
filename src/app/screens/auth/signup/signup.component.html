@@ -15,7 +15,8 @@
       <small class="text-danger" *ngIf="signUpForm.controls['emailId'].hasError('required') && signUpForm.controls['emailId'].touched">
         Email is required.
       </small>
-      <small class="text-danger" *ngIf="signUpForm.controls['emailId'].hasError('email') && signUpForm.controls['emailId'].touched">
+      <small class="text-danger" *ngIf="(signUpForm.controls['emailId'].hasError('email') && signUpForm.controls['emailId'].touched) || 
+      signUpForm.controls['emailId'].hasError('pattern') && signUpForm.controls['emailId'].touched">
         Enter a valid email address.
       </small>
 
@@ -36,3 +37,7 @@
     <p><small>Already have an account?</small> <a class="ms-2" href="/auth/login">Log In</a></p>
   </div>
 </div>
+<div class="spinner" *ngIf="loadSpinner">
+  Loading...
+</div>
+

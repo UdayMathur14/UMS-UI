@@ -14,56 +14,101 @@ export class SignupComponent implements OnInit {
   signUpForm!: FormGroup;
   isMicrosoftLogin = false;
   passwordLabel = 'Password';
+  loadSpinner: boolean = false;
 
   constructor(
-    private authService: AuthService, 
-    private router: Router,   
+    private authService: AuthService,
+    private router: Router,
     private passwordService: PasswordDataShareService,
     private toastr: ToastrService
-  ) {}
+  ) { }
 
   ngOnInit() {
-    // Check if user logged in via Microsoft
-    const userProfile = JSON.parse(localStorage.getItem('userProfile') || '{}');
-    const email = userProfile?.mail;
-
-    this.isMicrosoftLogin = !!email; // If email exists, user logged in via Microsoft
-
+    const storedProfile = localStorage.getItem('userProfile');
+    let userProfile: any = {};
+  
+    if (storedProfile) {
+      try {
+        userProfile = JSON.parse(storedProfile);
+      } catch (error) {
+        console.error("Error parsing userProfile from localStorage:", error);
+      }
+    }
+  
+    const email = userProfile?.mail || '';
+    const name = userProfile?.displayName || '';
+    const contactNo = userProfile?.mobilePhone || '';
+  
+    this.isMicrosoftLogin = !!email;
+  
+    // Fetch Google user data
+    const googleUserString = localStorage.getItem('googleUser');
+    let googleUser: any = null;
+    let isGoogleLogin = false;
+  
+    if (googleUserString) {
+      try {
+        googleUser = JSON.parse(googleUserString);
+        isGoogleLogin = true;
+      } catch (error) {
+        console.error("Error parsing googleUser from localStorage:", error);
+      }
+    }
+  
     this.signUpForm = new FormGroup({
-      userName: new FormControl('', Validators.required),
-      emailId: new FormControl({ value: email || '', disabled: this.isMicrosoftLogin }, Validators.required),
-      contactNo: new FormControl('', Validators.required),
-      // password: new FormControl('', [Validators.required, Validators.minLength(6), this.passwordValidator()]),
+      userName: new FormControl(
+        { value: name || (isGoogleLogin && googleUser ? googleUser.fullName : ''), disabled: this.isMicrosoftLogin || isGoogleLogin },
+        Validators.required
+      ),
+      emailId: new FormControl(
+        { value: email || (isGoogleLogin && googleUser ? googleUser.email : ''), disabled: this.isMicrosoftLogin || isGoogleLogin },
+        [Validators.required, Validators.pattern(/^[a-zA-Z0-9._%+-]+@[a-zA-Z0-9.-]+\.[a-zA-Z]{2,}$/)]
+      ),
+      contactNo: new FormControl(
+        { value: contactNo, disabled: this.isMicrosoftLogin }, // Enable for Google, Disable for Microsoft
+        Validators.required
+      ),
       organisation: new FormControl('', Validators.required),
     });
-
+  
+    this.signUpForm.patchValue({
+      Type: isGoogleLogin ? 'Google' : (this.isMicrosoftLogin ? 'Microsoft' : 'Portal'),
+    });
+  
     if (this.isMicrosoftLogin) {
       this.passwordLabel = 'New Password';
     }
   }
+  
 
   onSubmit() {
+    this.loadSpinner = true;
     if (this.signUpForm.valid) {
+      const googleUser = localStorage.getItem('googleUser');
+      const isGoogleLogin = googleUser ? true : false;
+  
       const data = {
         name: this.signUpForm.controls['userName']?.value,
         emailId: this.signUpForm.controls['emailId']?.value,
         contactNo: this.signUpForm.controls['contactNo']?.value,
-        // password: this.signUpForm.controls['password']?.value,
         organisation: this.signUpForm.controls['organisation']?.value,
         otp: '',
+        Type: this.isMicrosoftLogin ? 'Microsoft' : isGoogleLogin ? 'Google' : 'Portal',
       };
-
+  
       this.passwordService.setPasswordData(data);
-
+  
       this.authService.signUp(data).subscribe(
         (res) => {
           if (res.code === 200) {
             this.toastr.success(res.message, 'Success');
             this.router.navigate(['/otpValidation']);
+            this.loadSpinner = false;
           }
         },
         (error) => {
           this.toastr.error(error?.error?.message, 'Error');
+          this.loadSpinner = false;
         }
       );
     }
