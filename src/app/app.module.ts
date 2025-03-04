@@ -36,12 +36,12 @@ import { msalConfig, msalGuardConfig, msalInterceptorConfig } from './auth-confi
       useClass: AuthInterceptor,
       multi: true,
     },
-    {
-      provide: HTTP_INTERCEPTORS,
-      useClass: MsalInterceptor,
-      multi: true,
-    },
+    // {
+    //   provide: HTTP_INTERCEPTORS,
+    //   useClass: MsalInterceptor,
+    //   multi: true,
+    // },
   ],
-  bootstrap: [AppComponent, MsalRedirectComponent]
+  bootstrap: [AppComponent]
 })
 export class AppModule { }

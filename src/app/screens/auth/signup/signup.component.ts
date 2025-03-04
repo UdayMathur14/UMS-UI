@@ -14,6 +14,7 @@ export class SignupComponent implements OnInit {
   signUpForm!: FormGroup;
   isMicrosoftLogin = false;
   passwordLabel = 'Password';
+  loadSpinner: boolean = false;
 
   constructor(
     private authService: AuthService,
@@ -61,7 +62,7 @@ export class SignupComponent implements OnInit {
       ),
       emailId: new FormControl(
         { value: email || (isGoogleLogin && googleUser ? googleUser.email : ''), disabled: this.isMicrosoftLogin || isGoogleLogin },
-        Validators.required
+        [Validators.required, Validators.pattern(/^[a-zA-Z0-9._%+-]+@[a-zA-Z0-9.-]+\.[a-zA-Z]{2,}$/)]
       ),
       contactNo: new FormControl(
         { value: contactNo, disabled: this.isMicrosoftLogin }, // Enable for Google, Disable for Microsoft
@@ -81,6 +82,7 @@ export class SignupComponent implements OnInit {
   
 
   onSubmit() {
+    this.loadSpinner = true;
     if (this.signUpForm.valid) {
       const googleUser = localStorage.getItem('googleUser');
       const isGoogleLogin = googleUser ? true : false;
@@ -101,10 +103,12 @@ export class SignupComponent implements OnInit {
           if (res.code === 200) {
             this.toastr.success(res.message, 'Success');
             this.router.navigate(['/otpValidation']);
+            this.loadSpinner = false;
           }
         },
         (error) => {
           this.toastr.error(error?.error?.message, 'Error');
+          this.loadSpinner = false;
         }
       );
     }
