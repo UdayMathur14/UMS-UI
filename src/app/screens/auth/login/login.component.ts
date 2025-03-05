@@ -103,8 +103,8 @@ export class LoginComponent implements OnInit, AfterViewInit {
             );
 
             if (userApp) {
-              console.log(userApp.route);
               window.location.href = userApp.route;
+              // this.router.navigate(['/masters'])
             } else {
               const appRoute = dataObj.apps[0].route;
               const appId = dataObj.apps[0].id;
