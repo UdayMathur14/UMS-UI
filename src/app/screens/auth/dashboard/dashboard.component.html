@@ -1,0 +1,28 @@
+<div>
+  <a href="client/dashboard">
+      <img src="../../../assets/images/diplogo.png" class="full-logo">
+  </a>
+  <app-header></app-header>
+</div>
+
+
+<div class="tiles-wrapper ms-5">
+  <div class="tile-box" *ngFor="let app of apps" (click)="onClickApp(app)">
+
+    <div class="tile-content">
+      <div class="icon">
+        <span></span>
+      </div>
+      <div class="tile-title">
+        {{ app.name}}
+      </div>
+
+      <div class="tile-desc">
+        {{app.description}}
+      </div>
+    </div>
+</div>
+<!-- <div class="spinner" *ngIf="loadSpinner">
+  Loading...
+</div> -->
+

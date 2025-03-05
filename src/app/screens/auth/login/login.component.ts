@@ -65,51 +65,41 @@ export class LoginComponent implements OnInit, AfterViewInit {
   // 🔹 Manual Login
   onSignIn() {
     this.loadSpinner = true;
-    // this.authService.login({ username: this.emailId, password: this.password }).subscribe(
-    //   (response: any) => {
-    //     const encrRes = JSON.stringify(response);
-    //     localStorage.setItem('data', encrRes);
-    //     const storedData = localStorage.getItem('data');
-    //     if (storedData) {
-    //       const dataObj = JSON.parse(storedData);
-    //       this.toastr.success('Logged In Successfully');
-    //       this.router.navigate(['/auth/signup']);
-    //     }
-    //     this.loadSpinner = false;
-    //   },
-    //   (error) => {
-    //     this.toastr.error('Something Went Wrong');
-    //     this.loadSpinner = false;
-    //   }
-    // );
     this.authService
       .login({ username: this.emailId, password: this.password })
       .subscribe(
         (response: any) => {
-          const encrRes = JSON.stringify(response);
-          localStorage.setItem('data', encrRes);
-
+          const resData = JSON.stringify(response);
+          localStorage.setItem('data', resData);
           const storedData = localStorage.getItem('data');
           if (storedData) {
             const dataObj = JSON.parse(storedData);
             this.toastr.success('Logged In Successfully', response.message);
-            console.log(dataObj);
-
             const token = dataObj.accessToken;
             const userApp = dataObj.apps.find(
               (app: any) =>
                 app.name.toLowerCase().replace(/\s/g, '') ===
                 'usermanagamentsystem'
             );
-
-            if (userApp) {
-              console.log(userApp.route);
+            if (dataObj.apps.length == 1 && userApp) {
               window.location.href = userApp.route;
-            } else {
+              // this.router.navigate(['/masters'])
+            } else if(dataObj.apps.length == 1 && !userApp) {
               const appRoute = dataObj.apps[0].route;
               const appId = dataObj.apps[0].id;
               window.location.href = `${appRoute}?data=${token}&appId=${appId}`;
+            } else {
+              this.router.navigate(['/dashboard'])
             }
+
+            // if (userApp) {
+            //   // window.location.href = userApp.route;
+            //   this.router.navigate(['/masters'])
+            // } else {
+            //   const appRoute = dataObj.apps[0].route;
+            //   const appId = dataObj.apps[0].id;
+            //   window.location.href = `${appRoute}?data=${token}&appId=${appId}`;
+            // }
 
             this.loadSpinner = false;
           }

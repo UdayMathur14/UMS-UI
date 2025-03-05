@@ -10,7 +10,7 @@ export class UserMasterComponent implements OnInit {
   loadSpinner: boolean = true;
 
   count: number = 10;
-  userId: any = 1;
+  userId: string = '';
   userMaster: any;
   totalUsersMasters: number = 0;
   currentPage: number = 1;
@@ -19,6 +19,11 @@ export class UserMasterComponent implements OnInit {
 
   constructor(private userMasterService: UserMasterService) {}
   ngOnInit(): void {
+    const data = localStorage.getItem('data');
+    if (data) {
+      const dataObj = JSON.parse(data);
+      this.userId = dataObj.userId;
+    }
     this.getUserMasterData();
   }
 
