@@ -16,6 +16,6 @@ import { RouterModule } from '@angular/router';
     CommonModule,
     RouterModule
   ],
-  exports: [LayoutComponent] // Export LayoutComponent to use it in routing
+  exports: [LayoutComponent, HeaderComponent] // Export LayoutComponent to use it in routing
 })
 export class LayoutModule { }

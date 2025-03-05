@@ -5,6 +5,7 @@
         height: calc(100vh - 115px);
         column-gap: 233px;
         transition: column-gap 0.3s ease;
+        
         /* Smooth transition for spacing */
 
         &.collapsed-sidebar {

@@ -1,0 +1,147 @@
+.full-logo {
+    display: flex;
+    position: fixed;
+    top: 0;
+    background-color: #fff;
+    margin-top: 7px;
+    width: calc(200px - 10px);
+    height: calc(70px - 10px);
+    cursor: pointer;
+}
+
+header {
+    height: 80px;
+    background-color: var(--primaryColor);
+}
+
+.tiles-wrapper {
+    display: grid;
+    gap: 30px;
+    grid-template-columns: 1fr 1fr 1fr;
+    padding: 30px 15px;
+    max-width: 1200px;
+    margin-top: 6rem;
+
+    .tile-box {
+        background-color: #f9f9f9; // Light Gray Background
+        border-radius: 12px;
+        position: relative;
+        min-height: 270px;
+        box-shadow: 0 5px 10px rgba(0, 0, 0, 0.1); // Softer shadow
+        cursor: pointer;
+        border: 1px solid #ddd; // Subtle border
+        transition: all 0.3s ease-in-out;
+
+        &:hover {
+            transform: translateY(-5px);
+            box-shadow: 0 10px 20px rgba(0, 0, 0, 0.2);
+            background-color: #ffffff;
+        }
+
+        .tile-photo {
+            height: 180px;
+            background-size: cover;
+            background-repeat: no-repeat;
+            display: none;
+        }
+
+        .tile-logo {
+            text-align: center;
+
+            img {
+                width: 130px;
+            }
+        }
+
+        .tile-content {
+            padding: 25px 20px;
+
+            .icon {
+                margin-left: auto;
+                text-align: right;
+
+                span{
+                    height: 40px;
+                    max-height: 40px;
+                    background-repeat: no-repeat;
+                    background-size: contain;
+                    width: 55px;
+                    min-width: 40px;
+                    display: inline-block;
+                    background-position: right;
+                }
+            }
+
+            .tile-title {
+                font-size: 24px;
+                font-weight: 600;
+                margin: 5px 0px 13px;
+                font-family: "Work Sans", sans-serif;
+                letter-spacing: -0.3px;
+            }
+
+            .tile-desc {
+                font-size: 16px;
+                color: #949494;
+                margin-bottom: 20px;
+                padding-right: 100px;
+                font-family: "Work Sans", sans-serif;
+            }
+
+            .redirect {
+                text-decoration: none;
+                font-size: 13px;
+                color: var(--primaryColor);
+                font-weight: 600;
+                position: absolute;
+                bottom: 20px;
+            }
+        }
+        
+
+        &:nth-child(1) {
+            background-image: url('./../../../../assets/images/icons/tile_vector1.png');
+            background-size: 103px;
+            background-repeat: no-repeat;
+            background-position: bottom right;
+
+            .tile-content {
+                .icon {
+                    span {
+                        background-image: url('./../../../../assets/images/icons/tile_icn1.svg');
+                    }
+                }
+            }
+        }
+
+        &:nth-child(2) {
+            background-image: url('./../../../../assets/images/icons/tile_vector2.png');
+            background-size: 103px;
+            background-repeat: no-repeat;
+            background-position: bottom right;
+
+            .tile-content {
+                .icon {
+                    span {
+                        background-image: url('./../../../../assets/images/icons/tile_icn2.svg');
+                    }
+                }
+            }
+        }
+
+    }
+}
+
+.spinner{
+    position: fixed;
+    width:100%;
+    height:100%;
+    background-color: #00000055;
+    color: #fff;
+    top:0;
+    left : 0;
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    font-size: 30px;
+}

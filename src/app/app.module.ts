@@ -12,6 +12,7 @@ import { AuthInterceptor } from './core/interceptor';
 import { MsalInterceptor, MsalModule, MsalRedirectComponent } from '@azure/msal-angular';
 import { PublicClientApplication } from '@azure/msal-browser';
 import { msalConfig, msalGuardConfig, msalInterceptorConfig } from './auth-config';
+import { DashboardComponent } from './screens/auth/dashboard/dashboard.component';
 @NgModule({
   declarations: [
     AppComponent,
