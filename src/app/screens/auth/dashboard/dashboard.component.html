@@ -7,13 +7,7 @@
 
 
 <div class="tiles-wrapper ms-5">
-  <!-- <div class="title">
-    <h1> Choose an Application to continue</h1>
-  </div> -->
-  <div class="tile-box" *ngFor="let app of apps">
-    <div class="tile-photo">
-
-    </div>
+  <div class="tile-box" *ngFor="let app of apps" (click)="onClickApp(app)">
 
     <div class="tile-content">
       <div class="icon">

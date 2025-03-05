@@ -23,13 +23,13 @@ header {
     margin-top: 6rem;
 
     .tile-box {
-        background-color: #f9f9f9; // Light Gray Background
+        // background-color: #f9f9f9;
         border-radius: 12px;
         position: relative;
         min-height: 270px;
-        box-shadow: 0 5px 10px rgba(0, 0, 0, 0.1); // Softer shadow
+        box-shadow: 0 5px 10px rgba(0, 0, 0, 0.1);
         cursor: pointer;
-        border: 1px solid #ddd; // Subtle border
+        border: 1px solid #ddd; 
         transition: all 0.3s ease-in-out;
 
         &:hover {
