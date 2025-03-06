@@ -2,80 +2,88 @@
   <h1>Add App Menu Mapping</h1>
   <div class="action-buttons">
     <button class="custom-button-regulr" (click)="submitForm()">Save</button>
-    <button class="custom-button-regulr" (click)="addSubmenu()">Add Submenu</button>
+    <button class="custom-button-regulr" (click)="addMenu()">Add Menu</button>
     <button class="custom-button-secondary" (click)="onCancelPress()">Cancel</button>
   </div>
 </div>
-
 <form [formGroup]="menuForm">
-  <div class="row">
-    <!-- App Name -->
-    <div class="col-lg-3">
+  <div class="row mt-3">
+    <div class="col-3">
       <div class="custom-form-input">
         <label>App Name<span class="text-danger">*</span></label>
         <ng-select>
-          <ng-option *ngFor="let app of appNames" [value]="app">{{ app }}</ng-option>
+          <ng-option *ngFor="let app of appsData" [value]="app.value">{{ app.value }}</ng-option>
         </ng-select>
-        <div *ngIf="menuForm.get('appName')?.touched && menuForm.get('appName')?.invalid" class="text-danger">
-          <small>App Name is required</small>
-        </div>
       </div>
     </div>
-
-    <!-- Menu Name -->
-    <div class="col-lg-3">
+    <div class="col-3">
       <div class="custom-form-input">
-        <label>Menu Name<span class="text-danger">*</span></label>
-        <input>
-        <div *ngIf="menuForm.get('menuName')?.touched && menuForm.get('menuName')?.invalid" class="text-danger">
-          <small>Menu Name is required</small>
+        <label>Status<span class="text-danger">*</span></label>
+        <ng-select>
+          <ng-option *ngFor="let status of statusOptions" [value]="status">{{ status }}</ng-option>
+        </ng-select>
+      </div>
+    </div>
+  </div>
+
+  <div class="row mt-4" formArrayName="menu">
+    <div *ngFor="let menu of menus().controls; let i = index" [formGroupName]="i">
+      <div class="row mt-3">
+        <div class="col-6">
+          <label style="font-weight: bold;">Menu {{ i + 1 }}</label> 
         </div>
+        <div class="col-6 d-flex">
+        <button type="button" class="custom-button-regulr ms-auto">
+        Add Sub Menu
+      </button>
       </div>
-    </div>
+      </div>
 
-    <!-- Routing -->
-    <div class="col-lg-3">
-      <div class="custom-form-input">
-        <label>Routing<span class="text-danger">*</span></label>
-        <input>
-        <div *ngIf="menuForm.get('routing')?.touched && menuForm.get('routing')?.invalid" class="text-danger">
-          <small>Routing is required</small>
+      <!-- Menu Name -->
+      <div class="row mt-3">
+        <div class="col-lg-3">
+          <div class="custom-form-input">
+            <label>Menu Name<span class="text-danger">*</span></label>
+            <input>
+          </div>
         </div>
-      </div>
-    </div>
 
-    <!-- Description -->
-    <div class="col-lg-3">
-      <div class="custom-form-input">
-        <label>Description</label>
-        <input>
-      </div>
-    </div>
-
-    <!-- Order By -->
-    <div class="col-lg-3">
-      <div class="custom-form-input">
-        <label>Order By<span class="text-danger">*</span></label>
-        <input type="number">
-        <div *ngIf="menuForm.get('orderBy')?.touched && menuForm.get('orderBy')?.invalid" class="text-danger">
-          <small>Order By is required</small>
+        <!-- Routing -->
+        <div class="col-lg-3">
+          <div class="custom-form-input">
+            <label>Routing<span class="text-danger">*</span></label>
+            <input>
+          </div>
         </div>
-      </div>
-    </div>
 
-    <!-- Level -->
-    <div class="col-lg-3">
-      <div class="custom-form-input">
-        <label>Level<span class="text-danger">*</span></label>
-        <input type="number">
-        <div *ngIf="menuForm.get('level')?.touched && menuForm.get('level')?.invalid" class="text-danger">
-          <small>Level is required</small>
+        <!-- Description -->
+        <div class="col-lg-3">
+          <div class="custom-form-input">
+            <label>Description</label>
+            <input>
+          </div>
         </div>
-      </div>
-    </div>
 
-    <!-- Main Menu Permission (Multi-select) -->
-    <div class="col-lg-3">
+        <!-- Order By -->
+        <div class="col-lg-3">
+          <div class="custom-form-input">
+            <label>Order By<span class="text-danger">*</span></label>
+            <input type="text" (keypress)="validateNo($event)">
+          </div>
+        </div>
+
+        <!-- Level -->
+        <div class="col-lg-3">
+          <div class="custom-form-input">
+            <label>Level<span class="text-danger">*</span></label>
+            <input type="text" (keypress)="validateNo($event)">
+          </div>
+        </div>
+
+      </div>
+
+      <!-- Main Menu Permission (Multi-select) -->
+      <!-- <div class="col-lg-3">
       <div class="custom-form-input">
         <label>Permissions</label>
         <ng-multiselect-dropdown [placeholder]="'Select Permissions'" [data]="permissions" [settings]="dropdownSettings"
@@ -84,36 +92,21 @@
           (onDeSelectAll)="onMainPermissionChange($event)">
         </ng-multiselect-dropdown>
       </div>
-    </div>
+    </div> -->
 
-    <!-- Status -->
-    <div class="col-lg-3">
-      <div class="custom-form-input">
-        <label>Status<span class="text-danger">*</span></label>
-        <ng-select>
-          <ng-option *ngFor="let status of statusOptions" [value]="status">{{ status }}</ng-option>
-        </ng-select>
-        <div *ngIf="menuForm.get('status')?.touched && menuForm.get('status')?.invalid" class="text-danger">
-          <small>Status is required</small>
-        </div>
-      </div>
     </div>
   </div>
 
   <!-- Submenu Section -->
-  <div *ngIf="submenus.length > 0" class="submenu-section">
+  <!-- <div *ngIf="submenus.length > 0" class="submenu-section">
     <h3>Add Sub Menu</h3>
 
-    <div *ngFor="let submenu of submenus.controls; let i = index" [formGroupName]="i"
-      class="submenu-item mt-3 p-3 border rounded">
+    <div *ngFor="let submenu of submenus.controls; let i = index" [formGroupName]="i"  class="submenu-item mt-3 p-3 border rounded">
       <div class="row">
         <div class="col-lg-3">
           <div class="custom-form-input">
             <label>Name<span class="text-danger">*</span></label>
             <input >
-            <div *ngIf="submenu.get('name')?.touched && submenu.get('name')?.invalid" class="text-danger">
-              <small>Name is required</small>
-            </div>
           </div>
         </div>
 
@@ -121,9 +114,6 @@
           <div class="custom-form-input">
             <label>Routing<span class="text-danger">*</span></label>
             <input>
-            <div *ngIf="submenu.get('routing')?.touched && submenu.get('routing')?.invalid" class="text-danger">
-              <small>Routing is required</small>
-            </div>
           </div>
         </div>
 
@@ -138,9 +128,6 @@
           <div class="custom-form-input">
             <label>Order By<span class="text-danger">*</span></label>
             <input type="number" >
-            <div *ngIf="submenu.get('orderBy')?.touched && submenu.get('orderBy')?.invalid" class="text-danger">
-              <small>Order By is required</small>
-            </div>
           </div>
         </div>
 
@@ -148,9 +135,6 @@
           <div class="custom-form-input">
             <label>Level<span class="text-danger">*</span></label>
             <input type="number">
-            <div *ngIf="submenu.get('level')?.touched && submenu.get('level')?.invalid" class="text-danger">
-              <small>Level is required</small>
-            </div>
           </div>
         </div>
 
@@ -172,12 +156,9 @@
             <ng-select>
               <ng-option *ngFor="let status of statusOptions" [value]="status">{{ status }}</ng-option>
             </ng-select>
-            <div *ngIf="submenu.get('status')?.touched && submenu.get('status')?.invalid" class="text-danger">
-              <small>Status is required</small>
-            </div>
           </div>
         </div>
       </div>
     </div>
-  </div>
+  </div> -->
 </form>

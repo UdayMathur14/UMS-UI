@@ -15,7 +15,7 @@ export class AppMenuMappingComponent {
   currentPage: number = 1; // Current active page
   count: number = 10; // Default items per page
   appliedFilters: any;
-  userId: any = 1;
+  userId: string = '';
   appMenuMapping: any;
   filters: any;
   totalPages: number = 0;
@@ -26,6 +26,11 @@ export class AppMenuMappingComponent {
   ) {}
 
   ngOnInit(): void {
+    const data = localStorage.getItem('data');
+    if (data) {
+      const dataObj = JSON.parse(data);
+      this.userId = dataObj.userId;
+    }
     this.fetchUsers();
     this.getAppMenuMapping();
   }
