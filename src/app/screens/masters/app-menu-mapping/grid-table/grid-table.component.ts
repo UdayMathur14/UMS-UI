@@ -1,4 +1,5 @@
 import { Component, Input } from '@angular/core';
+import { Router } from '@angular/router';
 
 @Component({
   selector: 'app-grid-table',
@@ -6,5 +7,11 @@ import { Component, Input } from '@angular/core';
   styleUrl: './grid-table.component.scss',
 })
 export class GridTableComponent {
-  @Input() appMenuMapping: any
+  @Input() appMenuMapping: any;
+
+  constructor(private router: Router){}
+
+  onEdit(id: string = ''){
+    this.router.navigate(['masters/edit-app-role-menu-mapping', id])
+  }
 }

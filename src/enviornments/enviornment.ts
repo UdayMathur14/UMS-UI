@@ -5,6 +5,6 @@
 export const environment = {
     production: false,
     // apiPath: 'https://localhost:7199'
-    apiPath: 'http://111.93.61.253:8061',
+    apiPath: 'https://ums-internal-api.azurewebsites.net',
     umsURL: "http://111.93.61.253:8066",
 };

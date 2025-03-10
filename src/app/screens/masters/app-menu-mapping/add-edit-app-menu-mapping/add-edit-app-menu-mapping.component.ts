@@ -1,7 +1,9 @@
 import { Component, OnInit } from '@angular/core';
 import { FormArray, FormBuilder, FormGroup, Validators } from '@angular/forms';
-import { Router } from '@angular/router';
+import { ActivatedRoute, Router } from '@angular/router';
 import { LookupService } from '../../../../core/service/lookup.service';
+import { AppMenuMappingService } from '../../../../core/service/app-menu-mapping.service';
+import { ToastrService } from 'ngx-toastr';
 
 @Component({
   selector: 'app-add-edit-app-menu-mapping',
@@ -10,26 +12,29 @@ import { LookupService } from '../../../../core/service/lookup.service';
 })
 export class AddEditAppMenuMappingComponent implements OnInit {
   menuForm: FormGroup;
-  isEditMode = false;
-  permissions = ['Add', 'Edit', 'View'];
+  permissionDropdown = {};
   statusOptions = ['Active', 'Inactive'];
   userId: string = '';
   offset = 0;
   count: number = Number.MAX_VALUE;
-  selectedMainPermissions = [];
   appsData: any;
   loadSpinner: boolean = true;
+  permissionData: any[] = [];
+  menuId: any;
+  allpermissions = [
+    { id: 'ADD', permissionName: 'ADD' },
+    { id: 'EDIT', permissionName: 'EDIT' },
+    { id: 'VIEW', permissionName: 'VIEW' },
+  ];
 
-  dropdownSettings = {
-    singleSelection: false,
-    idField: 'item_id',
-    textField: 'item_text',
-    selectAllText: 'Select All',
-    unSelectAllText: 'UnSelect All',
-    allowSearchFilter: true,
-  };
-
-  constructor(private router: Router, private formBuilder: FormBuilder, private lookupService: LookupService,) {
+  constructor(
+    private router: Router,
+    private formBuilder: FormBuilder,
+    private lookupService: LookupService,
+    private menuService: AppMenuMappingService,
+    private toastr: ToastrService,
+    private route: ActivatedRoute
+  ) {
     this.menuForm = this.formBuilder.group({
       status: ['', Validators.required],
       appName: ['', Validators.required],
@@ -43,15 +48,21 @@ export class AddEditAppMenuMappingComponent implements OnInit {
       const dataObj = JSON.parse(data);
       this.userId = dataObj.userId;
     }
+    this.menuId = this.route.snapshot.paramMap.get('id');
     this.getApps();
+    this.dropdownData();
+    this.getPermissions();
+    if(this.menuId){
+      this.getAppMenuById();
+    }
   }
 
   menus(): FormArray {
     return this.menuForm.get('menu') as FormArray;
   }
 
-  subMenus(): FormArray {
-    return this.menuForm.get('menu') as FormArray;
+  subMenus(index: number): FormArray {
+    return this.menus().at(index).get('subMenu') as FormArray;
   }
 
   addMenu() {
@@ -61,17 +72,93 @@ export class AddEditAppMenuMappingComponent implements OnInit {
       description: [''],
       orderBy: ['', [Validators.required, Validators.pattern('^[0-9]*$')]],
       level: ['', [Validators.required, Validators.pattern('^[0-9]*$')]],
-      permission: [[]],
-      menu: this.formBuilder.array([]),
+      permissions: [[]],
+      subMenu: this.formBuilder.array([]),
     });
     this.menus().push(newMenu);
   }
 
-  submitForm() {
-   
+  addSubMenu(numberOfSubMenus: any, menuIndex: number) {
+    const subMenuArray = this.subMenus(menuIndex);
+    if (!subMenuArray) return;
+
+    for (let i = 0; i < numberOfSubMenus; i++) {
+      const newSubMenu = this.formBuilder.group({
+        menuName: ['', Validators.required],
+        routing: ['', Validators.required],
+        description: [''],
+        orderBy: ['', [Validators.required, Validators.pattern('^[0-9]*$')]],
+        level: ['', [Validators.required, Validators.pattern('^[0-9]*$')]],
+        permissions: [[]],
+      });
+
+      subMenuArray.push(newSubMenu);
+    }
   }
 
-  onCancelPress() {
+  dropdownData() {
+    this.permissionDropdown = {
+      singleSelection: false,
+      idField: 'id',
+      textField: 'permissionName',
+      selectAllText: 'Select All',
+      unSelectAllText: 'UnSelect All',
+      enableCheckAll: true,
+      itemsShowLimit: 5,
+      enableSearchFilter: true,
+      allowSearchFilter: true,
+    };
+  }
+
+  getPermissions() {
+    this.permissionData = this.allpermissions.map((item: any) => ({
+      id: item.id,
+      permissionName: item.permissionName,
+    }));
+  }
+
+  onSubmit() {
+    const formValue = this.menuForm.value;
+    const appId = this.appsData.find(
+      (item: any) => item?.value == formValue.appName
+    )?.id;
+    const payload = {
+      status: formValue.status,
+      appName: formValue.appName,
+      appId: appId,
+      actionBy: this.userId,
+      appMenuLists: formValue.menu.map((menu: any) => ({
+        menuName: menu.menuName,
+        menuURL: menu.routing,
+        description: menu.description,
+        orderBy: Number(menu.orderBy),
+        level: Number(menu.level),
+        permissions: menu.permissions.map((perm: any) => perm.id),
+        subMenu: menu.subMenu.map((sub: any) => ({
+          menuName: sub.menuName,
+          menuURL: sub.routing,
+          description: sub.description,
+          orderBy: Number(sub.orderBy),
+          level: Number(sub.level),
+          permissions: sub.permissions.map((perm: any) => perm.id),
+        })),
+      })),
+    };
+
+    this.menuService.appMenuCreate(payload).subscribe(
+      (response: any) => {
+        this.loadSpinner = false;
+        this.toastr.success('App ' + response.message);
+        this.onCancel();
+      },
+      (error) => {
+        this.toastr.error(error?.error?.message, 'Error');
+        this.loadSpinner = false;
+      }
+    );
+  }
+
+  onCancel() {
     this.router.navigate(['/masters/app-menu-mapping']);
   }
 
@@ -97,8 +184,74 @@ export class AddEditAppMenuMappingComponent implements OnInit {
   validateNo(e: any) {
     const charCode = e.which ? e.which : e.keyCode;
     if (charCode > 31 && (charCode < 48 || charCode > 57)) {
-      return false
+      return false;
     }
     return true;
   }
+
+  getAppMenuById() {
+    this.loadSpinner = true;
+    this.menuService.appMenuDataById(this.menuId).subscribe(
+      (response: any) => {
+        if (response && response.menuList) {
+          this.patchMenuForm(response.menuList);
+        }
+        this.loadSpinner = false;
+      },
+      (error) => {
+        this.loadSpinner = false;
+      }
+    );
+  }
+
+  mapPermissions(permissions: any[]): any[] {
+    if (!permissions || !permissions.length) return [];
+    const allowedPermissions = ['ADD', 'EDIT', 'VIEW'];
+    return permissions
+      .map((perm) => {
+        const lastWord = perm.permissionName.split('_').pop()?.toUpperCase();
+        return allowedPermissions.includes(lastWord || '') ? { id: lastWord, permissionName: lastWord } : null;
+      })
+      .filter(Boolean);
+  }
+  
+  
+  patchMenuForm(menuList: any[]) {
+    if (!menuList.length) return;
+    this.menuForm.patchValue({
+      appName: menuList[0].appName,
+      status: menuList[0].status,
+    });
+    this.menus().clear();
+    menuList.forEach((menuItem) => {
+      const menuGroup = this.formBuilder.group({
+        menuName: [menuItem.menuName, Validators.required],
+        routing: [menuItem.menuURL, Validators.required],
+        description: [menuItem.description || ''],
+        orderBy: [menuItem.orderBy, [Validators.required, Validators.pattern('^[0-9]*$')]],
+        level: [menuItem.level, [Validators.required, Validators.pattern('^[0-9]*$')]],
+        permissions: [this.mapPermissions(menuItem.permissions)],
+        subMenu: this.formBuilder.array([]),
+      });
+  
+      if (menuItem.subMenu && menuItem.subMenu.length) {
+        const subMenuArray = menuGroup.get('subMenu') as FormArray;
+        menuItem.subMenu.forEach((subMenuItem: any) => {
+          const subMenuGroup = this.formBuilder.group({
+            menuName: [subMenuItem.menuName, Validators.required],
+            routing: [subMenuItem.menuURL, Validators.required],
+            description: [subMenuItem.description || ''],
+            orderBy: [subMenuItem.orderBy, [Validators.required, Validators.pattern('^[0-9]*$')]],
+            level: [subMenuItem.level, [Validators.required, Validators.pattern('^[0-9]*$')]],
+            permissions: [this.mapPermissions(subMenuItem.permissions)],
+          });
+          subMenuArray.push(subMenuGroup);
+        });
+      }
+      this.menus().push(menuGroup);
+    });
+  }
+  
+  
+  
 }

@@ -90,6 +90,10 @@ const routes: Routes = [
     path: 'add-app-role-menu-mapping',
     component: AppEditRoleMenuComponent,
   },
+  {
+    path: 'edit-app-role-menu-mapping/:id',
+    component: AddEditAppMenuMappingComponent,
+  },
 ];
 
 @NgModule({
