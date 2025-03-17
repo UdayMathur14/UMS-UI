@@ -118,44 +118,107 @@ export class AddEditAppMenuMappingComponent implements OnInit {
   }
 
   onSubmit() {
-    const formValue = this.menuForm.value;
-    const appId = this.appsData.find(
-      (item: any) => item?.value == formValue.appName
-    )?.id;
-    const payload = {
-      status: formValue.status,
-      appName: formValue.appName,
-      appId: appId,
-      actionBy: this.userId,
-      appMenuLists: formValue.menu.map((menu: any) => ({
-        menuName: menu.menuName,
-        menuURL: menu.routing,
-        description: menu.description,
-        orderBy: Number(menu.orderBy),
-        level: Number(menu.level),
-        permissions: menu.permissions.map((perm: any) => perm.id),
-        subMenu: menu.subMenu.map((sub: any) => ({
-          menuName: sub.menuName,
-          menuURL: sub.routing,
-          description: sub.description,
-          orderBy: Number(sub.orderBy),
-          level: Number(sub.level),
-          permissions: sub.permissions.map((perm: any) => perm.id),
+    if(this.menuId){
+      const formValue = this.menuForm.value;
+      const appId = this.appsData.find(
+        (item: any) => item?.value == formValue.appName
+      )?.id;
+      const payload = {
+        id: this.menuId,
+        status: formValue.status,
+        appName: formValue.appName,
+        appId: appId,
+        actionBy: this.userId,
+        menuURL: formValue.menuURL || null,
+        description: formValue.description || null, 
+        orderBy: Number(formValue.orderBy) || 0,
+        level: Number(formValue.level) || 0,
+        permissions: formValue.permissions?.map((perm: any) => ({
+          id: perm.id,
+          permission: perm.permission,
+          status: perm.status || 'Active',
         })),
-      })),
-    };
-
-    this.menuService.appMenuCreate(payload).subscribe(
-      (response: any) => {
-        this.loadSpinner = false;
-        this.toastr.success('App ' + response.message);
-        this.onCancel();
-      },
-      (error) => {
-        this.toastr.error(error?.error?.message, 'Error');
-        this.loadSpinner = false;
-      }
-    );
+        subMenu: formValue.menu.map((menu: any) => ({
+          id: menu.id || null,
+          menuName: menu.menuName,
+          menuURL: menu.routing,
+          description: menu.description || '',
+          orderBy: Number(menu.orderBy) || 0,
+          level: Number(menu.level) || 0,
+          status: menu.status,
+          permissions: menu.permissions.map((perm: any) => ({
+            id: perm.id,
+            permission: perm.permission,
+            status: perm.status,
+          })),
+          subMenu: menu.subMenu.map((sub: any) => ({
+            id: sub.id || null,
+            menuName: sub.menuName,
+            menuURL: sub.routing,
+            description: sub.description || '',
+            orderBy: Number(sub.orderBy) || 0,
+            level: Number(sub.level) || 0,
+            status: sub.status,
+            permissions: sub.permissions.map((perm: any) => ({
+              id: perm.id,
+              permission: perm.permission,
+              status: perm.status,
+            })),
+          })),
+        })),
+      };
+      this.menuService.appMenuCreate(payload).subscribe(
+        (response: any) => {
+          this.loadSpinner = false;
+          this.toastr.success('App ' + response.message);
+          this.onCancel();
+        },
+        (error) => {
+          this.toastr.error(error?.error?.message, 'Error');
+          this.loadSpinner = false;
+        }
+      );
+    } else {
+      const formValue = this.menuForm.value;
+      const appId = this.appsData.find(
+        (item: any) => item?.value == formValue.appName
+      )?.id;
+      const payload = {
+        status: formValue.status,
+        appName: formValue.appName,
+        appId: appId,
+        actionBy: this.userId,
+        appMenuLists: formValue.menu.map((menu: any) => ({
+          menuName: menu.menuName,
+          menuURL: menu.routing,
+          description: menu.description,
+          orderBy: Number(menu.orderBy),
+          level: Number(menu.level),
+          permissions: menu.permissions.map((perm: any) => perm.id),
+          subMenu: menu.subMenu.map((sub: any) => ({
+            menuName: sub.menuName,
+            menuURL: sub.routing,
+            description: sub.description,
+            orderBy: Number(sub.orderBy),
+            level: Number(sub.level),
+            permissions: sub.permissions.map((perm: any) => perm.id),
+          })),
+        })),
+      };
+  
+      this.menuService.appMenuCreate(payload).subscribe(
+        (response: any) => {
+          this.loadSpinner = false;
+          this.toastr.success('App ' + response.message);
+          this.onCancel();
+        },
+        (error) => {
+          this.toastr.error(error?.error?.message, 'Error');
+          this.loadSpinner = false;
+        }
+      );
+    }
+    
   }
 
   onCancel() {
@@ -205,6 +268,8 @@ export class AddEditAppMenuMappingComponent implements OnInit {
   }
 
   mapPermissions(permissions: any[]): any[] {
+    console.log(permissions);
+    
     if (!permissions || !permissions.length) return [];
     const allowedPermissions = ['ADD', 'EDIT', 'VIEW'];
     return permissions

@@ -32,4 +32,9 @@ export class AppMenuMappingService extends CRUDService<AuthRequest> {
     const url = `${APIConstant.appMenuGetById}/${id}`;
     return this.baseService.get(url);
   }
+
+  updateAppMenu(id: string | null = '', data: any) {
+    const url = `${APIConstant.updateAppMenu}/${id}`;
+    return this.baseService.put(url, data);
+  }
 }
