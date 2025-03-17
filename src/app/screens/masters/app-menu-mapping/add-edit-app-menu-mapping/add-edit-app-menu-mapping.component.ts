@@ -22,9 +22,9 @@ export class AddEditAppMenuMappingComponent implements OnInit {
   permissionData: any[] = [];
   menuId: any;
   allpermissions = [
-    { id: 'ADD', permissionName: 'ADD' },
-    { id: 'EDIT', permissionName: 'EDIT' },
-    { id: 'VIEW', permissionName: 'VIEW' },
+    { id: '', permissionName: 'ADD' },
+    { id: '', permissionName: 'EDIT' },
+    { id: '', permissionName: 'VIEW' },
   ];
 
   constructor(
@@ -99,7 +99,7 @@ export class AddEditAppMenuMappingComponent implements OnInit {
   dropdownData() {
     this.permissionDropdown = {
       singleSelection: false,
-      idField: 'id',
+      idField: 'permissionName',
       textField: 'permissionName',
       selectAllText: 'Select All',
       unSelectAllText: 'UnSelect All',
@@ -194,14 +194,14 @@ export class AddEditAppMenuMappingComponent implements OnInit {
           description: menu.description,
           orderBy: Number(menu.orderBy),
           level: Number(menu.level),
-          permissions: menu.permissions.map((perm: any) => perm.id),
+          permissions: menu.permissions.map((perm: any) => perm.permissionName),
           subMenu: menu.subMenu.map((sub: any) => ({
             menuName: sub.menuName,
             menuURL: sub.routing,
             description: sub.description,
             orderBy: Number(sub.orderBy),
             level: Number(sub.level),
-            permissions: sub.permissions.map((perm: any) => perm.id),
+            permissions: sub.permissions.map((perm: any) => perm.permissionName),
           })),
         })),
       };
@@ -275,7 +275,7 @@ export class AddEditAppMenuMappingComponent implements OnInit {
     return permissions
       .map((perm) => {
         const lastWord = perm.permissionName.split('_').pop()?.toUpperCase();
-        return allowedPermissions.includes(lastWord || '') ? { id: lastWord, permissionName: lastWord } : null;
+        return allowedPermissions.includes(lastWord || '') ? { id: perm?.id, permissionName: lastWord } : null;
       })
       .filter(Boolean);
   }
