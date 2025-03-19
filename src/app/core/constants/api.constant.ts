@@ -28,5 +28,8 @@ export const APIConstant = {
   domainProjectCreate: `${apiPath}/api/v1/domain-Project/create`,
   updateDomainProject: `${apiPath}/api/v1/domain-Project/update`,
   domainProjectById: `${apiPath}/api/v1/domain-Project`,
-  appMenuMapping:`${apiPath}/api/v1/app-menu/search`
+  appMenuMapping:`${apiPath}/api/v1/app-menu/search`,
+  appMenuCreate: `${apiPath}/api/v1/app-menu/create`,
+  appMenuGetById: `${apiPath}/api/v1/app-menu/appMenuId`,
+  updateAppMenu: `${apiPath}/api/v1/app-menu/update`
 };

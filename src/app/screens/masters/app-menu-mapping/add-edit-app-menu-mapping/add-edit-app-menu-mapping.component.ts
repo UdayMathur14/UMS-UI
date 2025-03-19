@@ -1,138 +1,321 @@
-import { Component } from '@angular/core';
+import { Component, OnInit } from '@angular/core';
 import { FormArray, FormBuilder, FormGroup, Validators } from '@angular/forms';
-import { Router } from '@angular/router';
+import { ActivatedRoute, Router } from '@angular/router';
+import { LookupService } from '../../../../core/service/lookup.service';
+import { AppMenuMappingService } from '../../../../core/service/app-menu-mapping.service';
+import { ToastrService } from 'ngx-toastr';
 
 @Component({
   selector: 'app-add-edit-app-menu-mapping',
   templateUrl: './add-edit-app-menu-mapping.component.html',
   styleUrl: './add-edit-app-menu-mapping.component.scss',
 })
-export class AddEditAppMenuMappingComponent {
+export class AddEditAppMenuMappingComponent implements OnInit {
   menuForm: FormGroup;
-  isEditMode = false; // Change this based on edit mode logic
-  appNames = ['App1', 'App2', 'App3']; // Example data for App Name dropdown
-  permissions = ['Add', 'Edit', 'View']; // Permission options
+  permissionDropdown = {};
   statusOptions = ['Active', 'Inactive'];
+  userId: string = '';
+  offset = 0;
+  count: number = Number.MAX_VALUE;
+  appsData: any;
+  loadSpinner: boolean = true;
+  permissionData: any[] = [];
+  menuId: any;
+  allpermissions = [
+    { id: '', permissionName: 'ADD' },
+    { id: '', permissionName: 'EDIT' },
+    { id: '', permissionName: 'VIEW' },
+  ];
 
-  // Separate selected permissions for main menu
-  selectedMainPermissions = [];
-
-  // Map to store selected permissions for each submenu by index
-  submenuPermissionsMap: { [key: number]: any[] } = {};
-
-  dropdownSettings = {
-    singleSelection: false,
-    idField: 'item_id',
-    textField: 'item_text',
-    selectAllText: 'Select All',
-    unSelectAllText: 'UnSelect All',
-    allowSearchFilter: true,
-  };
-
-  constructor(private router: Router, private formBuilder: FormBuilder) {
+  constructor(
+    private router: Router,
+    private formBuilder: FormBuilder,
+    private lookupService: LookupService,
+    private menuService: AppMenuMappingService,
+    private toastr: ToastrService,
+    private route: ActivatedRoute
+  ) {
     this.menuForm = this.formBuilder.group({
+      status: ['', Validators.required],
       appName: ['', Validators.required],
+      menu: this.formBuilder.array([]),
+    });
+  }
+
+  ngOnInit(): void {
+    const data = localStorage.getItem('data');
+    if (data) {
+      const dataObj = JSON.parse(data);
+      this.userId = dataObj.userId;
+    }
+    this.menuId = this.route.snapshot.paramMap.get('id');
+    this.getApps();
+    this.dropdownData();
+    this.getPermissions();
+    if(this.menuId){
+      this.getAppMenuById();
+    }
+  }
+
+  menus(): FormArray {
+    return this.menuForm.get('menu') as FormArray;
+  }
+
+  subMenus(index: number): FormArray {
+    return this.menus().at(index).get('subMenu') as FormArray;
+  }
+
+  addMenu() {
+    const newMenu = this.formBuilder.group({
       menuName: ['', Validators.required],
       routing: ['', Validators.required],
       description: [''],
       orderBy: ['', [Validators.required, Validators.pattern('^[0-9]*$')]],
       level: ['', [Validators.required, Validators.pattern('^[0-9]*$')]],
-      permission: [[]], // Multi-select dropdown for main menu
-      status: ['', Validators.required],
-      submenus: this.formBuilder.array([]), // FormArray for submenus
+      permissions: [[]],
+      subMenu: this.formBuilder.array([]),
     });
+    this.menus().push(newMenu);
   }
 
-  get submenus(): FormArray {
-    return this.menuForm.get('submenus') as FormArray;
-  }
+  addSubMenu(numberOfSubMenus: any, menuIndex: number) {
+    const subMenuArray = this.subMenus(menuIndex);
+    if (!subMenuArray) return;
 
-  addSubmenu() {
-    const submenuForm = this.formBuilder.group({
-      name: ['', Validators.required],
-      routing: ['', Validators.required],
-      description: [''],
-      orderBy: ['', Validators.required],
-      level: ['', Validators.required],
-      permission: [[]], // Independent permission array for each submenu
-      status: ['', Validators.required],
-    });
-
-    this.submenus.push(submenuForm);
-    const newIndex = this.submenus.length - 1;
-    this.submenuPermissionsMap[newIndex] = [];
-    console.log('New Submenu Index:', newIndex);
-    return newIndex;
-  }
-
-  removeSubmenu(index: number) {
-    this.submenus.removeAt(index);
-
-    delete this.submenuPermissionsMap[index];
-
-    // Reindex the permissions map to match the actual indices after removal
-    const newPermissionsMap: { [key: number]: any[] } = {};
-    Object.keys(this.submenuPermissionsMap).forEach((key) => {
-      const keyNum = parseInt(key);
-      if (keyNum > index) {
-        newPermissionsMap[keyNum - 1] = this.submenuPermissionsMap[keyNum];
-      } else if (keyNum < index) {
-        newPermissionsMap[keyNum] = this.submenuPermissionsMap[keyNum];
-      }
-    });
-
-    this.submenuPermissionsMap = newPermissionsMap;
-  }
-
-
-  getSubmenuPermissions(index: number): any[] {
-    return this.submenuPermissionsMap[index] || [];
-  }
-
-
-  onSubmenuPermissionChange(index: number, event: any) {
-    this.submenus.at(index).get('permission')?.setValue(event);
-  }
-
-  onMainPermissionChange(event: any) {
-    this.menuForm.get('permission')?.setValue(event);
-  }
-
-  submitForm() {
-    if (this.menuForm.valid) {
-      
-      const formData = this.menuForm.value;
-
-      formData.submenus.forEach((submenu: any, index: number) => {
-        submenu.permission = this.submenuPermissionsMap[index] || [];
+    for (let i = 0; i < numberOfSubMenus; i++) {
+      const newSubMenu = this.formBuilder.group({
+        menuName: ['', Validators.required],
+        routing: ['', Validators.required],
+        description: [''],
+        orderBy: ['', [Validators.required, Validators.pattern('^[0-9]*$')]],
+        level: ['', [Validators.required, Validators.pattern('^[0-9]*$')]],
+        permissions: [[]],
       });
 
-      console.log('Form submitted:', formData);
-      alert('Form Submitted Successfully!');
-    } else {
-      this.markFormGroupTouched(this.menuForm);
-      alert('Please fill in all required fields correctly.');
+      subMenuArray.push(newSubMenu);
     }
   }
 
-  markFormGroupTouched(formGroup: FormGroup) {
-    Object.keys(formGroup.controls).forEach((key) => {
-      const control = formGroup.get(key);
-      if (control instanceof FormGroup) {
-        this.markFormGroupTouched(control);
-      } else if (control instanceof FormArray) {
-        for (let i = 0; i < control.length; i++) {
-          if (control.at(i) instanceof FormGroup) {
-            this.markFormGroupTouched(control.at(i) as FormGroup);
-          }
-        }
-      } else {
-        control?.markAsTouched();
-      }
-    });
+  dropdownData() {
+    this.permissionDropdown = {
+      singleSelection: false,
+      idField: 'permissionName',
+      textField: 'permissionName',
+      selectAllText: 'Select All',
+      unSelectAllText: 'UnSelect All',
+      enableCheckAll: true,
+      itemsShowLimit: 5,
+      enableSearchFilter: true,
+      allowSearchFilter: true,
+    };
   }
 
-  onCancelPress() {
+  getPermissions() {
+    this.permissionData = this.allpermissions.map((item: any) => ({
+      id: item.id,
+      permissionName: item.permissionName,
+    }));
+  }
+
+  onSubmit() {
+    if(this.menuId){
+      const formValue = this.menuForm.value;
+      console.log(formValue);
+      
+      const appId = this.appsData.find(
+        (item: any) => item?.value == formValue.appName
+      )?.id;
+      const payload = {
+        id: this.menuId,
+        status: formValue.status,
+        appName: formValue.appName,
+        appId: appId,
+        actionBy: this.userId,
+        menuURL: formValue.menuURL || null,
+        description: formValue.description || null, 
+        orderBy: Number(formValue.orderBy) || 0,
+        level: Number(formValue.level) || 0,
+        permissions: formValue.permissions?.map((perm: any) => ({
+          id: perm.id,
+          permission: perm.permissionName,
+          status: perm.status || 'Active',
+        })),
+        subMenu: formValue.menu.map((menu: any) => ({
+          id: menu.id || null,
+          menuName: menu.menuName,
+          menuURL: menu.routing,
+          description: menu.description || '',
+          orderBy: Number(menu.orderBy) || 0,
+          level: Number(menu.level) || 0,
+          status: menu.status,
+          permissions: menu.permissions.map((perm: any) => ({
+            id: perm.id || "",
+            permission: perm.permissionName,
+            status: perm.status,
+          })),
+        })),
+      };
+      this.menuService.appMenuCreate(payload).subscribe(
+        (response: any) => {
+          this.loadSpinner = false;
+          this.toastr.success('App ' + response.message);
+          this.onCancel();
+        },
+        (error) => {
+          this.toastr.error(error?.error?.message, 'Error');
+          this.loadSpinner = false;
+        }
+      );
+    } else {
+      const formValue = this.menuForm.value;
+      const appId = this.appsData.find(
+        (item: any) => item?.value == formValue.appName
+      )?.id;
+      const payload = {
+        status: formValue.status,
+        appName: formValue.appName,
+        appId: appId,
+        actionBy: this.userId,
+        appMenuLists: formValue.menu.map((menu: any) => ({
+          menuName: menu.menuName,
+          menuURL: menu.routing,
+          description: menu.description,
+          orderBy: Number(menu.orderBy),
+          level: Number(menu.level),
+          permissions: menu.permissions.map((perm: any) => perm.permissionName),
+          subMenu: menu.subMenu.map((sub: any) => ({
+            menuName: sub.menuName,
+            menuURL: sub.routing,
+            description: sub.description,
+            orderBy: Number(sub.orderBy),
+            level: Number(sub.level),
+            permissions: sub.permissions.map((perm: any) => perm.permissionName),
+          })),
+        })),
+      };
+  
+      this.menuService.appMenuCreate(payload).subscribe(
+        (response: any) => {
+          this.loadSpinner = false;
+          this.toastr.success('App ' + response.message);
+          this.onCancel();
+        },
+        (error) => {
+          this.toastr.error(error?.error?.message, 'Error');
+          this.loadSpinner = false;
+        }
+      );
+    }
+    
+  }
+
+  onCancel() {
     this.router.navigate(['/masters/app-menu-mapping']);
   }
+
+  getApps() {
+    const data = {
+      status: '',
+      type: 'app',
+      value: '',
+    };
+    this.lookupService
+      .lookupData(this.userId, this.offset, this.count, data)
+      .subscribe(
+        (response: any) => {
+          this.appsData = response?.lookUps;
+          this.loadSpinner = false;
+        },
+        (error) => {
+          this.loadSpinner = false;
+        }
+      );
+  }
+
+  validateNo(e: any) {
+    const charCode = e.which ? e.which : e.keyCode;
+    if (charCode > 31 && (charCode < 48 || charCode > 57)) {
+      return false;
+    }
+    return true;
+  }
+
+  getAppMenuById() {
+    this.loadSpinner = true;
+    this.menuService.appMenuDataById(this.menuId).subscribe(
+      (response: any) => {
+        if (response && response.menuList) {
+          this.patchMenuForm(response.menuList);
+        }
+        this.loadSpinner = false;
+      },
+      (error) => {
+        this.loadSpinner = false;
+      }
+    );
+  }
+
+  mapPermissions(permissions: any[]): any[] {
+    const allowedPermissions = ['ADD', 'EDIT', 'VIEW'];
+    
+    // Map existing permissions from API
+    const existingPermissions = (permissions || [])
+      .map((perm) => {
+        const lastWord = perm.permissionName.split('_').pop()?.toUpperCase();
+        return allowedPermissions.includes(lastWord || '') 
+          ? { id: perm?.id || "", permissionName: lastWord } 
+          : null;
+      })
+      .filter(Boolean);
+  
+    const existingPermissionNames = existingPermissions.map((p: any) => p.permissionName);
+    console.log(existingPermissionNames);
+    
+    const missingPermissions = allowedPermissions
+      .filter(p => !existingPermissionNames.includes(p))
+      .map(p => ({ id: '', permissionName: p }));
+  
+    return [...existingPermissions, ...missingPermissions];
+  }
+  
+  
+  
+  patchMenuForm(menuList: any[]) {
+    if (!menuList.length) return;
+    this.menuForm.patchValue({
+      appName: menuList[0].appName,
+      status: menuList[0].status,
+    });
+    this.menus().clear();
+    menuList.forEach((menuItem) => {
+      const menuGroup = this.formBuilder.group({
+        menuName: [menuItem.menuName, Validators.required],
+        routing: [menuItem.menuURL, Validators.required],
+        description: [menuItem.description || ''],
+        orderBy: [menuItem.orderBy, [Validators.required, Validators.pattern('^[0-9]*$')]],
+        level: [menuItem.level, [Validators.required, Validators.pattern('^[0-9]*$')]],
+        permissions: [this.mapPermissions(menuItem.permissions)],
+        subMenu: this.formBuilder.array([]),
+      });
+  
+      if (menuItem.subMenu && menuItem.subMenu.length) {
+        const subMenuArray = menuGroup.get('subMenu') as FormArray;
+        menuItem.subMenu.forEach((subMenuItem: any) => {
+          const subMenuGroup = this.formBuilder.group({
+            menuName: [subMenuItem.menuName, Validators.required],
+            routing: [subMenuItem.menuURL, Validators.required],
+            description: [subMenuItem.description || ''],
+            orderBy: [subMenuItem.orderBy, [Validators.required, Validators.pattern('^[0-9]*$')]],
+            level: [subMenuItem.level, [Validators.required, Validators.pattern('^[0-9]*$')]],
+            permissions: [this.mapPermissions(subMenuItem.permissions)],
+          });
+          subMenuArray.push(subMenuGroup);
+        });
+      }
+      this.menus().push(menuGroup);
+    });
+  }
+  
+  
+  
 }

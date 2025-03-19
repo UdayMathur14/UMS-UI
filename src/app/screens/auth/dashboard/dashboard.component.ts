@@ -9,6 +9,7 @@ export class DashboardComponent implements OnInit {
 
   apps: any;
   accessToken: string = '';
+  loadSpinner: boolean = false;
 
   ngOnInit(): void {
     const storedData: any = localStorage.getItem('data');
@@ -18,12 +19,13 @@ export class DashboardComponent implements OnInit {
   }
 
   onClickApp(data: any){
-    console.log(data);
-    
+    this.loadSpinner = true;    
     if(data.name.toLowerCase().replace(/\s/g, '') == 'usermanagamentsystem'){
       window.location.href = data.route;
+      this.loadSpinner = false;
     } else {
       window.location.href = `${data.route}?data=${this.accessToken}&appId=${data.id}`;
+      this.loadSpinner = false;
     }
     
   }

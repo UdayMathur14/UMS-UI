@@ -23,4 +23,18 @@ export class AppMenuMappingService extends CRUDService<AuthRequest> {
     const url = `${APIConstant.appMenuMapping}/${userId}?offset=${offset}&count=${count}`;
     return this.baseService.post(url, data);
   }
+
+  appMenuCreate(data: any) {
+    return this.baseService.post(APIConstant.appMenuCreate, data);
+  }
+
+  appMenuDataById(id: string | null = '') {
+    const url = `${APIConstant.appMenuGetById}/${id}`;
+    return this.baseService.get(url);
+  }
+
+  updateAppMenu(id: string | null = '', data: any) {
+    const url = `${APIConstant.updateAppMenu}/${id}`;
+    return this.baseService.put(url, data);
+  }
 }
