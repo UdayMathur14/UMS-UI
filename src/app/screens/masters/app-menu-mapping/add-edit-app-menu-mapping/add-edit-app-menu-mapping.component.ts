@@ -120,6 +120,8 @@ export class AddEditAppMenuMappingComponent implements OnInit {
   onSubmit() {
     if(this.menuId){
       const formValue = this.menuForm.value;
+      console.log(formValue);
+      
       const appId = this.appsData.find(
         (item: any) => item?.value == formValue.appName
       )?.id;
@@ -135,7 +137,7 @@ export class AddEditAppMenuMappingComponent implements OnInit {
         level: Number(formValue.level) || 0,
         permissions: formValue.permissions?.map((perm: any) => ({
           id: perm.id,
-          permission: perm.permission,
+          permission: perm.permissionName,
           status: perm.status || 'Active',
         })),
         subMenu: formValue.menu.map((menu: any) => ({
@@ -147,23 +149,9 @@ export class AddEditAppMenuMappingComponent implements OnInit {
           level: Number(menu.level) || 0,
           status: menu.status,
           permissions: menu.permissions.map((perm: any) => ({
-            id: perm.id,
-            permission: perm.permission,
+            id: perm.id || "",
+            permission: perm.permissionName,
             status: perm.status,
-          })),
-          subMenu: menu.subMenu.map((sub: any) => ({
-            id: sub.id || null,
-            menuName: sub.menuName,
-            menuURL: sub.routing,
-            description: sub.description || '',
-            orderBy: Number(sub.orderBy) || 0,
-            level: Number(sub.level) || 0,
-            status: sub.status,
-            permissions: sub.permissions.map((perm: any) => ({
-              id: perm.id,
-              permission: perm.permission,
-              status: perm.status,
-            })),
           })),
         })),
       };
@@ -268,17 +256,28 @@ export class AddEditAppMenuMappingComponent implements OnInit {
   }
 
   mapPermissions(permissions: any[]): any[] {
-    console.log(permissions);
-    
-    if (!permissions || !permissions.length) return [];
     const allowedPermissions = ['ADD', 'EDIT', 'VIEW'];
-    return permissions
+    
+    // Map existing permissions from API
+    const existingPermissions = (permissions || [])
       .map((perm) => {
         const lastWord = perm.permissionName.split('_').pop()?.toUpperCase();
-        return allowedPermissions.includes(lastWord || '') ? { id: perm?.id, permissionName: lastWord } : null;
+        return allowedPermissions.includes(lastWord || '') 
+          ? { id: perm?.id || "", permissionName: lastWord } 
+          : null;
       })
       .filter(Boolean);
+  
+    const existingPermissionNames = existingPermissions.map((p: any) => p.permissionName);
+    console.log(existingPermissionNames);
+    
+    const missingPermissions = allowedPermissions
+      .filter(p => !existingPermissionNames.includes(p))
+      .map(p => ({ id: '', permissionName: p }));
+  
+    return [...existingPermissions, ...missingPermissions];
   }
+  
   
   
   patchMenuForm(menuList: any[]) {
