@@ -112,8 +112,8 @@ export class AddEditAppMenuMappingComponent implements OnInit {
 
   getPermissions() {
     this.permissionData = this.allpermissions.map((item: any) => ({
-      id: item.id,
-      permissionName: item.permissionName,
+      id: item.id || "",
+      permissionName: item.permissionName || "",
     }));
   }
 
@@ -258,7 +258,6 @@ export class AddEditAppMenuMappingComponent implements OnInit {
   mapPermissions(permissions: any[]): any[] {
     const allowedPermissions = ['ADD', 'EDIT', 'VIEW'];
     
-    // Map existing permissions from API
     const existingPermissions = (permissions || [])
       .map((perm) => {
         const lastWord = perm.permissionName.split('_').pop()?.toUpperCase();
@@ -267,15 +266,7 @@ export class AddEditAppMenuMappingComponent implements OnInit {
           : null;
       })
       .filter(Boolean);
-  
-    const existingPermissionNames = existingPermissions.map((p: any) => p.permissionName);
-    console.log(existingPermissionNames);
-    
-    const missingPermissions = allowedPermissions
-      .filter(p => !existingPermissionNames.includes(p))
-      .map(p => ({ id: '', permissionName: p }));
-  
-    return [...existingPermissions, ...missingPermissions];
+    return [...existingPermissions];
   }
   
   
