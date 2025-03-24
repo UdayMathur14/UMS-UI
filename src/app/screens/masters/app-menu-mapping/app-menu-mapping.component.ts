@@ -10,10 +10,8 @@ import { AppMenuMappingService } from '../../../core/service/app-menu-mapping.se
 })
 export class AppMenuMappingComponent {
   loadSpinner: boolean = true;
-
-  totalMenuUsers: number = 500; // Total number of users (example value)
-  currentPage: number = 1; // Current active page
-  count: number = 10; // Default items per page
+  currentPage: number = 1;
+  count: number = 5;
   appliedFilters: any;
   userId: string = '';
   appMenuMapping: any;
@@ -31,7 +29,6 @@ export class AppMenuMappingComponent {
       const dataObj = JSON.parse(data);
       this.userId = dataObj.userId;
     }
-    this.fetchUsers();
     this.getAppMenuMapping();
   }
 
@@ -62,33 +59,24 @@ export class AppMenuMappingComponent {
         }
       );
   }
-
   getData(e: any) {
     this.appliedFilters = e;
     this.currentPage = 1;
     this.getAppMenuMapping(0, this.count, this.appliedFilters);
   }
 
-  // Function to handle page change
-  onPageChange(event: number): void {
-    this.currentPage = event;
-    this.fetchUsers();
+  onPageChange(page: number) {
+    this.currentPage = page;
+    const offset = (this.currentPage - 1) * this.count;
+    this.getAppMenuMapping(offset, this.count, this.appliedFilters);
   }
 
-  // Function to handle items per page change
-  onPageSizeChange(newPageSize: number): void {
-    this.count = newPageSize;
-    this.currentPage = 1; // Reset to first page
-    this.fetchUsers();
+  onPageSizeChange(data: any) {
+    this.count = data;
+    this.currentPage = 1;
+    this.getAppMenuMapping(0, this.count, this.appliedFilters);
   }
 
-  // Fetch users based on pagination parameters (replace with actual API call)
-  fetchUsers(): void {
-    console.log(
-      `Fetching users - Page: ${this.currentPage}, Items per page: ${this.count}`
-    );
-    // Add API call logic here if needed
-  }
 
   onCreate() {
     this.router.navigate(['/masters/add-app-menu-mapping']);
