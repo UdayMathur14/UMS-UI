@@ -84,6 +84,7 @@ export class AddEditAppMenuMappingComponent implements OnInit {
 
     for (let i = 0; i < numberOfSubMenus; i++) {
       const newSubMenu = this.formBuilder.group({
+        id: [''],
         menuName: ['', Validators.required],
         routing: ['', Validators.required],
         description: [''],
@@ -118,29 +119,25 @@ export class AddEditAppMenuMappingComponent implements OnInit {
   }
 
   onSubmit() {
-    if(this.menuId){
+    if (this.menuId) {
       const formValue = this.menuForm.value;
       console.log(formValue);
       
       const appId = this.appsData.find(
         (item: any) => item?.value == formValue.appName
       )?.id;
+    
       const payload = {
-        id: this.menuId,
         status: formValue.status,
         appName: formValue.appName,
         appId: appId,
         actionBy: this.userId,
-        menuURL: formValue.menuURL || null,
-        description: formValue.description || null, 
-        orderBy: Number(formValue.orderBy) || 0,
-        level: Number(formValue.level) || 0,
-        permissions: formValue.permissions?.map((perm: any) => ({
-          id: perm.id,
-          permission: perm.permissionName,
-          status: perm.status || 'Active',
-        })),
-        subMenu: formValue.menu.map((menu: any) => ({
+        menuURL: formValue?.menu[0]?.routing || null,
+        description: formValue.menu[0]?.description || null,
+        orderBy: Number(formValue.menu[0]?.orderBy) || 0,
+        level: Number(formValue.menu[0]?.level) || 0,
+        permissions: this.mapPermissions(formValue.menu[0]?.permissions || []), // Now it works!
+        subMenu: formValue.menu[0]?.subMenu.map((menu: any) => ({
           id: menu.id || null,
           menuName: menu.menuName,
           menuURL: menu.routing,
@@ -148,13 +145,12 @@ export class AddEditAppMenuMappingComponent implements OnInit {
           orderBy: Number(menu.orderBy) || 0,
           level: Number(menu.level) || 0,
           status: menu.status,
-          permissions: menu.permissions.map((perm: any) => ({
-            id: perm.id || "",
-            permission: perm.permissionName,
-            status: perm.status,
-          })),
+          permissions: this.mapPermissions(menu.permissions || []), // Ensure subMenu permissions are handled too
         })),
       };
+      
+      
+    
       this.menuService.appMenuCreate(payload).subscribe(
         (response: any) => {
           this.loadSpinner = false;
@@ -166,7 +162,8 @@ export class AddEditAppMenuMappingComponent implements OnInit {
           this.loadSpinner = false;
         }
       );
-    } else {
+    }
+     else {
       const formValue = this.menuForm.value;
       const appId = this.appsData.find(
         (item: any) => item?.value == formValue.appName
@@ -254,9 +251,7 @@ export class AddEditAppMenuMappingComponent implements OnInit {
       }
     );
   }
-
   mapPermissions(permissions: any[]): any[] {
-    console.log(permissions);
     
     const allowedPermissions = ['ADD', 'EDIT', 'VIEW'];
     
@@ -270,9 +265,9 @@ export class AddEditAppMenuMappingComponent implements OnInit {
       
       .filter(Boolean);
     return [...existingPermissions];
-
-    
   }
+  
+  
   
   patchMenuForm(menuList: any[]) {
     if (!menuList.length) return;
@@ -300,6 +295,7 @@ export class AddEditAppMenuMappingComponent implements OnInit {
   
         menuItem.subMenu.forEach((subMenuItem: any, subIndex: any) => {
           const subMenuGroup = this.formBuilder.group({
+            id: [subMenuItem.id],
             menuName: [subMenuItem.menuName, Validators.required],
             routing: [subMenuItem.menuURL, Validators.required],
             description: [subMenuItem.description || ''],
