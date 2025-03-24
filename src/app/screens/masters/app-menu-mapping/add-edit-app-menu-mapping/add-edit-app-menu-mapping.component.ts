@@ -203,7 +203,7 @@ export class AddEditAppMenuMappingComponent implements OnInit {
         (item: any) => item?.value == formValue.appName
       )?.id;
       const payload = {
-        status: formValue.status,
+        status: 'Active',
         appName: formValue.appName,
         appId: appId,
         actionBy: this.userId,

@@ -11,12 +11,13 @@
     <div class="col-3">
       <div class="custom-form-input">
         <label>App Name<span class="text-danger">*</span></label>
-        <ng-select class="input-field" formControlName="appName"  placeholder="Select App Name">
+        <ng-select class="input-field" formControlName="appName"  placeholder="Select App Name"
+        [readonly]="menuId">
           <ng-option *ngFor="let app of appsData" [value]="app.value">{{ app.value }}</ng-option>
         </ng-select>
       </div>
     </div>
-    <div class="col-3">
+    <div class="col-3" *ngIf="menuId">
       <div class="custom-form-input">
         <label>Status<span class="text-danger">*</span></label>
         <ng-select class="input-field" formControlName="status"  placeholder="Select Status">
