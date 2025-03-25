@@ -169,7 +169,7 @@ export class AddEditAppMenuMappingComponent implements OnInit {
         level: Number(formValue.menu[0]?.level) || 0,
         permissions: mapPermissions(
           formValue.menu[0]?.permissions || [],
-          this.menuById.permissions || []
+          this.menuById[0].permissions || []
         ),
         subMenu: formValue.menu[0]?.subMenu.map((submenu: any) => {
           const existingSubmenu = this.menuById[0].subMenu?.find(
