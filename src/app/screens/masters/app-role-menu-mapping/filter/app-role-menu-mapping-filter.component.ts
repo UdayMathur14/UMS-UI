@@ -1,11 +1,11 @@
 import { Component, EventEmitter, Input, Output } from '@angular/core';
 
 @Component({
-  selector: 'app-filter',
-  templateUrl: './filter.component.html',
-  styleUrl: './filter.component.scss',
+  selector: 'app-role-menu-mapping-filter',
+  templateUrl: './app-role-menu-mapping-filter.component.html',
+  styleUrl: './app-role-menu-mapping-filter.component.scss',
 })
-export class FilterComponent {
+export class AppRoleMenuMappingFilterComponent {
   @Input() filters: any;
   appName: any;
   menuName: any;

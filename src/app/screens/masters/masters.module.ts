@@ -32,9 +32,9 @@ import { NgMultiSelectDropDownModule } from 'ng-multiselect-dropdown';
 import { AppRoleMenuMappingComponent } from './app-role-menu-mapping/app-role-menu-mapping.component';
 import { FiltersComponent } from './app-menu-mapping/filters/filters.component';
 import { AppEditRoleMenuComponent } from './app-role-menu-mapping/app-edit-role-menu/app-edit-role-menu.component';
-import { FilterComponent } from './app-role-menu-mapping/filter/filter.component';
 import { GridTableComponent } from './app-menu-mapping/grid-table/grid-table.component';
 import { RoleAppMenuMappingGridTableComponent } from './app-role-menu-mapping/grid-table/role-app-menu-mapping-grid-table.component';
+import { AppRoleMenuMappingFilterComponent } from './app-role-menu-mapping/filter/app-role-menu-mapping-filter.component';
 @NgModule({
   declarations: [
     UserSignupStatusComponent,
@@ -63,7 +63,7 @@ import { RoleAppMenuMappingGridTableComponent } from './app-role-menu-mapping/gr
     AppRoleMenuMappingComponent,
     FiltersComponent,
     AppEditRoleMenuComponent,
-    FilterComponent,
+    AppRoleMenuMappingFilterComponent,
     RoleAppMenuMappingGridTableComponent,
     GridTableComponent
   ],
