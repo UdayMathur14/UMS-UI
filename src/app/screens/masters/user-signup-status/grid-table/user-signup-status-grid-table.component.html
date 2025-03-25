@@ -27,9 +27,9 @@
             {{users?.status}}
           </span>
         <td style="cursor: pointer">
-          <button class="icon-button" [disabled]="users?.status == 'New'" >
-            <img class="ms-3" src="../../../../assets/images/icons/editPencil.svg" alt=""
-              [routerLink]="['/masters/edit-user-signup-status', users.id]">
+          <button class="icon-button" [disabled]="users?.status == 'New'" 
+          [routerLink]="['/masters/edit-user-signup-status', users.id]">
+            <img class="ms-3" src="../../../../assets/images/icons/editPencil.svg" alt="">
           </button>
         </td>
       </tr>

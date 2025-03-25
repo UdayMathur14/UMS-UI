@@ -20,6 +20,7 @@ export class AddEditAppMenuMappingComponent implements OnInit {
   appsData: any;
   loadSpinner: boolean = true;
   permissionData: any[] = [];
+  menuById: any;
   menuId: any;
   allpermissions = [
     { id: '', permissionName: 'ADD' },
@@ -84,6 +85,7 @@ export class AddEditAppMenuMappingComponent implements OnInit {
 
     for (let i = 0; i < numberOfSubMenus; i++) {
       const newSubMenu = this.formBuilder.group({
+        id: [''],
         menuName: ['', Validators.required],
         routing: ['', Validators.required],
         description: [''],
@@ -112,50 +114,77 @@ export class AddEditAppMenuMappingComponent implements OnInit {
 
   getPermissions() {
     this.permissionData = this.allpermissions.map((item: any) => ({
-      id: item.id,
-      permissionName: item.permissionName,
+      id: item.id || "",
+      permissionName: item.permissionName || "",
     }));
   }
 
   onSubmit() {
-    if(this.menuId){
+    if (this.menuId) {
       const formValue = this.menuForm.value;
-      console.log(formValue);
-      
       const appId = this.appsData.find(
         (item: any) => item?.value == formValue.appName
       )?.id;
+    
+      const mapPermissions = (formPermissions: any[], getByIdPermissions: any[]) => {
+        const permissionTypes = ['ADD', 'EDIT', 'VIEW'];
+      
+        return permissionTypes
+          .map((permType) => {
+            const formPerm = formPermissions.find((p: any) => p.permissionName === permType);
+            const getByIdPerm = getByIdPermissions.find((p: any) =>
+              p.permissionName.endsWith(`_${permType}`)
+            );
+            if (formPerm && getByIdPerm) {
+              return { id: getByIdPerm.id, permissionName: permType, status: 'Active' };
+            } 
+            if (formPerm && !getByIdPerm) {
+              return { id: '', permissionName: permType, status: 'Active' };
+            } 
+            if (!formPerm && getByIdPerm) {
+              return { id: getByIdPerm.id, permissionName: permType, status: 'Inactive' };
+            }
+      
+            return null;
+          })
+          .filter((perm) => perm !== null);
+      };
+      
       const payload = {
-        id: this.menuId,
         status: formValue.status,
         appName: formValue.appName,
         appId: appId,
         actionBy: this.userId,
-        menuURL: formValue.menuURL || null,
-        description: formValue.description || null, 
-        orderBy: Number(formValue.orderBy) || 0,
-        level: Number(formValue.level) || 0,
-        permissions: formValue.permissions?.map((perm: any) => ({
-          id: perm.id,
-          permission: perm.permissionName,
-          status: perm.status || 'Active',
-        })),
-        subMenu: formValue.menu.map((menu: any) => ({
-          id: menu.id || null,
-          menuName: menu.menuName,
-          menuURL: menu.routing,
-          description: menu.description || '',
-          orderBy: Number(menu.orderBy) || 0,
-          level: Number(menu.level) || 0,
-          status: menu.status,
-          permissions: menu.permissions.map((perm: any) => ({
-            id: perm.id || "",
-            permission: perm.permissionName,
-            status: perm.status,
-          })),
-        })),
+        menuURL: formValue?.menu[0]?.routing || null,
+        description: formValue.menu[0]?.description || null,
+        orderBy: Number(formValue.menu[0]?.orderBy) || 0,
+        level: Number(formValue.menu[0]?.level) || 0,
+        permissions: mapPermissions(
+          formValue.menu[0]?.permissions || [],
+          this.menuById.permissions || []
+        ),
+        subMenu: formValue.menu[0]?.subMenu.map((submenu: any) => {
+          const existingSubmenu = this.menuById[0].subMenu?.find(
+            (item: any) => item.id === submenu.id
+            
+          );
+          return {
+            id: submenu.id || null,
+            menuName: submenu.menuName,
+            menuURL: submenu.routing,
+            description: submenu.description || '',
+            orderBy: Number(submenu.orderBy) || 0,
+            level: Number(submenu.level) || 0,
+            status: submenu.status,
+            permissions: mapPermissions(
+              submenu.permissions || [],
+              existingSubmenu?.permissions || []
+            ),
+          };
+        }),
       };
-      this.menuService.appMenuCreate(payload).subscribe(
+    
+      this.menuService.updateAppMenu(this.menuId, payload).subscribe(
         (response: any) => {
           this.loadSpinner = false;
           this.toastr.success('App ' + response.message);
@@ -166,13 +195,15 @@ export class AddEditAppMenuMappingComponent implements OnInit {
           this.loadSpinner = false;
         }
       );
-    } else {
+    }
+    
+     else {
       const formValue = this.menuForm.value;
       const appId = this.appsData.find(
         (item: any) => item?.value == formValue.appName
       )?.id;
       const payload = {
-        status: formValue.status,
+        status: 'Active',
         appName: formValue.appName,
         appId: appId,
         actionBy: this.userId,
@@ -245,6 +276,7 @@ export class AddEditAppMenuMappingComponent implements OnInit {
     this.menuService.appMenuDataById(this.menuId).subscribe(
       (response: any) => {
         if (response && response.menuList) {
+          this.menuById = response.menuList
           this.patchMenuForm(response.menuList);
         }
         this.loadSpinner = false;
@@ -254,28 +286,21 @@ export class AddEditAppMenuMappingComponent implements OnInit {
       }
     );
   }
-
+  
   mapPermissions(permissions: any[]): any[] {
+    
     const allowedPermissions = ['ADD', 'EDIT', 'VIEW'];
     
-    // Map existing permissions from API
     const existingPermissions = (permissions || [])
       .map((perm) => {
         const lastWord = perm.permissionName.split('_').pop()?.toUpperCase();
         return allowedPermissions.includes(lastWord || '') 
-          ? { id: perm?.id || "", permissionName: lastWord } 
+          ? { id: perm?.id || "", permissionName: lastWord, status: perm?.status } 
           : null;
       })
+      
       .filter(Boolean);
-  
-    const existingPermissionNames = existingPermissions.map((p: any) => p.permissionName);
-    console.log(existingPermissionNames);
-    
-    const missingPermissions = allowedPermissions
-      .filter(p => !existingPermissionNames.includes(p))
-      .map(p => ({ id: '', permissionName: p }));
-  
-    return [...existingPermissions, ...missingPermissions];
+    return [...existingPermissions];
   }
   
   
@@ -286,8 +311,10 @@ export class AddEditAppMenuMappingComponent implements OnInit {
       appName: menuList[0].appName,
       status: menuList[0].status,
     });
+  
     this.menus().clear();
-    menuList.forEach((menuItem) => {
+  
+    menuList.forEach((menuItem, index) => {
       const menuGroup = this.formBuilder.group({
         menuName: [menuItem.menuName, Validators.required],
         routing: [menuItem.menuURL, Validators.required],
@@ -300,8 +327,10 @@ export class AddEditAppMenuMappingComponent implements OnInit {
   
       if (menuItem.subMenu && menuItem.subMenu.length) {
         const subMenuArray = menuGroup.get('subMenu') as FormArray;
-        menuItem.subMenu.forEach((subMenuItem: any) => {
+  
+        menuItem.subMenu.forEach((subMenuItem: any, subIndex: any) => {
           const subMenuGroup = this.formBuilder.group({
+            id: [subMenuItem.id],
             menuName: [subMenuItem.menuName, Validators.required],
             routing: [subMenuItem.menuURL, Validators.required],
             description: [subMenuItem.description || ''],
@@ -309,13 +338,12 @@ export class AddEditAppMenuMappingComponent implements OnInit {
             level: [subMenuItem.level, [Validators.required, Validators.pattern('^[0-9]*$')]],
             permissions: [this.mapPermissions(subMenuItem.permissions)],
           });
+  
           subMenuArray.push(subMenuGroup);
         });
       }
+  
       this.menus().push(menuGroup);
     });
   }
-  
-  
-  
 }

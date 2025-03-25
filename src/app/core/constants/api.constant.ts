@@ -31,5 +31,10 @@ export const APIConstant = {
   appMenuMapping:`${apiPath}/api/v1/app-menu/search`,
   appMenuCreate: `${apiPath}/api/v1/app-menu/create`,
   appMenuGetById: `${apiPath}/api/v1/app-menu/appMenuId`,
-  updateAppMenu: `${apiPath}/api/v1/app-menu/update`
+  updateAppMenu: `${apiPath}/api/v1/app-menu/update`,
+
+  roleAppMenuMapping:`${apiPath}/api/v1/role-app-menu/search`,
+  roleAppMenuCreate: `${apiPath}/api/v1/role-app-menu/create`,
+  roleAppMenuGetById: `${apiPath}/api/v1/role-app-menu`,
+  updateroleAppMenu: `${apiPath}/api/v1/role-app-menu/update`
 };
