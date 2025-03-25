@@ -6,17 +6,17 @@
 </div>
 
 <div class="filter-section">
-    <app-filter></app-filter>
+    <app-filter [filters]="filters" (getData)="getData($event)"></app-filter>
 </div>
 
 
 <div class="content-section">
     <div class="grid-table">
         <div class="table-container">
-            <app-gridtables></app-gridtables>
+            <app-role-app-menu-mapping-grid-table [roleAppMenuMapping]="roleAppMenuMapping"></app-role-app-menu-mapping-grid-table>
         </div>
         <div class="d-flex justify-content-center mt-3">
-            <ngb-pagination [collectionSize]="totalMenuUsers" [(page)]="currentPage" [pageSize]="count"
+            <ngb-pagination [collectionSize]="totalPages" [(page)]="currentPage" [pageSize]="count"
                 (pageChange)="onPageChange($event)" [boundaryLinks]="true" [maxSize]="5"
                 [rotate]="true"></ngb-pagination>
             <p class="mt-2 ms-3"> Items per page:</p>
@@ -30,3 +30,6 @@
         </div>
     </div>
 </div>
+<div class="spinner" *ngIf="loadSpinner">
+    Loading...
+  </div>

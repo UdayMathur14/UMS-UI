@@ -3,16 +3,16 @@
         <div class="col-lg-3">
             <div class="custom-form-input">
                 <label for="">App Name</label>
-                <ng-select class="input-field" placeholder="Select App Name">
-                    <ng-option></ng-option>
+                <ng-select class="input-field" placeholder="Select App Name" [(ngModel)]="appName">
+                    <ng-option *ngFor="let data of filters?.AppName" [value]="data"> {{data}} </ng-option>
                 </ng-select>
             </div>
         </div>
         <div class="col-lg-3">
             <div class="custom-form-input">
                 <label>Menu Name</label>
-                <ng-select class="input-field" placeholder="Select Menu Name">
-                    <ng-option></ng-option>
+                <ng-select class="input-field" placeholder="Select Menu Name" [(ngModel)]="menuName">
+                    <ng-option *ngFor="let data of filters?.MenuName" [value]="data"> {{data}} </ng-option>
                 </ng-select>
             </div>
         </div>
@@ -20,8 +20,8 @@
         <div class="col-lg-3">
             <div class="custom-form-input">
                 <label>Role Name</label>
-                <ng-select class="input-field" placeholder="Select Order By">
-                    <ng-option></ng-option>
+                <ng-select class="input-field" placeholder="Select Role Name" [(ngModel)]="roleName">
+                    <ng-option *ngFor="let data of filters?.RoleName" [value]="data"> {{data}} </ng-option>
                 </ng-select>
             </div>
         </div>
@@ -29,8 +29,8 @@
         <div class="col-lg-3">
             <div class="custom-form-input">
                 <label>Status</label>
-                <ng-select class="input-field" placeholder="Select Status">
-                    <ng-option></ng-option>
+                <ng-select class="input-field" placeholder="Select Status" [(ngModel)]="status">
+                    <ng-option *ngFor="let data of filters?.Status" [value]="data"> {{data}} </ng-option>
                 </ng-select>
             </div>
         </div>
@@ -38,8 +38,8 @@
         <div class="col-lg-3">
             <div class="custom-form-input">
                 <label for="" class="d-block">&nbsp;</label>
-                <button class="custom-button-filters">Search</button>
-                <button class="custom-button-filters ms-2">Clear</button>
+                <button class="custom-button-filters" (click)="onSearch()">Search</button>
+                <button class="custom-button-filters ms-2" (click)="onClear()">Clear</button>
             </div>
         </div>
     </div>

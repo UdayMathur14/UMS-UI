@@ -11,7 +11,7 @@ import { AppMenuMappingService } from '../../../core/service/app-menu-mapping.se
 export class AppMenuMappingComponent {
   loadSpinner: boolean = true;
   currentPage: number = 1;
-  count: number = 5;
+  count: number = 10;
   appliedFilters: any;
   userId: string = '';
   appMenuMapping: any;
