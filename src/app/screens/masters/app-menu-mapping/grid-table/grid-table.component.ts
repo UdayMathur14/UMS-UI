@@ -12,6 +12,6 @@ export class GridTableComponent {
   constructor(private router: Router){}
 
   onEdit(id: string = ''){
-    this.router.navigate(['masters/edit-app-role-menu-mapping', id])
+    this.router.navigate(['masters/edit-app-menu-mapping', id])
   }
 }

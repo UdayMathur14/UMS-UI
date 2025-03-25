@@ -12,7 +12,7 @@
       <div class="custom-form-input">
         <label>App Name<span class="text-danger">*</span></label>
         <ng-select class="input-field" formControlName="appName"  placeholder="Select App Name"
-        [readonly]="menuId">
+        [readonly]="menuId" (change)="onAppChange($event)">
           <ng-option *ngFor="let app of appsData" [value]="app.value">{{ app.value }}</ng-option>
         </ng-select>
       </div>
@@ -142,6 +142,14 @@
                     formControlName = "permissions">
                   </ng-multiselect-dropdown>
                   </div>
+              </div>
+              <div class="col-3" *ngIf="menuId">
+                <div class="custom-form-input">
+                  <label>Status</label>
+                  <ng-select class="input-field" formControlName="status"  placeholder="Select Status">
+                    <ng-option *ngFor="let status of statusOptions" [value]="status">{{ status }}</ng-option>
+                  </ng-select>
+                </div>
               </div>
             </div>
           </div>  

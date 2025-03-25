@@ -91,6 +91,7 @@ export class AddEditAppMenuMappingComponent implements OnInit {
         description: [''],
         orderBy: ['', [Validators.required, Validators.pattern('^[0-9]*$')]],
         level: ['', [Validators.required, Validators.pattern('^[0-9]*$')]],
+        status:[''],
         permissions: [[]],
       });
 
@@ -119,8 +120,15 @@ export class AddEditAppMenuMappingComponent implements OnInit {
     }));
   }
 
+  onAppChange(data: any){
+    if(data && !this.menuId){
+      this.addMenu()
+    }
+  }
+
   onSubmit() {
     if (this.menuId) {
+      this.loadSpinner = true;
       const formValue = this.menuForm.value;
       const appId = this.appsData.find(
         (item: any) => item?.value == formValue.appName
@@ -136,13 +144,13 @@ export class AddEditAppMenuMappingComponent implements OnInit {
               p.permissionName.endsWith(`_${permType}`)
             );
             if (formPerm && getByIdPerm) {
-              return { id: getByIdPerm.id, permissionName: permType, status: 'Active' };
+              return { id: getByIdPerm.id, permission: permType, status: 'Active' };
             } 
             if (formPerm && !getByIdPerm) {
-              return { id: '', permissionName: permType, status: 'Active' };
+              return { id: '', permission: permType, status: 'Active' };
             } 
             if (!formPerm && getByIdPerm) {
-              return { id: getByIdPerm.id, permissionName: permType, status: 'Inactive' };
+              return { id: getByIdPerm.id, permission: permType, status: 'Inactive' };
             }
       
             return null;
@@ -187,7 +195,7 @@ export class AddEditAppMenuMappingComponent implements OnInit {
       this.menuService.updateAppMenu(this.menuId, payload).subscribe(
         (response: any) => {
           this.loadSpinner = false;
-          this.toastr.success('App ' + response.message);
+          this.toastr.success('App Menu Mapping ' + response.message);
           this.onCancel();
         },
         (error) => {
@@ -221,6 +229,7 @@ export class AddEditAppMenuMappingComponent implements OnInit {
             orderBy: Number(sub.orderBy),
             level: Number(sub.level),
             permissions: sub.permissions.map((perm: any) => perm.permissionName),
+            status: 'Active',
           })),
         })),
       };
@@ -228,7 +237,7 @@ export class AddEditAppMenuMappingComponent implements OnInit {
       this.menuService.appMenuCreate(payload).subscribe(
         (response: any) => {
           this.loadSpinner = false;
-          this.toastr.success('App ' + response.message);
+          this.toastr.success('App Menu Mapping ' + response.message);
           this.onCancel();
         },
         (error) => {
@@ -334,6 +343,7 @@ export class AddEditAppMenuMappingComponent implements OnInit {
             menuName: [subMenuItem.menuName, Validators.required],
             routing: [subMenuItem.menuURL, Validators.required],
             description: [subMenuItem.description || ''],
+            status: [subMenuItem.status],
             orderBy: [subMenuItem.orderBy, [Validators.required, Validators.pattern('^[0-9]*$')]],
             level: [subMenuItem.level, [Validators.required, Validators.pattern('^[0-9]*$')]],
             permissions: [this.mapPermissions(subMenuItem.permissions)],

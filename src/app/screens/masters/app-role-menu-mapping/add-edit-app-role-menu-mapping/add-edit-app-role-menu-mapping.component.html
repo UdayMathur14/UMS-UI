@@ -1,0 +1,162 @@
+<div class="page-title">
+    <h1>Create App Role Menu Mapping</h1>
+    <div class="action-buttons">
+      <button class="custom-button-regulr">Save</button>
+      <!-- <button class="custom-button-regulr">Add Menu</button> -->
+      <button class="custom-button-secondary">Cancel</button>
+    </div>
+  </div>
+  <form>
+    <div class="row mt-3">
+      <div class="col-3">
+        <div class="custom-form-input">
+          <label>App Name<span class="text-danger">*</span></label>
+          <ng-select class="input-field" formControlName="appName"  placeholder="Select App Name">
+            <ng-option *ngFor="let app of appsData" [value]="app.value">{{ app.value }}</ng-option>
+          </ng-select>
+        </div>
+      </div>
+      <div class="col-3">
+        <div class="custom-form-input">
+          <label>Role Name<span class="text-danger">*</span></label>
+          <ng-select class="input-field" formControlName="status"  placeholder="Select Role">
+            <ng-option *ngFor="let role of roleData" [value]="role?.roleName">{{ role?.roleName }}</ng-option>
+          </ng-select>
+        </div>
+      </div>
+      <div class="col-3">
+        <div class="custom-form-input">
+          <label>Status<span class="text-danger">*</span></label>
+          <ng-select class="input-field" formControlName="status"  placeholder="Select Status">
+            <ng-option *ngFor="let status of statusOptions" [value]="status">{{ status }}</ng-option>
+          </ng-select>
+        </div>
+      </div>
+    </div>
+  
+    <!-- <div class="row mt-4" formArrayName="menu">
+      <div *ngFor="let menu of menus().controls; let i = index" [formGroupName]="i" class="menu-card p-3 border rounded">
+        <div class="row align-items-center">
+          <div class="col-6">
+            <h5 class="fw-bold text-primary">Menu {{ i + 1 }}</h5>
+          </div>
+          <div class="col-6 text-end">
+            <button type="button" class="custom-button-regulr" [ngbPopover]="popContent" [autoClose]="'outside'"
+              triggers="manual" #p="ngbPopover" (click)="p.open()">
+              Add Sub Menu
+            </button>
+            <ng-template #popContent>
+              <div class="custom-form-input">
+                <input type="text" placeholder="Number of sub menus" #subMenu>
+              </div>
+              <button class="custom-button-filters" (click)="p.close(); addSubMenu(subMenu.value, i)">
+                Add
+              </button>
+            </ng-template>
+          </div>
+        </div>
+    
+        <div class="row mt-3">
+          <div class="col-lg-3">
+            <div class="custom-form-input">
+              <label>Menu Name<span class="text-danger">*</span></label>
+              <input type="text" class="input-field" formControlName="menuName">
+            </div>
+          </div>
+          <div class="col-lg-3">
+            <div class="custom-form-input">
+              <label>Routing<span class="text-danger">*</span></label>
+              <input type="text" class="input-field" formControlName="routing">
+            </div>
+          </div>
+          <div class="col-lg-3">
+            <div class="custom-form-input">
+              <label>Description</label>
+              <input type="text" class="input-field" formControlName="description">
+            </div>
+          </div>
+          <div class="col-lg-3">
+            <div class="custom-form-input">
+              <label>Order By<span class="text-danger">*</span></label>
+              <input type="text" (keypress)="validateNo($event)" formControlName="orderBy">
+            </div>
+          </div>
+          <div class="col-lg-3">
+            <div class="custom-form-input">
+              <label>Level<span class="text-danger">*</span></label>
+              <input type="text" (keypress)="validateNo($event)" formControlName="level">
+            </div>
+          </div>
+          <div class="col-lg-3">
+            <div class="custom-form-input">
+              <label>Permissions</label>
+              <ng-multiselect-dropdown 
+              [settings]="permissionDropdown" 
+              [data]="permissionData"
+              formControlName = "permissions">
+            </ng-multiselect-dropdown>
+            </div>
+          </div>
+        </div>
+    
+        <div  *ngIf="subMenus(i).length > 0" formArrayName="subMenu" class="mt-4 submenu-section p-3 bg-light rounded">
+          <h6 class="fw-bold text-secondary">Sub Menus</h6>
+          <div *ngIf="subMenus(i) as subMenuArray">
+            <div *ngFor="let _subSubMenu of subMenuArray.controls; let j = index" [formGroupName]="j"
+              class="submenu-item mt-3 p-2 border rounded">
+              <div class="row">
+                <div class="mb-3 fw-bold text-success">
+                  Sub Menu {{i+1}}.{{j+1}} 
+                </div>
+                <div class="col-lg-3">
+                  <div class="custom-form-input">
+                    <label>Name<span class="text-danger">*</span></label>
+                    <input formControlName="menuName">
+                  </div>
+                </div>
+                <div class="col-lg-3">
+                  <div class="custom-form-input">
+                    <label>Routing<span class="text-danger">*</span></label>
+                    <input formControlName="routing">
+                  </div>
+                </div>
+                <div class="col-lg-3">
+                  <div class="custom-form-input">
+                    <label>Description</label>
+                    <input formControlName="description">
+                  </div>
+                </div>
+                <div class="col-lg-3">
+                  <div class="custom-form-input">
+                    <label>Order By<span class="text-danger">*</span></label>
+                    <input type="text" formControlName="orderBy" (keypress)="validateNo($event)">
+                  </div>
+                </div>
+                <div class="col-lg-3">
+                  <div class="custom-form-input">
+                    <label>Level<span class="text-danger">*</span></label>
+                    <input type="text" formControlName="level" (keypress)="validateNo($event)">
+                  </div>
+                </div>
+                <div class="col-lg-3">
+                  <div class="custom-form-input">
+                    <label>Permissions</label>
+                      <ng-multiselect-dropdown 
+                      [settings]="permissionDropdown" 
+                      [data]="permissionData"
+                      formControlName = "permissions">
+                    </ng-multiselect-dropdown>
+                    </div>
+                </div>
+              </div>
+            </div>  
+          </div>
+        </div>
+    
+      </div>
+    </div> -->
+  </form>
+  
+  <div class="spinner" *ngIf="loadSpinner">
+    Loading...
+  </div>

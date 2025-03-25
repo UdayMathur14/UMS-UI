@@ -34,6 +34,7 @@ import { FiltersComponent } from './app-menu-mapping/filters/filters.component';
 import { GridTableComponent } from './app-menu-mapping/grid-table/grid-table.component';
 import { RoleAppMenuMappingGridTableComponent } from './app-role-menu-mapping/grid-table/role-app-menu-mapping-grid-table.component';
 import { AppRoleMenuMappingFilterComponent } from './app-role-menu-mapping/filter/app-role-menu-mapping-filter.component';
+import { AddEditAppRoleMenuMappingComponent } from './app-role-menu-mapping/add-edit-app-role-menu-mapping/add-edit-app-role-menu-mapping.component';
 @NgModule({
   declarations: [
     UserSignupStatusComponent,
@@ -63,7 +64,9 @@ import { AppRoleMenuMappingFilterComponent } from './app-role-menu-mapping/filte
     FiltersComponent,
     AppRoleMenuMappingFilterComponent,
     RoleAppMenuMappingGridTableComponent,
-    GridTableComponent
+    GridTableComponent,
+    AddEditAppRoleMenuMappingComponent,
+    AddEditAppRoleMenuMappingComponent
   ],
   imports: [
     CommonModule,

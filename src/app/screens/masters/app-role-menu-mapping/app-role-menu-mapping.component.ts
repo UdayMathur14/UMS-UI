@@ -77,6 +77,6 @@ export class AppRoleMenuMappingComponent {
   
   
     onCreate() {
-      this.router.navigate(['/masters/add-app-menu-mapping']);
+      this.router.navigate(['/masters/add-app-role-menu-mapping']);
     }
 }
