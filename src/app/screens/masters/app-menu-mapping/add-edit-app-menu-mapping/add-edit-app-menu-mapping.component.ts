@@ -121,7 +121,7 @@ export class AddEditAppMenuMappingComponent implements OnInit {
   }
 
   onAppChange(data: any){
-    if(data && !this.menuId){
+    if(data && !this.menuId && this.menus().length === 0){
       this.addMenu()
     }
   }
