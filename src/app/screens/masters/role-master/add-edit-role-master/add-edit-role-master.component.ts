@@ -1,9 +1,6 @@
 import { Component, OnInit } from '@angular/core';
 import { ActivatedRoute, Router } from '@angular/router';
-import { UserSignupStatusService } from '../../../../core/service/user-signup-status.service';
 import { FormGroup, FormControl, Validators } from '@angular/forms';
-import { LoginComponent } from '../../../auth/login/login.component';
-import { NgbModal } from '@ng-bootstrap/ng-bootstrap';
 import { ToastrService } from 'ngx-toastr';
 import { RoleService } from '../../../../core/service/role.service';
 

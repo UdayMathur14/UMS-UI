@@ -66,7 +66,6 @@ import { AddEditAppRoleMenuMappingComponent } from './app-role-menu-mapping/add-
     RoleAppMenuMappingGridTableComponent,
     GridTableComponent,
     AddEditAppRoleMenuMappingComponent,
-    AddEditAppRoleMenuMappingComponent
   ],
   imports: [
     CommonModule,

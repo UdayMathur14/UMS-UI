@@ -14,7 +14,7 @@
                 <td>{{ item.roleName }}</td>
                 <td>{{ item.status }}</td>
                 <td style="cursor: pointer">
-                    <button class="icon-button">
+                    <button class="icon-button" (click)="onEdit(item?.id)">
                         <img class="ms-3" src="../../../../assets/images/icons/editPencil.svg" alt="Edit">
                     </button>
                 </td>

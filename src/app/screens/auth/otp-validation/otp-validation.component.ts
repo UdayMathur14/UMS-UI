@@ -83,13 +83,13 @@ export class OtpValidationComponent {
   submit() {
     console.log(this.passwordData)
       const data = {
-        "name": this.passwordData.controls?.name,
+        "name": this.passwordData?.name,
         "emailId": this.passwordData.emailId,
         "contactNo": this.passwordData.contactNo,
         "password": this.passwordData.password,
         "organisation": this.passwordData.organisation,
         "otp":this.otp,
-        "methodType": "portal",
+        "methodType": this.passwordData.methodType,
       };
       this.authService.signUp(data).subscribe(
         (response: any) => {

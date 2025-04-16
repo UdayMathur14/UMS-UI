@@ -3,7 +3,7 @@
         <h1>{{ lookupId ? 'Edit Lookup' : 'Create Lookup' }}</h1>
         <div class="action-buttons d-flex align-items-start">
             <button class="custom-button-regulr" (click)="onSave()" [disabled]="!lookupForm.valid">Save</button>
-            <button class="custom-button-secondary ms-3" (click)="onCancel()">
+            <button class="custom-button-secondary ms-1" (click)="onCancel()">
                 Cancel
             </button>
         </div>

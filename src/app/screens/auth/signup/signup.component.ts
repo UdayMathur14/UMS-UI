@@ -93,7 +93,8 @@ export class SignupComponent implements OnInit {
         contactNo: this.signUpForm.controls['contactNo']?.value,
         organisation: this.signUpForm.controls['organisation']?.value,
         otp: '',
-        Type: this.isMicrosoftLogin ? 'Microsoft' : isGoogleLogin ? 'Google' : 'Portal',
+        // Type: this.isMicrosoftLogin ? 'Microsoft' : isGoogleLogin ? 'Google' : 'Portal',
+        methodType: 'Portal'
       };
   
       this.passwordService.setPasswordData(data);

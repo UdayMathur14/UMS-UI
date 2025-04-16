@@ -7,14 +7,15 @@ export class PasswordDataShareService {
 
   constructor() { }
 
-  private passwordData: { name: string | null, contactNo: string | null, emailId: string | null, organisation: string | null } = {
+  private passwordData: { name: string | null, contactNo: string | null, emailId: string | null, organisation: string | null, methodType: string | null } = {
     name: '',
     contactNo: '',
     emailId: '',
-    organisation: ''
+    organisation: '',
+    methodType: ''
   };
 
-  setPasswordData(data: { name: string | null, contactNo: string| null, emailId: string | null, organisation: string | null }) {
+  setPasswordData(data: { name: string | null, contactNo: string| null, emailId: string | null, organisation: string | null, methodType: string | null }) {
     this.passwordData = data;
   }
 
