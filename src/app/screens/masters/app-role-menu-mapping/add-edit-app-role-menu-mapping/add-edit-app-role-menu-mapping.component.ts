@@ -18,6 +18,7 @@ export class AddEditAppRoleMenuMappingComponent implements OnInit {
   userId: string = '';
   offset = 0;
   roleData: any = [];
+  selectedRole: string = '';
   count: any = undefined;
   statusOptions = ['Active', 'Inactive'];
   menuForm: FormGroup;
@@ -63,7 +64,7 @@ export class AddEditAppRoleMenuMappingComponent implements OnInit {
     this.getApps();
     this.getRolesList();
     this.dropdownData();
-    this.getAllMenus();
+    // this.getAllMenus();
     if (this.roleMenuId) {
       this.getRoleAppMenuById();
     }
@@ -180,6 +181,7 @@ export class AddEditAppRoleMenuMappingComponent implements OnInit {
   onRoleChange(data: any) {
     if (data && !this.roleMenuId && this.menus().length === 0) {
       this.addMenu();
+      this.selectedRole = data 
     }
   }
 
@@ -198,7 +200,7 @@ export class AddEditAppRoleMenuMappingComponent implements OnInit {
     const data = {
       status: 'Active',
       menuName: '',
-      appName: '',
+      appName: this.appName,
     };
     this.appMenuMappingService
       .appMenuMappingData(this.userId, this.offset, this.count, data)
@@ -245,6 +247,7 @@ export class AddEditAppRoleMenuMappingComponent implements OnInit {
   onAppChange(id: string) {
     this.appName = this.appsData.find((item: any) => item.id == id)?.value;
     this.getSelectedMenu();
+    this.getAllMenus();
   }
 
   onMenuChange(menuId: string, menuIndex: number) {

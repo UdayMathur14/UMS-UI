@@ -2,7 +2,7 @@
   <h1>{{ roleMenuId ? 'Edit' : 'Create' }} App Role Menu Mapping</h1>
   <div class="action-buttons">
     <button class="custom-button-regulr" (click)="onSubmit()">Save</button>
-    <button class="custom-button-regulr" (click)="addMenu()">Add Menu</button>
+    <button class="custom-button-regulr" (click)="addMenu()" [disabled]="!selectedRole" *ngIf="!roleMenuId">Add Menu</button>
     <button class="custom-button-secondary" (click)="onCancel()">Cancel</button>
   </div>
 </div>
@@ -12,7 +12,7 @@
       <div class="col-4">
         <div class="custom-form-input">
           <label>App Name<span class="text-danger">*</span></label>
-          <ng-select class="input-field" formControlName="appName" placeholder="Select App Name"
+          <ng-select class="input-field" formControlName="appName" placeholder="Select App Name" [readonly]="roleMenuId"
             (change)="onAppChange($event)">
             <ng-option *ngFor="let app of appsData" [value]="app.id">{{ app.value }}</ng-option>
           </ng-select>
@@ -21,13 +21,13 @@
       <div class="col-4">
         <div class="custom-form-input">
           <label>Role Name<span class="text-danger">*</span></label>
-          <ng-select class="input-field" formControlName="role" placeholder="Select Role"
+          <ng-select class="input-field" formControlName="role" placeholder="Select Role" [readonly]="roleMenuId"
             (change)="onRoleChange($event)">
             <ng-option *ngFor="let role of roleData" [value]="role?.id">{{ role?.roleName }}</ng-option>
           </ng-select>
         </div>
       </div>
-      <div class="col-4">
+      <div class="col-4" *ngIf="roleMenuId">
         <div class="custom-form-input">
           <label>Status<span class="text-danger">*</span></label>
           <ng-select class="input-field" formControlName="status" placeholder="Select Status">
