@@ -37,7 +37,7 @@ export class SignupComponent implements OnInit {
   
     const email = userProfile?.mail || '';
     const name = userProfile?.displayName || '';
-    const contactNo = userProfile?.mobilePhone || '';
+    // const contactNo = userProfile?.mobilePhone || '';
   
     this.isMicrosoftLogin = !!email;
   
@@ -64,8 +64,7 @@ export class SignupComponent implements OnInit {
         { value: email || (isGoogleLogin && googleUser ? googleUser.email : ''), disabled: this.isMicrosoftLogin || isGoogleLogin },
         [Validators.required, Validators.pattern(/^[a-zA-Z0-9._%+-]+@[a-zA-Z0-9.-]+\.[a-zA-Z]{2,}$/)]
       ),
-      contactNo: new FormControl(
-        { value: contactNo, disabled: this.isMicrosoftLogin }, // Enable for Google, Disable for Microsoft
+      contactNo: new FormControl('',
         Validators.required
       ),
       organisation: new FormControl('', Validators.required),
