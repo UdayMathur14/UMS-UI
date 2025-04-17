@@ -120,6 +120,8 @@ export class AddEditDomainProjectMappingComponent {
       const data = {
         status: this.domainProjectForm.controls['status']?.value,
         actionBy: this.userId,
+        projectManagerId: '',
+        projectManager: '',
       };
       this.domainService
         .domainProjectUpdate(this.domainProjectId, data)
@@ -139,8 +141,14 @@ export class AddEditDomainProjectMappingComponent {
         status: 'Active',
         domainId: this.domainProjectForm.controls['domain']?.value,
         domainName: domainNames,
-        projectId: this.domainProjectForm.controls['project']?.value,
-        projectName: projectNames,
+        projectDetails: [
+          {
+            projectId: this.domainProjectForm.controls['project']?.value,
+            projectName: projectNames,
+          },
+        ],
+        projectManagerId: '',
+        projectManager: '',
         actionBy: this.userId,
       };
       this.domainService.domainProjectCreate(data).subscribe(

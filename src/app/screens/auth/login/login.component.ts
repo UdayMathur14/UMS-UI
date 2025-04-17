@@ -118,7 +118,8 @@ export class LoginComponent implements OnInit, AfterViewInit {
 
   logout(): void {
     this.msalService.logoutRedirect({
-      postLogoutRedirectUri: 'http://localhost:4200',
+      // postLogoutRedirectUri: 'http://localhost:4200',
+      postLogoutRedirectUri: window.location.origin,
     });
     localStorage.removeItem('userProfile');
   }
