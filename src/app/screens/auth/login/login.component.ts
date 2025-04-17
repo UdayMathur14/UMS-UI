@@ -45,8 +45,14 @@ export class LoginComponent implements OnInit, AfterViewInit {
         // Redirect after successful Microsoft login
         setTimeout(() => {
           this.loadSpinner = false;
-          this.router.navigate(['/auth/signup']);
-        }, 1000)
+          const userProfile = localStorage.getItem('userProfile');
+          if (!userProfile) {
+            this.toastr.warning('Failed to retrieve profile. Please try signing in again.', 'Profile Missing');
+            this.logout(); // Clear state and redirect to login
+          } else {
+            this.router.navigate(['/auth/signup']);
+          }
+        }, 3000);
       }
 
       if (event.eventType === EventType.LOGOUT_SUCCESS) {
@@ -171,7 +177,12 @@ export class LoginComponent implements OnInit, AfterViewInit {
         });
       })
       .catch((error) => {
-        console.error('Error acquiring token:', error);
+        // console.error('Error acquiring token:', error);
+        console.warn('Silent token acquisition failed. Trying interactive redirect...');
+        console.warn('Silent token acquisition failed. Trying interactive redirect...');
+        this.msalService.instance.acquireTokenRedirect({
+          scopes: ['User.Read'],
+        });
       });
   }
 

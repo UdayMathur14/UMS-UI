@@ -31,6 +31,7 @@ export class SignupComponent implements OnInit {
       try {
         userProfile = JSON.parse(storedProfile);
       } catch (error) {
+        this.toastr.warning('Failed to retrieve profile. Please try signing in again.', 'Profile Missing');
         console.error("Error parsing userProfile from localStorage:", error);
       }
     }

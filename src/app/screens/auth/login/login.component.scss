@@ -121,11 +121,13 @@
   }
 }
 
+// Don't remove the below commented scss, it is used for the login button in the login page later
 .microsoft-login-button {
-  margin-bottom: 20px; // Adds space below the button
-  width: 100%;
-  max-width: 400px;
-  display: flex;
+  // margin-bottom: 20px; // Adds space below the button
+  // width: 100%;
+  max-width: 180px;
+  // max-height: 40px;
+  // display: flex;
   justify-content: center;
   align-items: center;
 }
@@ -164,25 +166,25 @@
   align-items: center;
 }
 
-#google-signin-button {
-  width: 400px !important;
-  height: 50px !important;
-  display: inline-block;
-}
+// #google-signin-button {
+//   width: 400px !important;
+//   height: 50px !important;
+//   display: inline-block;
+// }
 
-::ng-deep.nsm7Bb-HzV7m-LgbsSe .nsm7Bb-HzV7m-LgbsSe-Bz112c {
-  height: 18px;
-  margin-right: 8px;
-  min-width: 18px;
-  width: 18px;
-  margin-left: 110px !important;
-  // margin-left: 100px !important;
-  // justify-content: center !important;
-  align-items: center;
-  display: flex;
-  justify-content: center;
-}
+// ::ng-deep.nsm7Bb-HzV7m-LgbsSe .nsm7Bb-HzV7m-LgbsSe-Bz112c {
+//   height: 18px;
+//   margin-right: 8px;
+//   min-width: 18px;
+//   width: 18px;
+//   margin-left: 110px !important;
+//   // margin-left: 100px !important;
+//   // justify-content: center !important;
+//   align-items: center;
+//   display: flex;
+//   justify-content: center;
+// }
 
-::ng-deep.nsm7Bb-HzV7m-LgbsSe-BPrWId{
-  padding-right: 110px !important;
-}
+// ::ng-deep.nsm7Bb-HzV7m-LgbsSe-BPrWId{
+//   padding-right: 110px !important;
+// }
