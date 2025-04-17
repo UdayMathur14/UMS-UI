@@ -4,6 +4,7 @@ import { ActivatedRoute, Router } from '@angular/router';
 import { ToastrService } from 'ngx-toastr';
 import { LookupService } from '../../../../core/service/lookup.service';
 import { DomainProjectMappingService } from '../../../../core/service/domain-project-mapping.service';
+import { UserMasterService } from '../../../../core/service/user-master.service';
 
 @Component({
   selector: 'app-add-edit-domain-project-mapping',
@@ -22,15 +23,17 @@ export class AddEditDomainProjectMappingComponent {
   domainProjectForm = new FormGroup({
     domain: new FormControl('', Validators.required),
     project: new FormControl('', Validators.required),
+    projectManager: new FormControl(''),
     status: new FormControl(''),
   });
-
+  userMaster: any=[];
   constructor(
     private activatedRoute: ActivatedRoute,
     private lookupService: LookupService,
     private domainService: DomainProjectMappingService,
     private router: Router,
-    private toastr: ToastrService
+    private toastr: ToastrService,
+    private userMasterService: UserMasterService
   ) {}
 
   ngOnInit(): void {
@@ -43,6 +46,7 @@ export class AddEditDomainProjectMappingComponent {
     // this.getLookupById();
     this.projectNameLookup();
     this.domainNameLookup();
+    this.getProjectManager();
     if (this.domainProjectId) {
       this.getDomainProjectById();
     }
@@ -92,6 +96,7 @@ export class AddEditDomainProjectMappingComponent {
         this.domainProjectForm.patchValue({
           domain: response?.domainId,
           project: response?.projectId,
+          projectManager: response?.projectManagerId,
           status: response?.status,
         });
         this.loadSpinner = false;
@@ -100,6 +105,28 @@ export class AddEditDomainProjectMappingComponent {
         this.loadSpinner = false;
       }
     );
+  }
+
+  getProjectManager() {
+    this.loadSpinner = true;
+    const data = {
+      id: '',
+      name: '',
+      userCategory: 'Project Manager',
+    };
+    this.userMasterService
+      .userMasterData(this.userId, this.offset, this.count, data)
+      .subscribe(
+        (response: any) => {
+          this.userMaster = response.users;
+          this.loadSpinner = false;
+
+          console.log(response);
+        },
+        (error) => {
+          console.log(error);
+        }
+      );
   }
 
   onCancel() {
@@ -111,17 +138,26 @@ export class AddEditDomainProjectMappingComponent {
     const projectNames = this.projectNames.find(
       (item: any) => item?.id == projectId
     )?.value;
+
     const domainId = this.domainProjectForm.controls['domain']?.value;
     const domainNames = this.domainNames.find(
       (item: any) => item?.id == domainId
     )?.value;
+
+    const projectManagerId =
+      this.domainProjectForm.controls['projectManager']?.value;
+    // Correctly use 'name' property instead of 'value' for project manager's name
+    const projectManagerName = this.userMaster.find(
+      (item: any) => item.id === projectManagerId
+    )?.name;
+
     if (this.domainProjectId) {
       this.loadSpinner = true;
       const data = {
         status: this.domainProjectForm.controls['status']?.value,
         actionBy: this.userId,
-        projectManagerId: '',
-        projectManager: '',
+        projectManagerId: projectManagerId,
+        projectManager: projectManagerName,
       };
       this.domainService
         .domainProjectUpdate(this.domainProjectId, data)
@@ -137,18 +173,19 @@ export class AddEditDomainProjectMappingComponent {
           }
         );
     } else {
+      this.loadSpinner = true;
       const data = {
         status: 'Active',
-        domainId: this.domainProjectForm.controls['domain']?.value,
+        domainId: domainId,
         domainName: domainNames,
         projectDetails: [
           {
-            projectId: this.domainProjectForm.controls['project']?.value,
+            projectId: projectId,
             projectName: projectNames,
           },
         ],
-        projectManagerId: '',
-        projectManager: '',
+        projectManagerId: projectManagerId,
+        projectManager: projectManagerName,
         actionBy: this.userId,
       };
       this.domainService.domainProjectCreate(data).subscribe(
