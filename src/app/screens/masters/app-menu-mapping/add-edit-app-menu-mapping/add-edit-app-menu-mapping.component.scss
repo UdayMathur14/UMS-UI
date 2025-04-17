@@ -27,4 +27,19 @@ h5 {
   .submenu-item {
     background: #f8f9fa;
   }
+
+  .menu-heading{
+    font-weight: 600;
+    font-size:16px;
+    color: #4361ee;
+  }
+
+  .menu-container{
+    min-height: calc(100vh - 200px);
+    max-height: calc(100vh - 150px);    
+    overflow-y: auto;
+    overflow-x: hidden;
+    padding: 0 15px;
+  }
+  
   

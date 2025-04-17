@@ -22,6 +22,7 @@ export class AddEditAppMenuMappingComponent implements OnInit {
   permissionData: any[] = [];
   menuById: any;
   menuId: any;
+  appData: string = '';
   allpermissions = [
     { id: '', permissionName: 'ADD' },
     { id: '', permissionName: 'EDIT' },
@@ -76,6 +77,7 @@ export class AddEditAppMenuMappingComponent implements OnInit {
       permissions: [[]],
       subMenu: this.formBuilder.array([]),
     });
+    
     this.menus().push(newMenu);
   }
 
@@ -122,13 +124,14 @@ export class AddEditAppMenuMappingComponent implements OnInit {
 
   onAppChange(data: any){
     if(data && !this.menuId && this.menus().length === 0){
+      this.appData = data;
       this.addMenu()
     }
   }
 
   onSubmit() {
+    this.loadSpinner = true;
     if (this.menuId) {
-      this.loadSpinner = true;
       const formValue = this.menuForm.value;
       const appId = this.appsData.find(
         (item: any) => item?.value == formValue.appName
@@ -356,4 +359,36 @@ export class AddEditAppMenuMappingComponent implements OnInit {
       this.menus().push(menuGroup);
     });
   }
+
+  getPrefilledSubmenuName(menuIndex: number, subMenuIndex: number): string {
+    const menuName = this.menuForm.get(['menu', menuIndex, 'menuName'])?.value || '';
+    const subMenuName = this.menuForm.get(['menu', menuIndex, 'subMenu', subMenuIndex, 'menuName'])?.value || '';
+    
+    if (!subMenuName.startsWith(menuName + "_")) {
+      this.menuForm.get(['menu', menuIndex, 'subMenu', subMenuIndex, 'menuName'])?.setValue(menuName + "_");
+    }
+    return this.menuForm.get(['menu', menuIndex, 'subMenu', subMenuIndex, 'menuName'])?.value;
+  }
+  
+  updateSubmenuName(event: Event, menuIndex: number, subMenuIndex: number) {
+    let inputValue = (event.target as HTMLInputElement).value.replace(/\s+/g, '_');
+    const menuName = this.menuForm.get(['menu', menuIndex, 'menuName'])?.value?.replace(/\s+/g, '_') || '';
+  
+    if (!inputValue.startsWith(menuName + "_")) {
+      this.menuForm.get(['menu', menuIndex, 'subMenu', subMenuIndex, 'menuName'])?.setValue(menuName + "_");
+    } else {
+      this.menuForm.get(['menu', menuIndex, 'subMenu', subMenuIndex, 'menuName'])?.setValue(inputValue);
+    }
+  }
+  
+  isMenuName(menuIndex: number): boolean {
+    const menuName = this.menuForm.get(['menu', menuIndex, 'menuName'])?.value;
+    return menuName && menuName.trim().length > 0;
+  }
+
+  formatMenuName(event: Event, menuIndex: number) {
+    let inputValue = (event.target as HTMLInputElement).value.replace(/\s+/g, '_'); // Replace spaces with underscores
+    this.menuForm.get(['menu', menuIndex, 'menuName'])?.setValue(inputValue);
+  }
+  
 }

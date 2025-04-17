@@ -4,8 +4,9 @@ import { MsalInterceptorConfiguration, MsalGuardConfiguration } from '@azure/msa
 export const msalConfig = {
   auth: {
     clientId: '051e23d2-1d46-4e6b-8656-19e31cc7fc60', // Replace with your Azure AD Application (client) ID
-    authority: 'https://login.microsoftonline.com/0b0b99a4-2164-4f92-ba18-f39001796420', // Replace with your Azure AD Tenant ID
-    redirectUri: 'http://localhost:4200/', // Replace with your redirect URI
+    authority: 'https://login.microsoftonline.com/common', // Replace with your Azure AD Tenant ID
+    // redirectUri: 'http://localhost:4200/', // Replace with your redirect URI
+    redirectUri: window.location.origin, // Replace with your redirect URI
   },
   cache: {
     cacheLocation: 'localStorage',

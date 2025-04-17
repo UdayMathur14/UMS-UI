@@ -8,7 +8,7 @@ import { CRUDService } from './crud.service';
   providedIn: 'root',
 })
 export class AppMenuMappingService extends CRUDService<AuthRequest> {
-  maxCount: number = Number.MAX_VALUE;
+  maxCount: number = 9000000;
 
   constructor(protected override baseService: BaseService) {
     super(baseService, APIConstant.basePath);
