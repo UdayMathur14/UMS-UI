@@ -23,17 +23,19 @@
             <div class="col-lg-3">
                 <div class="custom-form-input">
                     <label>Project Name<span class="text-danger">*</span></label>
-                    <ng-select formControlName="project" [readonly]="domainProjectId">
-                        <ng-option *ngFor="let data of projectNames" [value]="data.id">
-                            {{data?.value}}
-                        </ng-option>
-                    </ng-select>
+                    <ng-multiselect-dropdown 
+                        formControlName="project"
+                        [placeholder]="'Select Projects'"
+                        [settings]="dropdownSettings"
+                        [data]="formattedProjectNames"
+                        [disabled]="domainProjectId ? true : false">
+                    </ng-multiselect-dropdown>
                 </div>
             </div>
             <div class="col-lg-3">
                 <div class="custom-form-input">
                     <label>Project Manager<span class="text-danger">*</span></label>
-                    <ng-select formControlName="projectManager" [readonly]="domainProjectId">
+                    <ng-select formControlName="projectManager">
                         <ng-option *ngFor="let data of userMaster" [value]="data.id">
                             {{ data?.name }}
                         </ng-option>
@@ -56,7 +58,6 @@
             </div>
         </div>
     </form>
-
 </div>
 <div class="spinner" *ngIf="loadSpinner">
     Loading...

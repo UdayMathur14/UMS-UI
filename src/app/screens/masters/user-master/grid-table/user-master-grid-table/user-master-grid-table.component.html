@@ -13,8 +13,8 @@
                 <th>Action</th>
             </tr>
         </thead>
-        <tbody *ngFor="let users of userMaster">
-            <tr>
+        <tbody>
+            <tr *ngFor="let users of userMaster">
                 <td>{{users?.name || '-'}}</td>
                 <td>{{users?.emailId || '-'}}</td>
                 <td>{{users?.contactNo || '-'}}</td>

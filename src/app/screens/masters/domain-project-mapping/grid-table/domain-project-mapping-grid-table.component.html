@@ -9,8 +9,8 @@
             </tr>
         </thead>
 
-        <tbody *ngFor="let data of domainProjects">
-            <tr>
+        <tbody >
+            <tr *ngFor="let data of domainProjects">
                 <td>{{data?.domainName || '-'}}</td>
                 <td>{{data?.projectName || '-'}}</td>
                 <td>{{data?.status || '-'}}</td>
