@@ -11,6 +11,6 @@ export const environment = {
     // umsURL: "http://111.93.61.253:8066",
 
     //production url
-    apiPath: ': https://api-ums.azurewebsites.net',
+    apiPath: 'https://api-ums.azurewebsites.net',
     umsURL: "https://admin.diverseinfotech.com",
 };
