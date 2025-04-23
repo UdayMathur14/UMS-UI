@@ -11,8 +11,8 @@
         <th>Action</th>
       </tr>
     </thead>
-    <tbody *ngFor="let users of signupUsers">
-      <tr>
+    <tbody>
+      <tr *ngFor="let users of signupUsers">
         <td>{{users?.name || '-'}}</td>
         <td>{{users?.emailId || '-'}}</td>
         <td>{{users?.contactNo || '-'}}</td>

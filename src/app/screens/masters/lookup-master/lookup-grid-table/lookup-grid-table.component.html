@@ -11,8 +11,8 @@
             </tr>
         </thead>
 
-        <tbody *ngFor="let lookup of lookups">
-            <tr>
+        <tbody>
+            <tr *ngFor="let lookup of lookups">
                 <td>{{lookup?.type || '-'}}</td>
                 <td>{{lookup?.value || '-'}}</td>
                 <td>{{lookup?.description || '-'}}</td>

@@ -9,8 +9,8 @@
                 <th>Action</th>
             </tr>
         </thead>
-        <tbody *ngFor="let data of roleData">
-            <tr>
+        <tbody>
+            <tr *ngFor="let data of roleData">
                 <td>{{data?.roleName || '-'}}</td>
                 <td>{{data?.roleDescription || '-'}}</td>
                 <td>{{data?.roleKey || '-'}}</td>
