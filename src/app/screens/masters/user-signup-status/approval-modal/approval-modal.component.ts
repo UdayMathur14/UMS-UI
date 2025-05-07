@@ -100,7 +100,6 @@ export class ApprovalModalComponent implements OnInit {
       id: item.id,
       name: item.appName
     }));
-    console.log(this.app);
     
     const data = {
       status: this.status,
