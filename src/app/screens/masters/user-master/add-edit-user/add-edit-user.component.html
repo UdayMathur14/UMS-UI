@@ -62,14 +62,12 @@
                 <input formControlName="organisation">
             </div>
         </div>
-        <div class="col-lg-3 col-md-3" *ngIf="!userId">
+        <div class="col-lg-3 col-md-3">
             <div class="custom-form-input">
                 <label for="application">Application<span class="text-danger">*</span></label>
-                <ng-select formControlName="app" [readonly]="userId">
-                    <ng-option *ngFor="let lookup of lookups" [value]="lookup.value">
-                        {{ lookup.value }}
-                    </ng-option>
-                </ng-select>
+                <ng-multiselect-dropdown [settings]="appData" [data]="apps" [disabled]="userId"
+                formControlName="app">
+            </ng-multiselect-dropdown>
             </div>
         </div>
         <!-- <div class="col-lg-3" *ngIf="!userId">

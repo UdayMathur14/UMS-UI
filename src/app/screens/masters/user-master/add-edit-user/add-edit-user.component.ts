@@ -12,7 +12,7 @@ import { RoleService } from '../../../../core/service/role.service';
   styleUrl: './add-edit-user.component.scss',
 })
 export class AddEditUserComponent {
-  userId: string = '';
+  userId: any;
   isEditMode: boolean = false;
   loadSpinner: boolean = true;
   actionById: string = '';
@@ -22,6 +22,8 @@ export class AddEditUserComponent {
   roleList: any;
   app: any;
   maxCount: number = Number.MAX_VALUE;
+  appData: any = [];
+  apps: any[] = [];
 
   constructor(
     private formBuilder: FormBuilder,
@@ -63,6 +65,7 @@ export class AddEditUserComponent {
     });
     this.getRolesList();
     this.getLookupsList();
+    this.getAppData();
   }
 
   loadUserMasterDataById() {
@@ -86,7 +89,13 @@ export class AddEditUserComponent {
             organisation: response.organisation,
             status: response.status,
           });
-          console.log('Form after patch:', this.createUserform.value);
+          this.apps = response.appLists.map((item: any) => ({
+            appName: item?.name,
+            id: item?.id
+          }));
+          this.createUserform.patchValue({
+            app: this.apps
+          })
         }
         this.loadSpinner = false;
       },
@@ -103,11 +112,14 @@ export class AddEditUserComponent {
     this.loadSpinner = true;
     const formData = this.createUserform.getRawValue();
     const userCategory = this.createUserform.controls['userCategory']?.value;
-    const appName = this.createUserform.controls['app']?.value;
+    // const appName = this.createUserform.controls['app']?.value;
     const roleid = this.roleList.find(
       (item: any) => item?.roleName == userCategory
     )?.id;
-    const appId = this.lookups.find((item: any) => item?.value == appName)?.id;
+    const appList = formData.app.map((item: any) => ({
+      id: item.id,
+      name: item.appName
+    }));
     if (this.isEditMode) {
       const updateData = {
         designation: formData.designation,
@@ -148,15 +160,8 @@ export class AddEditUserComponent {
         createdBy: this.actionById,
         roleId: roleid,
         methodType: 'Portal',
-        appList: [
-          {
-            id: appId,
-            name: formData.app,
-          },
-        ],
+        appList: appList
       };
-
-      console.log('Creating user with data:', createData);
 
       this.userMasterService.userMasterCreate(createData).subscribe({
         next: (response) => {
@@ -207,6 +212,10 @@ export class AddEditUserComponent {
             (item: any) => item.status === 'Active'
           );
         }
+        this.apps = this.lookups.map((item: any) => ({
+          appName: item?.value,
+          id: item?.id
+        }));
         this.loadSpinner = false;
       },
       (error) => {
@@ -217,5 +226,19 @@ export class AddEditUserComponent {
 
   onCancel() {
     this.router.navigate(['/masters/user-master']);
+  }
+
+  getAppData() {
+    this.appData = {
+      singleSelection: false,
+      idField: 'id',
+      textField: 'appName',
+      selectAllText: 'Select All',
+      unSelectAllText: 'UnSelect All',
+      enableCheckAll: true,
+      itemsShowLimit: 5,
+      enableSearchFilter: true,
+      allowSearchFilter: true,
+    };
   }
 }
