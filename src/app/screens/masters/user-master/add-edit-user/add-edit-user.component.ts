@@ -117,7 +117,7 @@ export class AddEditUserComponent {
           ? 'Internal'
           : 'External',
         actionBy: this.actionById,
-        methodType: this.createUserform.controls['methodType']?.value,
+        methodType: 'Portal',
       };
 
       this.userMasterService
@@ -147,7 +147,7 @@ export class AddEditUserComponent {
           : 'External',
         createdBy: this.actionById,
         roleId: roleid,
-        methodType: this.createUserform.controls['methodType']?.value,
+        methodType: 'Portal',
         appList: [
           {
             id: appId,

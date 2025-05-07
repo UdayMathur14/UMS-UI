@@ -22,6 +22,8 @@ export class ApprovalModalComponent implements OnInit {
   lookups: any = [];
   roleList: any;
   app: any;
+  appData: any = [];
+  apps: any[] = [];
 
   @Input() status: string = '';
   @Input() recordId: string = '';
@@ -44,6 +46,7 @@ export class ApprovalModalComponent implements OnInit {
     }
     this.getRolesList();
     this.getLookupsList();
+    this.getAppData();
   }
 
   getRolesList(offset: number = 0, count: number = this.maxCount) {
@@ -78,6 +81,10 @@ export class ApprovalModalComponent implements OnInit {
         if (response && response.lookUps) {
           this.lookups = response.lookUps.filter((item: any) => item.status === 'Active');
         }
+        this.apps = this.lookups.map((item: any) => ({
+          appName: item?.value,
+          id: item?.id
+        }));
         this.loadSpinner = false;
       },
       (error) => {
@@ -89,7 +96,12 @@ export class ApprovalModalComponent implements OnInit {
 
   updateUserSignUpStatus() {
     const roleid = this.roleList.find((item:any) => item?.roleName == this.userCategory)?.id;
-    const appId = this.lookups.find((item:any) => item?.value == this.app)?.id;
+    const appList = this.app.map((item: any) => ({
+      id: item.id,
+      name: item.appName
+    }));
+    console.log(this.app);
+    
     const data = {
       status: this.status,
       actionBy: this.userId,
@@ -99,12 +111,7 @@ export class ApprovalModalComponent implements OnInit {
       userCategory: this.userCategory,
       designation: this.designation,
       roleId: roleid,
-      appList: [
-        {
-          id: appId,
-          name: this.app,
-        },
-      ],
+      appList: appList
     };
     this.userService.signupUserStatusUpdate(this.recordId, data).subscribe(
       (response: any) => {
@@ -118,5 +125,19 @@ export class ApprovalModalComponent implements OnInit {
         this.toastr.error(error?.error?.message, 'Error');
       }
     );
+  }
+
+  getAppData() {
+    this.appData = {
+      singleSelection: false,
+      idField: 'id',
+      textField: 'appName',
+      selectAllText: 'Select All',
+      unSelectAllText: 'UnSelect All',
+      enableCheckAll: true,
+      itemsShowLimit: 5,
+      enableSearchFilter: true,
+      allowSearchFilter: true,
+    };
   }
 }
