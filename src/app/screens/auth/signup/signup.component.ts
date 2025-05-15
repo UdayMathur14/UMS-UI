@@ -69,6 +69,7 @@ export class SignupComponent implements OnInit {
         Validators.required
       ),
       organisation: new FormControl('', Validators.required),
+      designation: new FormControl('', Validators.required)
     });
   
     this.signUpForm.patchValue({
@@ -94,7 +95,8 @@ export class SignupComponent implements OnInit {
         organisation: this.signUpForm.controls['organisation']?.value,
         otp: '',
         // Type: this.isMicrosoftLogin ? 'Microsoft' : isGoogleLogin ? 'Google' : 'Portal',
-        methodType: 'Portal'
+        methodType: 'Portal',
+        designation: this.signUpForm.controls['designation']?.value,
       };
   
       this.passwordService.setPasswordData(data);

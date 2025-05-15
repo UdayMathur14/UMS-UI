@@ -32,6 +32,12 @@
         Organization name is required.
       </small>
 
+      <label for="name" class="form-label">Designation</label>
+      <input type="text" class="form-control" id="name" formControlName="designation">
+      <small class="text-danger" *ngIf="signUpForm.controls['designation'].hasError('required') && signUpForm.controls['designation'].touched">
+        Designation is required.
+      </small>
+
       <button type="submit" class="btn btn-signup" [disabled]="!signUpForm.valid">Sign Up</button>
     </form>
     <p><small>Already have an account?</small> <a class="ms-2" href="/auth/login">Log In</a></p>

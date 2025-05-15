@@ -14,7 +14,6 @@ import { LookupService } from '../../../../core/service/lookup.service';
 export class ApprovalModalComponent implements OnInit {
   userType: string = '';
   userCategory: string = '';
-  designation: string = '';
   loadSpinner: boolean = true;
   userId: string = '';
   maxCount: number = Number.MAX_VALUE;
@@ -28,6 +27,7 @@ export class ApprovalModalComponent implements OnInit {
   @Input() status: string = '';
   @Input() recordId: string = '';
   @Input() emailId: string = '';
+  @Input() designation: string = '';
 
   constructor(
     public activeModal: NgbActiveModal,
