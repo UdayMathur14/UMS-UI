@@ -37,4 +37,9 @@ export class AuthService extends CRUDService<AuthRequest> {
         null,
         { headers: headers });
 }
+
+     logInUserStatus(emailId: any) {
+      const url = `${APIConstant.loginUserStatus}/${emailId}`;
+      return this.baseService.get(url);
+    }
 }

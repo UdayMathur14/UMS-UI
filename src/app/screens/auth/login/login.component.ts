@@ -19,6 +19,7 @@ export class LoginComponent implements OnInit, AfterViewInit {
   emailId: string = '';
   password: string = '';
   loadSpinner: boolean = false;
+  userEmail: string = '';
 
   constructor(
     private router: Router,
@@ -47,10 +48,15 @@ export class LoginComponent implements OnInit, AfterViewInit {
           this.loadSpinner = false;
           const userProfile = localStorage.getItem('userProfile');
           if (!userProfile) {
-            this.toastr.warning('Failed to retrieve profile. Please try signing in again.', 'Profile Missing');
+            this.toastr.warning(
+              'Failed to retrieve profile. Please try signing in again.',
+              'Profile Missing'
+            );
+            console.log('called');
+            
             this.logout(); // Clear state and redirect to login
           } else {
-            this.router.navigate(['/auth/signup']);
+           this.getLoginStatus();
           }
         }, 3000);
       }
@@ -90,12 +96,12 @@ export class LoginComponent implements OnInit, AfterViewInit {
             if (dataObj.apps.length == 1 && userApp) {
               window.location.href = userApp.route;
               // this.router.navigate(['/masters'])
-            } else if(dataObj.apps.length == 1 && !userApp) {
+            } else if (dataObj.apps.length == 1 && !userApp) {
               const appRoute = dataObj.apps[0].route;
               const appId = dataObj.apps[0].id;
               window.location.href = `${appRoute}?data=${token}&appId=${appId}`;
             } else {
-              this.router.navigate(['/dashboard'])
+              this.router.navigate(['/dashboard']);
             }
 
             // if (userApp) {
@@ -133,7 +139,8 @@ export class LoginComponent implements OnInit, AfterViewInit {
   checkLoginStatus(): void {
     const accounts = this.msalService.instance.getAllAccounts();
     if (accounts.length > 0) {
-      const activeAccount = this.msalService.instance.getActiveAccount() || accounts[0];
+      const activeAccount =
+        this.msalService.instance.getActiveAccount() || accounts[0];
       this.msalService.instance.setActiveAccount(activeAccount);
       this.updateLoginDisplay();
       this.fetchUserProfile();
@@ -169,7 +176,12 @@ export class LoginComponent implements OnInit, AfterViewInit {
         this.http.get(graphEndpoint, { headers }).subscribe({
           next: (profile) => {
             this.userProfile = profile;
-            localStorage.setItem('userProfile', JSON.stringify(this.userProfile));
+            this.emailId = this.userProfile?.mail
+            
+            localStorage.setItem(
+              'userProfile',
+              JSON.stringify(this.userProfile)
+            );
           },
           error: (err) => {
             console.error('Error fetching user profile:', err);
@@ -178,8 +190,12 @@ export class LoginComponent implements OnInit, AfterViewInit {
       })
       .catch((error) => {
         // console.error('Error acquiring token:', error);
-        console.warn('Silent token acquisition failed. Trying interactive redirect...');
-        console.warn('Silent token acquisition failed. Trying interactive redirect...');
+        console.warn(
+          'Silent token acquisition failed. Trying interactive redirect...'
+        );
+        console.warn(
+          'Silent token acquisition failed. Trying interactive redirect...'
+        );
         this.msalService.instance.acquireTokenRedirect({
           scopes: ['User.Read'],
         });
@@ -189,4 +205,23 @@ export class LoginComponent implements OnInit, AfterViewInit {
   onForgotPassword() {
     this.router.navigate(['']);
   }
+
+getLoginStatus() {
+  this.loadSpinner = true;
+  this.authService.logInUserStatus(this.emailId).subscribe({
+    next: (response: any) => {
+      if (response?.code === 200) {
+        this.router.navigate(['/auth/signup']);
+      } else {
+        this.onSignIn();
+      }
+      this.loadSpinner = false;
+    },
+    error: (err) => {
+      this.onSignIn();
+      this.loadSpinner = false;
+    }
+  });
+}
+
 }
