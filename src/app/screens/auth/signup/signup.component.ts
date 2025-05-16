@@ -4,6 +4,7 @@ import { FormGroup, FormControl, Validators } from '@angular/forms';
 import { Router } from '@angular/router';
 import { PasswordDataShareService } from '../../../core/service/password-data-share.service';
 import { ToastrService } from 'ngx-toastr';
+import { noWhitespaceValidator } from '../../../core/utilities/no-whitespace.validator';
 
 @Component({
   selector: 'app-signup',
@@ -67,7 +68,7 @@ export class SignupComponent implements OnInit {
             name || (isGoogleLogin && googleUser ? googleUser.fullName : ''),
           disabled: this.isMicrosoftLogin || isGoogleLogin,
         },
-        Validators.required
+        [Validators.required, noWhitespaceValidator]
       ),
       emailId: new FormControl(
         {
@@ -78,12 +79,12 @@ export class SignupComponent implements OnInit {
           Validators.required,
           Validators.pattern(
             /^[a-zA-Z0-9._%+-]+@[a-zA-Z0-9.-]+\.[a-zA-Z]{2,}$/
-          ),
+          ), noWhitespaceValidator
         ]
       ),
-      contactNo: new FormControl('', Validators.required),
-      organisation: new FormControl('', Validators.required),
-      designation: new FormControl('', Validators.required),
+      contactNo: new FormControl('', [Validators.required, noWhitespaceValidator]),
+      organisation: new FormControl('',[Validators.required, noWhitespaceValidator]),
+      designation: new FormControl('', [Validators.required, noWhitespaceValidator]),
       methodType: new FormControl(''),
     });
 
@@ -134,6 +135,17 @@ export class SignupComponent implements OnInit {
       );
     }
   }
+
+  isFieldRequired(field: string): any {
+  const control = this.signUpForm.get(field);
+  return control?.touched && (control.hasError('required') || control.hasError('whitespace'));
+}
+
+isEmailInvalid(): any {
+  const control = this.signUpForm.get('emailId');
+  return control?.touched && (control.hasError('email') || control.hasError('pattern'));
+}
+
 
   // passwordValidator() {
   //   return (control: any) => {
