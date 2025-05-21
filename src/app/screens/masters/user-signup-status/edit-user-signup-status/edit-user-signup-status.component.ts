@@ -18,6 +18,7 @@ export class EditUserSignupStatusComponent implements OnInit {
   loadSpinner: boolean = true;
   showSaveButton: boolean = false;
   emailId:string = '';
+  designation: string = '';
   signupUserForm = new FormGroup({
     name: new FormControl('', Validators.required),
     emailId: new FormControl('', Validators.required),
@@ -48,6 +49,7 @@ export class EditUserSignupStatusComponent implements OnInit {
     this.userService.signupUserStatusDataById(this.signupUserId).subscribe(
       (response: any) => {
         this.emailId = response.emailId;
+        this.designation = response?.designation;
         this.signupUserForm.patchValue({
           name: response?.name,
           emailId: response?.emailId,
@@ -83,6 +85,7 @@ export class EditUserSignupStatusComponent implements OnInit {
     documentModal.componentInstance.id = data;
     documentModal.componentInstance.recordId = this.signupUserId;
     documentModal.componentInstance.emailId = this.emailId;
+    documentModal.componentInstance.designation = this.designation;
     documentModal.result.then(
       (result) => {
         if (result) {

@@ -8,6 +8,7 @@ import { FormsModule, ReactiveFormsModule } from '@angular/forms';
 import { OtpValidationComponent } from './otp-validation/otp-validation.component';
 import { DashboardComponent } from './dashboard/dashboard.component';
 import { LayoutModule } from '../../layout/layout.module';
+import { InputIntegerValidator } from '../../core/utilities/inputIntegerValidator.directive';
 
 
 @NgModule({
@@ -16,6 +17,7 @@ import { LayoutModule } from '../../layout/layout.module';
     SignupComponent,
     OtpValidationComponent,
     DashboardComponent,
+    InputIntegerValidator,
   ],
   imports: [
     CommonModule,

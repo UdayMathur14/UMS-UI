@@ -65,6 +65,7 @@ export class OtpValidationComponent {
         "contactNo": this.passwordData.contactNo,
         "password": this.passwordData.password,
         "organisation": this.passwordData.organisation,
+        "designation": this.passwordData.designation,
         "otp":'',
       };
       this.authService.signUp(data).subscribe(
@@ -90,6 +91,7 @@ export class OtpValidationComponent {
         "organisation": this.passwordData.organisation,
         "otp":this.otp,
         "methodType": this.passwordData.methodType,
+        "designation": this.passwordData?.designation
       };
       this.authService.signUp(data).subscribe(
         (response: any) => {

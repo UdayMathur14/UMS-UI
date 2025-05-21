@@ -8,6 +8,7 @@ export const APIConstant = {
   basePath: apiPath,
   signUp: `${apiPath}/api/v1/SignUp/create`,
   signupStatus: `${apiPath}/api/v1/SignUp/search`,
+  loginUserStatus: `${apiPath}/api/v1/SignUp/get`,
   signupStatusDataById: `${apiPath}/api/v1/SignUp`,
   signupStatusUpdate: `${apiPath}/api/v1/SignUp/update`,
   login: `${apiPath}/api/v1/login/login`,
