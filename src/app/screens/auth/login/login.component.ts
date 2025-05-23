@@ -203,7 +203,7 @@ export class LoginComponent implements OnInit, AfterViewInit {
   }
 
   onForgotPassword() {
-    this.router.navigate(['']);
+    this.router.navigate(['change-password']);
   }
 
 getLoginStatus() {

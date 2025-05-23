@@ -9,6 +9,7 @@ import { OtpValidationComponent } from './otp-validation/otp-validation.componen
 import { DashboardComponent } from './dashboard/dashboard.component';
 import { LayoutModule } from '../../layout/layout.module';
 import { InputIntegerValidator } from '../../core/utilities/inputIntegerValidator.directive';
+import { ChangePasswordComponent } from './change-password/change-password.component';
 
 
 @NgModule({
@@ -18,6 +19,7 @@ import { InputIntegerValidator } from '../../core/utilities/inputIntegerValidato
     OtpValidationComponent,
     DashboardComponent,
     InputIntegerValidator,
+    ChangePasswordComponent,
   ],
   imports: [
     CommonModule,

@@ -5,6 +5,7 @@ import { SignupComponent } from './signup/signup.component';
 import { OtpValidationComponent } from './otp-validation/otp-validation.component';
 import { AuthGuard } from '../../core/guards/auth.guard';
 import { DashboardComponent } from './dashboard/dashboard.component';
+import { ChangePasswordComponent } from './change-password/change-password.component';
 // import { ResetPasswordComponent } from './reset-password/reset-password.component';
 
 const routes: Routes = [
@@ -12,7 +13,8 @@ const routes: Routes = [
   { path: 'signup', component: SignupComponent },
   { path: 'otpValidation', component: OtpValidationComponent },
   { path: 'dashboard', component: DashboardComponent },
-//   { path: 'reset-password', component: ResetPasswordComponent },
+  { path: 'change-password', component: ChangePasswordComponent }
+  //   { path: 'reset-password', component: ResetPasswordComponent },
 ];
 
 @NgModule({
