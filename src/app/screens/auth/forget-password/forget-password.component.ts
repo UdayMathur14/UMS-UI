@@ -14,6 +14,7 @@ import { PasswordDataShareService } from '../../../core/service/password-data-sh
 export class ForgetPasswordComponent implements OnInit {
   forgetPasswordForm!: FormGroup;
   loadSpinner: boolean = false;
+  showNewPassword: boolean = false;
 
   constructor(
     private router: Router,
