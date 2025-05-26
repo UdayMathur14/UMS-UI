@@ -121,6 +121,12 @@
   }
 }
 
+.buttons {
+  display: flex;
+  flex-direction: row;
+  justify-content: space-around;
+}
+
 // Don't remove the below commented scss, it is used for the login button in the login page later
 .microsoft-login-button {
   // margin-bottom: 20px; // Adds space below the button

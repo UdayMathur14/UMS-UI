@@ -22,10 +22,14 @@ export class AuthService extends CRUDService<AuthRequest> {
 
   isAuthenticatedUser(): boolean {
     return this.isAuthenticated;
-}
+  }
 
   signUp(data: any) {
     return this.baseService.post(APIConstant.signUp, data);
+  }
+
+  changePassword(data: any) {
+    return this.baseService.post(APIConstant.changePassword, data)
   }
 
   login(data: any) {
@@ -33,13 +37,13 @@ export class AuthService extends CRUDService<AuthRequest> {
     headers.append('Authorization', 'Basic ' + btoa(data.username + ':' + data.password));
 
     return this.baseService.post(
-        APIConstant.login,
-        null,
-        { headers: headers });
-}
+      APIConstant.login,
+      null,
+      { headers: headers });
+  }
 
-     logInUserStatus(emailId: any) {
-      const url = `${APIConstant.loginUserStatus}/${emailId}`;
-      return this.baseService.get(url);
-    }
+  logInUserStatus(emailId: any) {
+    const url = `${APIConstant.loginUserStatus}/${emailId}`;
+    return this.baseService.get(url);
+  }
 }
