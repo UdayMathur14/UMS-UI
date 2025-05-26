@@ -3,6 +3,8 @@ import { FormGroup, FormControl, Validators } from '@angular/forms';
 import { Router } from '@angular/router';
 import { noWhitespaceValidator } from '../../../core/utilities/no-whitespace.validator';
 import { AuthService } from '../../../core/service/auth.service';
+import { ToastrService } from 'ngx-toastr';
+import { PasswordDataShareService } from '../../../core/service/password-data-share.service';
 
 @Component({
   selector: 'app-forget-password',
@@ -15,7 +17,9 @@ export class ForgetPasswordComponent implements OnInit {
 
   constructor(
     private router: Router,
-    private forgetPassword: AuthService
+    private forgetPassword: AuthService,
+    private toastr: ToastrService,
+    private passwordService: PasswordDataShareService,
   ) { }
 
   ngOnInit() {
@@ -35,29 +39,40 @@ export class ForgetPasswordComponent implements OnInit {
 
   onSubmit() {
     this.loadSpinner = true;
+
     if (this.forgetPasswordForm.valid) {
-      const payload = {
+      const data = {
         userEmailId: this.forgetPasswordForm.controls['emailId'].value,
-        otp: "", // Will be filled later in OTP screen
+        otp: '', // Will be filled in the OTP screen
         password: this.forgetPasswordForm.controls['newPassword'].value
       };
 
-      this.forgetPassword.forgetPassword(payload).subscribe({
-        next: (res: any) => {
-          this.loadSpinner = false;
-          // Assuming success response means continue to OTP validation
-          this.router.navigate(['/auth/otpValidation'], {
-            queryParams: { email: payload.userEmailId }
-          });
-        },
-        error: (err) => {
-          this.loadSpinner = false;
-          console.error('Forget password API failed', err);
-          // Optionally show a toast/snackbar with error message
-        }
+      // Store this data in a service (like Change Password flow), if needed later
+      this.passwordService.setForgetPassword({
+        userEmailId: data.userEmailId,
+        password: data.password,
       });
+
+      this.forgetPassword.forgetPassword(data).subscribe(
+        (res: any) => {
+          if (res.code === 200) {
+            this.toastr.success(res.message || 'Password reset request successful', 'Success');
+            this.router.navigate(['/auth/otpValidation'], {
+              queryParams: { email: data.userEmailId }
+            });
+          } else {
+            this.toastr.error(res.message || 'Failed to reset password', 'Error');
+          }
+          this.loadSpinner = false;
+        },
+        (err) => {
+          this.toastr.error(err?.error?.message || 'An error occurred', 'Error');
+          this.loadSpinner = false;
+        }
+      );
     } else {
       this.markFormGroupTouched(this.forgetPasswordForm);
+      this.toastr.warning('Please fill out all required fields correctly.', 'Validation Error');
       this.loadSpinner = false;
     }
   }
