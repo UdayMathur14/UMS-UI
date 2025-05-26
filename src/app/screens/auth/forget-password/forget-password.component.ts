@@ -2,6 +2,7 @@ import { Component, OnInit } from '@angular/core';
 import { FormGroup, FormControl, Validators } from '@angular/forms';
 import { Router } from '@angular/router';
 import { noWhitespaceValidator } from '../../../core/utilities/no-whitespace.validator';
+import { AuthService } from '../../../core/service/auth.service';
 
 @Component({
   selector: 'app-forget-password',
@@ -12,7 +13,10 @@ export class ForgetPasswordComponent implements OnInit {
   forgetPasswordForm!: FormGroup;
   loadSpinner: boolean = false;
 
-  constructor(private router: Router) { }
+  constructor(
+    private router: Router,
+    private forgetPassword: AuthService
+  ) { }
 
   ngOnInit() {
     this.forgetPasswordForm = new FormGroup({
@@ -29,33 +33,35 @@ export class ForgetPasswordComponent implements OnInit {
     });
   }
 
-
   onSubmit() {
     this.loadSpinner = true;
     if (this.forgetPasswordForm.valid) {
-      // Simulate processing delay
-      setTimeout(() => {
-        console.log('Forget password form submitted:', {
-          email: this.forgetPasswordForm.controls['emailId'].value
-        });
+      const payload = {
+        userEmailId: this.forgetPasswordForm.controls['emailId'].value,
+        otp: "", // Will be filled later in OTP screen
+        password: this.forgetPasswordForm.controls['newPassword'].value
+      };
 
-        this.loadSpinner = false;
-
-        // Navigate to OTP validation component
-        this.router.navigate(['/auth/otp-validation'], {
-          queryParams: { email: this.forgetPasswordForm.controls['emailId'].value }
-        });
-
-        // You can also store the email in a service if needed for the OTP component
-        // this.authService.setEmailForOtp(this.forgetPasswordForm.controls['emailId'].value);
-      }, 1500);
+      this.forgetPassword.forgetPassword(payload).subscribe({
+        next: (res: any) => {
+          this.loadSpinner = false;
+          // Assuming success response means continue to OTP validation
+          this.router.navigate(['/auth/otpValidation'], {
+            queryParams: { email: payload.userEmailId }
+          });
+        },
+        error: (err) => {
+          this.loadSpinner = false;
+          console.error('Forget password API failed', err);
+          // Optionally show a toast/snackbar with error message
+        }
+      });
     } else {
       this.markFormGroupTouched(this.forgetPasswordForm);
       this.loadSpinner = false;
     }
   }
 
-  // Helper method to mark all controls as touched to trigger validation messages
   markFormGroupTouched(formGroup: FormGroup) {
     Object.values(formGroup.controls).forEach(control => {
       control.markAsTouched();
