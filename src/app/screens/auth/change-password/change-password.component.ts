@@ -93,19 +93,24 @@ export class ChangePasswordComponent implements OnInit {
         return null;
       }
 
+      const errors: any = {};
+
+      // Check minimum length
       if (password.length < 6) {
-        return { minLength: true };
+        errors.minLength = true;
       }
 
+      // Check for special character, uppercase, and number
       const hasSpecial = /[!@#$%^&*(),.?":{}|<>]/.test(password);
       const hasUpperCase = /[A-Z]/.test(password);
       const hasNumber = /\d/.test(password);
 
       if (!hasSpecial || !hasUpperCase || !hasNumber) {
-        return { invalidCombination: true };
+        errors.invalidCombination = true;
       }
 
-      return null;
+      // Return errors object if any errors exist, otherwise null
+      return Object.keys(errors).length > 0 ? errors : null;
     };
   }
 }
