@@ -28,6 +28,10 @@ export class AuthService extends CRUDService<AuthRequest> {
     return this.baseService.post(APIConstant.signUp, data);
   }
 
+  changePassword(data: any) {
+    return this.baseService.post(APIConstant.changePassword, data)
+  }
+
   login(data: any) {
     let headers = new Headers();
     headers.append('Authorization', 'Basic ' + btoa(data.username + ':' + data.password));
