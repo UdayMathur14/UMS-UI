@@ -37,5 +37,6 @@ export const APIConstant = {
   roleAppMenuMapping:`${apiPath}/api/v1/role-app-menu/search`,
   roleAppMenuCreate: `${apiPath}/api/v1/role-app-menu/create`,
   roleAppMenuGetById: `${apiPath}/api/v1/role-app-menu`,
-  updateroleAppMenu: `${apiPath}/api/v1/role-app-menu/update`
+  updateroleAppMenu: `${apiPath}/api/v1/role-app-menu/update`,
+  changePassword:`${apiPath}/api/v1/user-setup/change-password`
 };
