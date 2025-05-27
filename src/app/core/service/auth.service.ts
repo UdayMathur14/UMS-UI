@@ -46,4 +46,8 @@ export class AuthService extends CRUDService<AuthRequest> {
     const url = `${APIConstant.loginUserStatus}/${emailId}`;
     return this.baseService.get(url);
   }
+
+  forgetPassword(data: any) {
+    return this.baseService.post(APIConstant.forgetPassword, data);
+  }
 }
