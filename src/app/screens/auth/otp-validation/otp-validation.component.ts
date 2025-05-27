@@ -12,39 +12,45 @@ import { PasswordDataShareService } from '../../../core/service/password-data-sh
 export class OtpValidationComponent {
   passwordData: any = [];
   changePasswordData: any = null; // New property for change password data
+  forgetPasswordData: any = null; // New property for forget password data
+
   minutes: number = 3;
   seconds: number = 0;
   timerExpired: boolean = false;
   timerInterval: any;
   enableResend: boolean = false;
   otp: number | null = null;
+
   isChangePasswordFlow: boolean = false; // Flag to identify the flow
+  isForgetPasswordFlow: boolean = false;
 
   constructor(
     private router: Router,
     private authService: AuthService,
     private toastr: ToastrService,
     private passwordService: PasswordDataShareService,
-  ) {}
+  ) { }
 
   ngOnInit(): void {
     this.passwordData = this.passwordService.getPasswordData();
     this.changePasswordData = this.passwordService.getChangePasswordData();
-    
+    this.forgetPasswordData = this.passwordService.getForgetPassword();
+
+
     // Check if this is change password flow
     this.isChangePasswordFlow = this.changePasswordData && this.changePasswordData.userEmailId;
-    
     console.log('Password Data:', this.passwordData);
     console.log('Change Password Data:', this.changePasswordData);
     console.log('Is Change Password Flow:', this.isChangePasswordFlow);
-    
+
+    // Check if this is forget password flow
+    this.isForgetPasswordFlow = !!(this.forgetPasswordData && this.forgetPasswordData.userEmailId);
     this.startTimer();
   }
 
   startTimer() {
-    if (this.timerInterval) {
-      clearInterval(this.timerInterval);
-    }
+    if (this.timerInterval) clearInterval(this.timerInterval);
+
     this.timerInterval = setInterval(() => {
       if (this.seconds > 0) {
         this.seconds--;
@@ -55,66 +61,67 @@ export class OtpValidationComponent {
         } else {
           this.timerExpired = true;
           clearInterval(this.timerInterval);
-          if (this.isChangePasswordFlow) {
-            this.router.navigate(['/auth/change-password']);
-          } else {
-            this.router.navigate(['/signup']);
-          }
+          this.onBackSignUp();
         }
       }
-      if (this.minutes < 2) {
-        this.enableResend = true;
-      }
+      if (this.minutes < 2) this.enableResend = true;
     }, 1000);
   }
 
   resendOtp() {
-    if (this.enableResend) {
-      this.timerExpired = false;
-      this.enableResend = false;
-      
-      if (this.isChangePasswordFlow) {
-        // Resend OTP for change password
-        const data = {
-          userEmailId: this.changePasswordData.userEmailId,
-          oldPassword: this.changePasswordData.oldPassword,
-          newPassword: this.changePasswordData.newPassword,
-          otp: '',
-          actionBy: this.changePasswordData.actionBy,
-        };
-        
-        this.authService.changePassword(data).subscribe(
-          (response: any) => {
-            if (response.code === 200) {
-              this.toastr.success(response.message, 'Success');
-            }
-          },
-          (error) => {
-            this.toastr.error(error?.error?.message, 'Error');
+    if (!this.enableResend) return;
+
+    this.timerExpired = false;
+    this.enableResend = false;
+
+    if (this.isChangePasswordFlow) {
+      // Resend OTP for change password
+      const data = {
+        userEmailId: this.changePasswordData.userEmailId,
+        oldPassword: this.changePasswordData.oldPassword,
+        newPassword: this.changePasswordData.newPassword,
+        otp: '',
+        actionBy: this.changePasswordData.actionBy,
+      };
+
+      this.authService.changePassword(data).subscribe(
+        res => res.code === 200 && this.toastr.success(res.message, 'Success'),
+        err => this.toastr.error(err?.error?.message, 'Error')
+      );
+
+    } else if (this.isForgetPasswordFlow) {
+      const data = {
+        userEmailId: this.forgetPasswordData.userEmailId,
+        otp: '',
+        password: this.forgetPasswordData.password,
+      };
+
+      this.authService.forgetPassword(data).subscribe(
+        (response: any) => {
+          if (response.code === 200) {
+            this.toastr.success(response.message, 'Success');
           }
-        );
-      } else {
-        // Existing signup resend OTP logic
-        const data = {
-          "name": this.passwordData.controls?.name,
-          "emailId": this.passwordData.emailId,
-          "contactNo": this.passwordData.contactNo,
-          "password": this.passwordData.password,
-          "organisation": this.passwordData.organisation,
-          "designation": this.passwordData.designation,
-          "otp":'',
-        };
-        this.authService.signUp(data).subscribe(
-          (response: any) => {
-            if (response.code === 200) {
-              this.toastr.success(response.message, 'Success');
-            }
-          },
-          (error) => {
-            this.toastr.error(error?.error?.message, 'Error');
-          }
-        );
-      }
+        },
+        (error) => {
+          this.toastr.error(error?.error?.message, 'Error');
+        }
+      );
+
+    } else {
+      // Existing signup resend OTP logic
+      const data = {
+        "name": this.passwordData.controls?.name,
+        "emailId": this.passwordData.emailId,
+        "contactNo": this.passwordData.contactNo,
+        "password": this.passwordData.password,
+        "organisation": this.passwordData.organisation,
+        "designation": this.passwordData.designation,
+        "otp": '',
+      };
+      this.authService.signUp(data).subscribe(
+        res => res.code === 200 && this.toastr.success(res.message, 'Success'), (error) => {
+          this.toastr.error(error?.error?.message, 'Error');
+        });
     }
   }
 
@@ -129,7 +136,6 @@ export class OtpValidationComponent {
         otp: this.otp?.toString() || '',
         actionBy: this.changePasswordData.actionBy,
       };
-      
       this.authService.changePassword(data).subscribe(
         (response: any) => {
           if (response.code === 200) {
@@ -141,6 +147,24 @@ export class OtpValidationComponent {
           this.toastr.error(error?.error?.message, 'Error');
         }
       );
+
+    } else if (this.isForgetPasswordFlow) {
+      const data = {
+        userEmailId: this.forgetPasswordData.userEmailId,
+        otp: this.otp?.toString() || '',
+        password: this.forgetPasswordData.password,
+      };
+
+      this.authService.forgetPassword(data).subscribe(
+        res => {
+          if (res.code === 200) {
+            this.toastr.success(res.message, 'Success');
+            this.router.navigate(['/auth/login']);
+          }
+        },
+        (error) => {
+          this.toastr.error(error?.error?.message, 'Error');
+        });
     } else {
       // Existing signup OTP verification logic
       console.log(this.passwordData);
@@ -150,7 +174,7 @@ export class OtpValidationComponent {
         "contactNo": this.passwordData.contactNo,
         "password": this.passwordData.password,
         "organisation": this.passwordData.organisation,
-        "otp":this.otp,
+        "otp": this.otp,
         "methodType": this.passwordData.methodType,
         "designation": this.passwordData?.designation
       };
@@ -179,6 +203,8 @@ export class OtpValidationComponent {
   onBackSignUp() {
     if (this.isChangePasswordFlow) {
       this.router.navigate(['/auth/change-password']);
+    } else if (this.isForgetPasswordFlow) {
+      this.router.navigate(['/auth/forget-password']);
     } else {
       this.router.navigate(['/signup']);
     }
