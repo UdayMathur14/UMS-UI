@@ -1,6 +1,7 @@
 <div class="page-title">
   <h1>{{ roleMenuId ? 'Edit' : 'Create' }} App Role Menu Mapping</h1>
   <div class="action-buttons">
+    <!-- (click)="buildAndUpdateRoleMenuMapping()" -->
     <button class="custom-button-regulr" (click)="onSubmit()">Save</button>
     <button class="custom-button-regulr" (click)="addMenu()" [disabled]="!selectedRole" *ngIf="!roleMenuId">Add Menu</button>
     <button class="custom-button-secondary" (click)="onCancel()">Cancel</button>
@@ -65,7 +66,7 @@
             <div class="custom-form-input">
               <label>Menu Name</label>
               <ng-select class="input-field" dropdownPosition="bottom" placeholder="Select Menu Name"
-                formControlName="menuName" (change)="onMenuChange($event, i)">
+                formControlName="menuName" (change)="onMenuChange($event, i)" [readonly]="isUpdateMode">
                 <ng-option *ngFor="let menu of allMenus" [value]="menu?.id">{{menu?.menuName}}</ng-option>
               </ng-select>
             </div>
