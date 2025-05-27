@@ -82,6 +82,7 @@ export class LoginComponent implements OnInit, AfterViewInit {
       .subscribe(
         (response: any) => {
           const resData = JSON.stringify(response);
+          const firstAttempt = response?.firstAttempt;
           localStorage.setItem('data', resData);
           const storedData = localStorage.getItem('data');
           if (storedData) {
@@ -93,15 +94,17 @@ export class LoginComponent implements OnInit, AfterViewInit {
                 app.name.toLowerCase().replace(/\s/g, '') ===
                 'usermanagamentsystem'
             );
-            if (dataObj.apps.length == 1 && userApp) {
+            if (dataObj.apps.length == 1 && userApp && !firstAttempt) {
               window.location.href = userApp.route;
               // this.router.navigate(['/masters'])
-            } else if (dataObj.apps.length == 1 && !userApp) {
+            } else if (dataObj.apps.length == 1 && !userApp && !firstAttempt) {
               const appRoute = dataObj.apps[0].route;
               const appId = dataObj.apps[0].id;
               window.location.href = `${appRoute}?data=${token}&appId=${appId}`;
-            } else {
+            } else if (!firstAttempt) {
               this.router.navigate(['/dashboard']);
+            } else {
+              this.router.navigate(['/change-password']);
             }
 
             // if (userApp) {
