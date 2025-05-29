@@ -334,9 +334,6 @@ export class AddEditAppRoleMenuMappingComponent implements OnInit {
     this.getSelectedMenu(menuIndex);
   }
 
-
-
-
   // onSubmit() {
   //     const formValue = this.menuForm.value;
   //     console.log("FORM VALUE",formValue);
@@ -464,7 +461,6 @@ export class AddEditAppRoleMenuMappingComponent implements OnInit {
       this.roleAppMenuMappingService.updateRoleAppMenu(this.roleMenuId, payload).subscribe({
         next: () => {
           this.toastr.success('Role menu mapping updated successfully');
-          this.router.navigate(['/your/listing-page']); // Update route accordingly
         },
         error: (error) => {
           this.toastr.error(error?.error?.message || 'Update failed');
@@ -475,7 +471,6 @@ export class AddEditAppRoleMenuMappingComponent implements OnInit {
       this.roleAppMenuMappingService.roleAppMenuCreate(payload).subscribe({
         next: () => {
           this.toastr.success('Role menu mapping created successfully');
-          this.router.navigate(['/your/listing-page']); // Update route accordingly
         },
         error: (error) => {
           this.toastr.error(error?.error?.message || 'Creation failed');
