@@ -1,9 +1,9 @@
 <div class="page-title">
   <h1>{{ roleMenuId ? 'Edit' : 'Create' }} App Role Menu Mapping</h1>
   <div class="action-buttons">
-    <!-- (click)="buildAndUpdateRoleMenuMapping()" -->
     <button class="custom-button-regulr" (click)="onSubmit()">Save</button>
-    <button class="custom-button-regulr" (click)="addMenu()" [disabled]="!selectedRole" *ngIf="!roleMenuId">Add Menu</button>
+    <button class="custom-button-regulr" (click)="addMenu()" [disabled]="!selectedRole" *ngIf="!roleMenuId">Add
+      Menu</button>
     <button class="custom-button-secondary" (click)="onCancel()">Cancel</button>
   </div>
 </div>
@@ -45,7 +45,7 @@
           <div class="col-6">
             <h5 class="fw-bold text-primary">Menu {{ i + 1 }}</h5>
           </div>
-          <div class="col-6 text-end">
+          <div class="col-6 text-end" *ngIf="!isUpdateMode">
             <button type="button" class="custom-button-regulr" [ngbPopover]="popContent" [autoClose]="'outside'"
               triggers="manual" #p="ngbPopover" (click)="p.open()">
               Add Sub Menu
@@ -74,9 +74,13 @@
           <div class="col-lg-4">
             <div class="custom-form-input">
               <label>Permissions</label>
+              <!-- <ng-multiselect-dropdown [settings]="permissionDropdown" [data]="menuPermissionsMap[i] || []"
+                formControlName="permissions">
+              </ng-multiselect-dropdown> -->
               <ng-multiselect-dropdown [settings]="permissionDropdown" [data]="menuPermissionsMap[i] || []"
                 formControlName="permissions">
               </ng-multiselect-dropdown>
+
             </div>
           </div>
         </div>
@@ -94,7 +98,8 @@
                   <div class="custom-form-input">
                     <label>Name<span class="text-danger">*</span></label>
                     <ng-select class="input-field" dropdownPosition="bottom" placeholder="Select Menu Name"
-                      formControlName="menuName" (change)="getSubMenuPermissions($event, i, j)">
+                      formControlName="menuName" (change)="getSubMenuPermissions($event, i, j)"
+                      [readonly]="isUpdateMode">
                       <ng-option *ngFor="let submenu of allSubmenus"
                         [value]="submenu?.id">{{submenu?.menuName}}</ng-option>
                     </ng-select>
@@ -107,6 +112,11 @@
                       [data]="subMenuPermissionsMap[i + '-' + j] || []" formControlName="permissions">
                     </ng-multiselect-dropdown>
                   </div>
+                </div>
+                <div class="col-lg-1" *ngIf="!isUpdateMode">
+                  <button type="button" class="btn btn-danger mt-4" (click)="removeSubMenu(i, j)">
+                    <i class="bi bi-trash"></i>
+                  </button>
                 </div>
               </div>
             </div>

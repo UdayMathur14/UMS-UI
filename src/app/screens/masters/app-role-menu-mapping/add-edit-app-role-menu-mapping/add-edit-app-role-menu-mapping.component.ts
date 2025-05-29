@@ -69,7 +69,7 @@ export class AddEditAppRoleMenuMappingComponent implements OnInit {
     this.getApps();
     this.getRolesList();
     this.dropdownData();
-    // this.getAllMenus();
+    this.getAllMenus();
     if (this.roleMenuId) {
       this.isUpdateMode = true;
       this.getRoleAppMenuById();
@@ -79,6 +79,11 @@ export class AddEditAppRoleMenuMappingComponent implements OnInit {
         this.getAllMenus();
       }, 2000);
     }
+
+    //     if (this.roleMenuId) {
+    //   this.isUpdateMode = true;
+    // }
+    // this.getAllMenus(); 
 
 
 
@@ -215,40 +220,67 @@ export class AddEditAppRoleMenuMappingComponent implements OnInit {
     return parts.length > 1 ? parts[parts.length - 1] : "";
   }
 
+  // getAllMenus() {
+  //   // debugger;
+  //   const menuPermissions: string[] = [];
+  //   const uniquePermissions = new Set<string>();
+  //   this.loadSpinner = true;
+  //   const data = {
+  //     status: 'Active',
+  //     menuName: this.menuName,
+  //     appName: ""
+  //   };
+  //   console.log(this.menuName, "MENU NAME");
+
+  //   this.appMenuMappingService
+  //     .appMenuMappingData(this.userId, this.offset, this.count, data)
+  //     .subscribe(
+  //       (response: any) => {
+  //         this.allMenus = response.menus;
+  //         console.log(this.allMenus, "permissionName");
+
+  //         this.allMenus.forEach((menu: any) => {
+  //           // Handle top-level menu permissions
+  //           if (menu.permissions) {
+  //             menu.permissions.forEach((perm: any) => {
+  //               const type = this.extractPermissionType(perm.permissionName);
+  //               if (type) uniquePermissions.add(type);
+  //             });
+  //           }
+  //         });
+  //         menuPermissions.push(...Array.from(uniquePermissions));
+  //         console.log(menuPermissions, "menuPermissions");
+
+
+
+  //         this.loadSpinner = false;
+  //       },
+  //       (error) => {
+  //         this.toastr.error(error?.error?.message, 'Error');
+  //         this.loadSpinner = false;
+  //       }
+  //     );
+  // }
+
   getAllMenus() {
-    // debugger;
-    const menuPermissions: string[] = [];
-    const uniquePermissions = new Set<string>();
-    this.loadSpinner = true;
     const data = {
       status: 'Active',
       menuName: this.menuName,
       appName: ""
     };
-    console.log(this.menuName, "MENU NAME");
+
+    this.loadSpinner = true;
 
     this.appMenuMappingService
       .appMenuMappingData(this.userId, this.offset, this.count, data)
       .subscribe(
         (response: any) => {
           this.allMenus = response.menus;
-          console.log(this.allMenus, "permissionName");
-
-          this.allMenus.forEach((menu: any) => {
-            // Handle top-level menu permissions
-            if (menu.permissions) {
-              menu.permissions.forEach((perm: any) => {
-                const type = this.extractPermissionType(perm.permissionName);
-                if (type) uniquePermissions.add(type);
-              });
-            }
-          });
-          menuPermissions.push(...Array.from(uniquePermissions));
-          console.log(menuPermissions, "menuPermissions");
-
-
-
           this.loadSpinner = false;
+
+          if (this.isUpdateMode) {
+            this.getRoleAppMenuById();
+          }
         },
         (error) => {
           this.toastr.error(error?.error?.message, 'Error');
@@ -256,6 +288,7 @@ export class AddEditAppRoleMenuMappingComponent implements OnInit {
         }
       );
   }
+
 
   getSelectedMenu(menuIndex?: any) {
     this.loadSpinner = true;
@@ -368,10 +401,7 @@ export class AddEditAppRoleMenuMappingComponent implements OnInit {
   //     );
   // }
 
-
-
   //my code --->
-
 
   onSubmit() {
     if (this.menuForm.invalid) {
@@ -382,37 +412,30 @@ export class AddEditAppRoleMenuMappingComponent implements OnInit {
     const formData = this.menuForm.value;
     const allowedPermissions = ['ADD', 'EDIT', 'VIEW'];
 
-    const menuDetail = this.roleMenuByIdData?.menuDetails?.map((menu: any, menuIndex: number) => {
-      const parentPermissions = menu.permissionDetails
-        .filter((p: any) => {
-          const permType = p.permissionName?.split('_').pop();
-          return allowedPermissions.includes(permType);
-        })
-        .map((p: any) => ({
-          permissionId: p.permissionId,
-          permissionName: p.permissionName?.split('_').pop(),
+    const menuDetail = formData.menu.map((menuItem: any, menuIndex: number) => {
+      const matchedMenu = this.allMenus.find((m: any) => m.id === menuItem.menuName);
+      const parentPermissions = menuItem.permissions.map((perm: any) => ({
+        permissionId: perm.id,
+        permissionName: perm.permissionName,
+        status: 'Active',
+      }));
+
+      const subMenuLists = (menuItem.subMenu || []).map((subMenuItem: any) => {
+        const matchedSub = matchedMenu?.subMenu?.find((s: any) => s.id === subMenuItem.menuName);
+
+        const subPermissions = (subMenuItem.permissions || []).map((perm: any) => ({
+          permissionId: perm.id,
+          permissionName: perm.permissionName,
           status: 'Active',
         }));
 
-      const subMenuLists = menu.subMenuLists.map((subMenu: any) => {
-        const filteredSubPermissions = subMenu.permissionDetails
-          .filter((p: any) => {
-            const permType = p.permissionName?.split('_').pop();
-            return allowedPermissions.includes(permType);
-          })
-          .map((p: any) => ({
-            permissionId: p.permissionId,
-            permissionName: p.permissionName?.split('_').pop(),
-            status: 'Active',
-          }));
-
         return {
           status: 'Active',
-          menuId: subMenu.menuId,
-          menuName: subMenu.menuName,
-          parentMenuId: menu.menuId,
-          parentMenuName: menu.menuName,
-          permissionDetails: filteredSubPermissions,
+          menuId: subMenuItem.menuName,
+          menuName: matchedSub?.menuName || '',
+          parentMenuId: menuItem.menuName,
+          parentMenuName: matchedMenu?.menuName || '',
+          permissionDetails: subPermissions,
         };
       });
 
@@ -420,12 +443,13 @@ export class AddEditAppRoleMenuMappingComponent implements OnInit {
         id: this.roleMenuId || '',
         actionBy: this.userId,
         status: 'Active',
-        menuId: menu.menuId,
-        menuName: menu.menuName,
-        subMenuLists: subMenuLists,
+        menuId: menuItem.menuName,
+        menuName: matchedMenu?.menuName || '',
+        subMenuLists,
         permissionDetails: parentPermissions,
       };
     });
+
 
     const payload = {
       appId: formData.appName,
@@ -465,6 +489,13 @@ export class AddEditAppRoleMenuMappingComponent implements OnInit {
     this.router.navigate(['/masters/app-role-menu-mapping']);
   }
 
+  removeSubMenu(menuIndex: number, subMenuIndex: number) {
+    const subMenuArray = this.subMenus(menuIndex);
+    if (subMenuArray) {
+      subMenuArray.removeAt(subMenuIndex);
+    }
+  }
+
   getRoleAppMenuById() {
     this.loadSpinner = true;
     this.roleAppMenuMappingService.roleAppMenuDataById(this.roleMenuId).subscribe(
@@ -489,20 +520,17 @@ export class AddEditAppRoleMenuMappingComponent implements OnInit {
   mapPermissions(permissions: any[]): any[] {
     const allowedPermissions = ['ADD', 'EDIT', 'VIEW'];
 
-    const existingPermissions = (permissions || [])
+    return (permissions || [])
       .map((perm) => {
         const lastWord = perm.permissionName.split('_').pop()?.toUpperCase();
         return allowedPermissions.includes(lastWord || '')
           ? {
-            id: perm?.id || '',
-            permissionName: lastWord,
-            status: perm?.status,
+            id: perm?.permissionId || perm?.id || '',
+            permissionName: lastWord
           }
           : null;
       })
-
       .filter(Boolean);
-    return [...existingPermissions];
   }
 
   patchMenuForm(menuList: any) {
@@ -514,23 +542,48 @@ export class AddEditAppRoleMenuMappingComponent implements OnInit {
 
     this.menus().clear();
 
-    menuList?.menuDetails.forEach((menuItem: any, index: any) => {
+    menuList?.menuDetails.forEach((menuItem: any, index: number) => {
+      const menuId = menuItem.menuId;
+      const matchedMenu = this.allMenus.find((m: any) => m.id === menuId);
+
+      const allPermissions = matchedMenu?.permissions?.map((perm: any) => ({
+        id: perm.id,
+        permissionName: perm.permissionName.split('_').pop()
+      })) || [];
+
+      const selectedPermissions = this.mapPermissions(menuItem.permissionDetails);
+
+      this.menuPermissionsMap[index] = allPermissions;
+
       const menuGroup = this.formBuilder.group({
-        menuName: [menuItem.menuId, Validators.required],
-        permissions: [this.mapPermissions(menuItem.permissionDetails)],
+        menuName: [menuId, Validators.required],
+        permissions: [selectedPermissions],
         subMenu: this.formBuilder.array([]),
       });
 
       if (menuItem.subMenuLists && menuItem.subMenuLists.length) {
         const subMenuArray = menuGroup.get('subMenu') as FormArray;
 
-        menuItem.subMenuLists.forEach((subMenuItem: any, subIndex: any) => {
-          console.log("subMenuItem", subMenuItem);
+        menuItem.subMenuLists.forEach((subMenuItem: any, subIndex: number) => {
+          const subMenuId = subMenuItem.menuId;
+          const parentMenu = this.allMenus.find((m: any) => m.id === menuId);
+          const matchedSubMenu = parentMenu?.subMenu?.find((s: any) => s.id === subMenuId);
+
+          const allSubPermissions = matchedSubMenu?.permissions?.map((perm: any) => ({
+            id: perm.id,
+            permissionName: perm.permissionName.split('_').pop()
+          })) || [];
+
+          this.allSubmenus = parentMenu?.subMenu || []; //to show submenus name only insteadof id in dropdown
+
+          const selectedSubPermissions = this.mapPermissions(subMenuItem.permissionDetails);
+
+          this.subMenuPermissionsMap[`${index}-${subIndex}`] = allSubPermissions;
 
           const subMenuGroup = this.formBuilder.group({
-            id: [subMenuItem.menuId],
-            menuName: [subMenuItem.menuId, Validators.required],
-            permissions: [this.mapPermissions(subMenuItem.permissionDetails)],
+            id: [subMenuId],
+            menuName: [subMenuId, Validators.required],
+            permissions: [selectedSubPermissions],
           });
 
           subMenuArray.push(subMenuGroup);
