@@ -35,17 +35,18 @@
         Menu Details
       </div>
     </div>
-  
-  
+
+
     <div class="row mt-4" formArrayName="menu">
-      <div *ngFor="let menu of menus().controls; let i = index" [formGroupName]="i" class="menu-card p-3 border rounded">
+      <div *ngFor="let menu of menus().controls; let i = index" [formGroupName]="i"
+        class="menu-card p-3 border rounded">
         <div class="row align-items-center">
           <div class="col-6">
             <h5 class="fw-bold text-primary">Menu {{ i + 1 }}</h5>
           </div>
           <div class="col-6 text-end">
             <button type="button" class="custom-button-regulr" [ngbPopover]="popContent" [autoClose]="'outside'"
-              triggers="manual" #p="ngbPopover" (click)="p.open()"  [disabled]="!isMenuName(i)">
+              triggers="manual" #p="ngbPopover" (click)="p.open()" [disabled]="!isMenuName(i)">
               Add Sub Menu
             </button>
             <ng-template #popContent>
@@ -56,9 +57,13 @@
                 Add
               </button>
             </ng-template>
+            <!-- Delete icon for Menu -->
+            <button type="button" class="btn btn-danger btn-sm ms-2" (click)="removeMenu(i)" *ngIf="!menuId">
+              <i class="bi bi-trash"></i>
+            </button>
           </div>
         </div>
-  
+
         <!-- Menu Fields -->
         <div class="row mt-3">
           <div class="col-lg-3">
@@ -96,11 +101,11 @@
               <label>Permissions</label>
               <ng-multiselect-dropdown [settings]="permissionDropdown" [data]="permissionData"
                 formControlName="permissions">
-              </ng-multiselect-dropdown >
+              </ng-multiselect-dropdown>
             </div>
           </div>
         </div>
-  
+
         <!-- Submenu Section -->
         <div *ngIf="subMenus(i).length > 0" formArrayName="subMenu" class="mt-4 submenu-section p-3 bg-light rounded">
           <h6 class="fw-bold text-secondary">Sub Menus</h6>
@@ -114,15 +119,11 @@
                 <div class="col-lg-3">
                   <div class="custom-form-input">
                     <label>Name<span class="text-danger">*</span></label>
-                    <input 
-                      type="text" 
-                      formControlName="menuName"
-                      [value]="getPrefilledSubmenuName(i, j)" 
-                      (input)="updateSubmenuName($event, i, j)"
-                    />
+                    <input type="text" formControlName="menuName" [value]="getPrefilledSubmenuName(i, j)"
+                      (input)="updateSubmenuName($event, i, j)" />
                   </div>
                 </div>
-                
+
                 <div class="col-lg-3">
                   <div class="custom-form-input">
                     <label>Routing<span class="text-danger">*</span></label>
@@ -164,10 +165,16 @@
                   </div>
                 </div>
               </div>
+              <div class="text-end">
+                <button type="button" class="btn btn-outline-danger btn-sm" (click)="removeSubMenu(i, j)"
+                  *ngIf="!menuId">
+                  <i class="bi bi-trash"></i>
+                </button>
+              </div>
             </div>
           </div>
         </div>
-  
+
       </div>
     </div>
   </form>

@@ -54,7 +54,7 @@ export class AddEditAppMenuMappingComponent implements OnInit {
     this.getApps();
     this.dropdownData();
     this.getPermissions();
-    if(this.menuId){
+    if (this.menuId) {
       this.getAppMenuById();
     }
   }
@@ -77,7 +77,7 @@ export class AddEditAppMenuMappingComponent implements OnInit {
       permissions: [[]],
       subMenu: this.formBuilder.array([]),
     });
-    
+
     this.menus().push(newMenu);
   }
 
@@ -93,11 +93,24 @@ export class AddEditAppMenuMappingComponent implements OnInit {
         description: [''],
         orderBy: ['', [Validators.required, Validators.pattern('^[0-9]*$')]],
         level: ['', [Validators.required, Validators.pattern('^[0-9]*$')]],
-        status:[''],
+        status: [''],
         permissions: [[]],
       });
 
       subMenuArray.push(newSubMenu);
+    }
+  }
+
+  // Delete a Menu
+  removeMenu(index: number): void {
+    this.menus().removeAt(index);
+  }
+
+  // Delete a Sub Menu
+  removeSubMenu(menuIndex: number, subMenuIndex: number): void {
+    const subMenuArray = this.subMenus(menuIndex);
+    if (subMenuArray) {
+      subMenuArray.removeAt(subMenuIndex);
     }
   }
 
@@ -122,8 +135,8 @@ export class AddEditAppMenuMappingComponent implements OnInit {
     }));
   }
 
-  onAppChange(data: any){
-    if(data && !this.menuId && this.menus().length === 0){
+  onAppChange(data: any) {
+    if (data && !this.menuId && this.menus().length === 0) {
       this.appData = data;
       this.addMenu()
     }
@@ -136,10 +149,10 @@ export class AddEditAppMenuMappingComponent implements OnInit {
       const appId = this.appsData.find(
         (item: any) => item?.value == formValue.appName
       )?.id;
-    
+
       const mapPermissions = (formPermissions: any[], getByIdPermissions: any[]) => {
         const permissionTypes = ['ADD', 'EDIT', 'VIEW'];
-      
+
         return permissionTypes
           .map((permType) => {
             const formPerm = formPermissions.find((p: any) => p.permissionName === permType);
@@ -148,19 +161,19 @@ export class AddEditAppMenuMappingComponent implements OnInit {
             );
             if (formPerm && getByIdPerm) {
               return { id: getByIdPerm.id, permission: permType, status: 'Active' };
-            } 
+            }
             if (formPerm && !getByIdPerm) {
               return { id: '', permission: permType, status: 'Active' };
-            } 
+            }
             if (!formPerm && getByIdPerm) {
               return { id: getByIdPerm.id, permission: permType, status: 'Inactive' };
             }
-      
+
             return null;
           })
           .filter((perm) => perm !== null);
       };
-      
+
       const payload = {
         status: formValue.status,
         appName: formValue.appName,
@@ -177,7 +190,7 @@ export class AddEditAppMenuMappingComponent implements OnInit {
         subMenu: formValue.menu[0]?.subMenu.map((submenu: any) => {
           const existingSubmenu = this.menuById[0].subMenu?.find(
             (item: any) => item.id === submenu.id
-            
+
           );
           return {
             id: submenu.id || null,
@@ -194,7 +207,7 @@ export class AddEditAppMenuMappingComponent implements OnInit {
           };
         }),
       };
-    
+
       this.menuService.updateAppMenu(this.menuId, payload).subscribe(
         (response: any) => {
           this.loadSpinner = false;
@@ -207,8 +220,8 @@ export class AddEditAppMenuMappingComponent implements OnInit {
         }
       );
     }
-    
-     else {
+
+    else {
       const formValue = this.menuForm.value;
       const appId = this.appsData.find(
         (item: any) => item?.value == formValue.appName
@@ -236,7 +249,7 @@ export class AddEditAppMenuMappingComponent implements OnInit {
           })),
         })),
       };
-  
+
       this.menuService.appMenuCreate(payload).subscribe(
         (response: any) => {
           this.loadSpinner = false;
@@ -249,7 +262,7 @@ export class AddEditAppMenuMappingComponent implements OnInit {
         }
       );
     }
-    
+
   }
 
   onCancel() {
@@ -298,34 +311,34 @@ export class AddEditAppMenuMappingComponent implements OnInit {
       }
     );
   }
-  
+
   mapPermissions(permissions: any[]): any[] {
-    
+
     const allowedPermissions = ['ADD', 'EDIT', 'VIEW'];
-    
+
     const existingPermissions = (permissions || [])
       .map((perm) => {
         const lastWord = perm.permissionName.split('_').pop()?.toUpperCase();
-        return allowedPermissions.includes(lastWord || '') 
-          ? { id: perm?.id || "", permissionName: lastWord, status: perm?.status } 
+        return allowedPermissions.includes(lastWord || '')
+          ? { id: perm?.id || "", permissionName: lastWord, status: perm?.status }
           : null;
       })
-      
+
       .filter(Boolean);
     return [...existingPermissions];
   }
-  
-  
-  
+
+
+
   patchMenuForm(menuList: any[]) {
     if (!menuList.length) return;
     this.menuForm.patchValue({
       appName: menuList[0].appName,
       status: menuList[0].status,
     });
-  
+
     this.menus().clear();
-  
+
     menuList.forEach((menuItem, index) => {
       const menuGroup = this.formBuilder.group({
         menuName: [menuItem.menuName, Validators.required],
@@ -336,10 +349,10 @@ export class AddEditAppMenuMappingComponent implements OnInit {
         permissions: [this.mapPermissions(menuItem.permissions)],
         subMenu: this.formBuilder.array([]),
       });
-  
+
       if (menuItem.subMenu && menuItem.subMenu.length) {
         const subMenuArray = menuGroup.get('subMenu') as FormArray;
-  
+
         menuItem.subMenu.forEach((subMenuItem: any, subIndex: any) => {
           const subMenuGroup = this.formBuilder.group({
             id: [subMenuItem.id],
@@ -351,11 +364,11 @@ export class AddEditAppMenuMappingComponent implements OnInit {
             level: [subMenuItem.level, [Validators.required, Validators.pattern('^[0-9]*$')]],
             permissions: [this.mapPermissions(subMenuItem.permissions)],
           });
-  
+
           subMenuArray.push(subMenuGroup);
         });
       }
-  
+
       this.menus().push(menuGroup);
     });
   }
@@ -363,24 +376,24 @@ export class AddEditAppMenuMappingComponent implements OnInit {
   getPrefilledSubmenuName(menuIndex: number, subMenuIndex: number): string {
     const menuName = this.menuForm.get(['menu', menuIndex, 'menuName'])?.value || '';
     const subMenuName = this.menuForm.get(['menu', menuIndex, 'subMenu', subMenuIndex, 'menuName'])?.value || '';
-    
+
     if (!subMenuName.startsWith(menuName + "_")) {
       this.menuForm.get(['menu', menuIndex, 'subMenu', subMenuIndex, 'menuName'])?.setValue(menuName + "_");
     }
     return this.menuForm.get(['menu', menuIndex, 'subMenu', subMenuIndex, 'menuName'])?.value;
   }
-  
+
   updateSubmenuName(event: Event, menuIndex: number, subMenuIndex: number) {
     let inputValue = (event.target as HTMLInputElement).value.replace(/\s+/g, '_');
     const menuName = this.menuForm.get(['menu', menuIndex, 'menuName'])?.value?.replace(/\s+/g, '_') || '';
-  
+
     if (!inputValue.startsWith(menuName + "_")) {
       this.menuForm.get(['menu', menuIndex, 'subMenu', subMenuIndex, 'menuName'])?.setValue(menuName + "_");
     } else {
       this.menuForm.get(['menu', menuIndex, 'subMenu', subMenuIndex, 'menuName'])?.setValue(inputValue);
     }
   }
-  
+
   isMenuName(menuIndex: number): boolean {
     const menuName = this.menuForm.get(['menu', menuIndex, 'menuName'])?.value;
     return menuName && menuName.trim().length > 0;
@@ -390,5 +403,5 @@ export class AddEditAppMenuMappingComponent implements OnInit {
     let inputValue = (event.target as HTMLInputElement).value.replace(/\s+/g, '_'); // Replace spaces with underscores
     this.menuForm.get(['menu', menuIndex, 'menuName'])?.setValue(inputValue);
   }
-  
+
 }
