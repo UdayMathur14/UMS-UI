@@ -29,13 +29,16 @@ export const APIConstant = {
   domainProjectCreate: `${apiPath}/api/v1/domain-Project/create`,
   updateDomainProject: `${apiPath}/api/v1/domain-Project/update`,
   domainProjectById: `${apiPath}/api/v1/domain-Project`,
-  appMenuMapping:`${apiPath}/api/v1/app-menu/search`,
+  appMenuMapping: `${apiPath}/api/v1/app-menu/search`,
   appMenuCreate: `${apiPath}/api/v1/app-menu/create`,
   appMenuGetById: `${apiPath}/api/v1/app-menu/appMenuId`,
   updateAppMenu: `${apiPath}/api/v1/app-menu/update`,
 
-  roleAppMenuMapping:`${apiPath}/api/v1/role-app-menu/search`,
+  roleAppMenuMapping: `${apiPath}/api/v1/role-app-menu/search`,
   roleAppMenuCreate: `${apiPath}/api/v1/role-app-menu/create`,
   roleAppMenuGetById: `${apiPath}/api/v1/role-app-menu`,
-  updateroleAppMenu: `${apiPath}/api/v1/role-app-menu/update`
+  updateroleAppMenu: `${apiPath}/api/v1/role-app-menu/update`,
+
+  forgetPassword: `${apiPath}/api/v1/user-setup/forget-password`,
+  changePassword:`${apiPath}/api/v1/user-setup/change-password`
 };

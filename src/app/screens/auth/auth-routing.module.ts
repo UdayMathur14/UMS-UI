@@ -6,6 +6,7 @@ import { OtpValidationComponent } from './otp-validation/otp-validation.componen
 import { AuthGuard } from '../../core/guards/auth.guard';
 import { DashboardComponent } from './dashboard/dashboard.component';
 import { ChangePasswordComponent } from './change-password/change-password.component';
+import { ForgetPasswordComponent } from './forget-password/forget-password.component';
 // import { ResetPasswordComponent } from './reset-password/reset-password.component';
 
 const routes: Routes = [
@@ -13,7 +14,8 @@ const routes: Routes = [
   { path: 'signup', component: SignupComponent },
   { path: 'otpValidation', component: OtpValidationComponent },
   { path: 'dashboard', component: DashboardComponent },
-  { path: 'change-password', component: ChangePasswordComponent }
+  { path: 'change-password', component: ChangePasswordComponent },
+  { path: 'forget-password', component: ForgetPasswordComponent }
   //   { path: 'reset-password', component: ResetPasswordComponent },
 ];
 

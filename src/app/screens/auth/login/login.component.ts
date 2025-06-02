@@ -53,10 +53,10 @@ export class LoginComponent implements OnInit, AfterViewInit {
               'Profile Missing'
             );
             console.log('called');
-            
+
             this.logout(); // Clear state and redirect to login
           } else {
-           this.getLoginStatus();
+            this.getLoginStatus();
           }
         }, 3000);
       }
@@ -177,7 +177,7 @@ export class LoginComponent implements OnInit, AfterViewInit {
           next: (profile) => {
             this.userProfile = profile;
             this.emailId = this.userProfile?.mail
-            
+
             localStorage.setItem(
               'userProfile',
               JSON.stringify(this.userProfile)
@@ -203,25 +203,29 @@ export class LoginComponent implements OnInit, AfterViewInit {
   }
 
   onForgotPassword() {
+    this.router.navigate(['forget-password']);
+  }
+
+  onChangePassword() {
     this.router.navigate(['change-password']);
   }
 
-getLoginStatus() {
-  this.loadSpinner = true;
-  this.authService.logInUserStatus(this.emailId).subscribe({
-    next: (response: any) => {
-      if (response?.code === 200) {
-        this.router.navigate(['/auth/signup']);
-      } else {
+  getLoginStatus() {
+    this.loadSpinner = true;
+    this.authService.logInUserStatus(this.emailId).subscribe({
+      next: (response: any) => {
+        if (response?.code === 200) {
+          this.router.navigate(['/auth/signup']);
+        } else {
+          this.onSignIn();
+        }
+        this.loadSpinner = false;
+      },
+      error: (err) => {
         this.onSignIn();
+        this.loadSpinner = false;
       }
-      this.loadSpinner = false;
-    },
-    error: (err) => {
-      this.onSignIn();
-      this.loadSpinner = false;
-    }
-  });
-}
+    });
+  }
 
 }
