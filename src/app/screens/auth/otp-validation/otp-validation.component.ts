@@ -158,7 +158,7 @@ export class OtpValidationComponent {
       this.authService.forgetPassword(data).subscribe(
         res => {
           if (res.code === 200) {
-            this.toastr.success(res.message, 'Success');
+            this.toastr.success('Password changed Successfully', 'Success');
             this.router.navigate(['/auth/login']);
           }
         },
