@@ -54,6 +54,7 @@ export class PasswordDataShareService {
   setForgetPassword(data: {
     userEmailId: string | null,
     password: any | null,
+    message: any | null
   }) {
     this.forgetPasswordData = data;
   }

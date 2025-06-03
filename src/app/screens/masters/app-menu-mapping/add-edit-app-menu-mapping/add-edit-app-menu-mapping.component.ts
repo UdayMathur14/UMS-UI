@@ -16,7 +16,7 @@ export class AddEditAppMenuMappingComponent implements OnInit {
   statusOptions = ['Active', 'Inactive'];
   userId: string = '';
   offset = 0;
-  count: number = Number.MAX_VALUE;
+  count: number = 9000000;
   appsData: any;
   loadSpinner: boolean = true;
   permissionData: any[] = [];

@@ -41,15 +41,16 @@ export class ForgetPasswordComponent implements OnInit {
         otp: ''
       };
 
-      this.passwordService.setForgetPassword({
-        userEmailId: data.userEmailId,
-        password: ''
-      });
 
       this.forgetPassword.forgetPassword(data).subscribe(
         (res: any) => {
           if (res.code === 200) {
             this.toastr.success(res.message || 'OTP sent successfully', 'Success');
+                this.passwordService.setForgetPassword({
+        userEmailId: data.userEmailId,
+        password: '',
+        message: res?.message
+      });
             this.router.navigate(['/auth/otpValidation'], {
               queryParams: { email: data.userEmailId }
             });

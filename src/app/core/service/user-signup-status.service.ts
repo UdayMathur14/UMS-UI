@@ -10,7 +10,7 @@ import { CRUDService } from './crud.service';
 })
 export class UserSignupStatusService extends CRUDService<AuthRequest> {
 
-  maxCount: number = Number.MAX_VALUE;
+  maxCount: number = 9000000;
 
    constructor(
       protected override baseService: BaseService,
