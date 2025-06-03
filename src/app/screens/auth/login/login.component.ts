@@ -83,6 +83,7 @@ export class LoginComponent implements OnInit, AfterViewInit {
         (response: any) => {
           const resData = JSON.stringify(response);
           const firstAttempt = response?.firstAttempt;
+          const email = response?.userEmailId
           localStorage.setItem('data', resData);
           const storedData = localStorage.getItem('data');
           if (storedData) {
@@ -104,7 +105,7 @@ export class LoginComponent implements OnInit, AfterViewInit {
             } else if (!firstAttempt) {
               this.router.navigate(['/dashboard']);
             } else {
-              this.router.navigate(['/change-password']);
+             this.router.navigate(['/change-password/', email]);
             }
 
             // if (userApp) {
