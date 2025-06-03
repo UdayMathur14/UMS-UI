@@ -5,7 +5,7 @@ import { name } from '@azure/msal-angular/packageMetadata';
 import { PasswordDataShareService } from '../../../core/service/password-data-share.service';
 import { AuthService } from '../../../core/service/auth.service';
 import { ToastrService } from 'ngx-toastr';
-import { Router } from '@angular/router';
+import { ActivatedRoute, Router } from '@angular/router';
 
 @Component({
   selector: 'app-change-password',
@@ -19,18 +19,21 @@ export class ChangePasswordComponent implements OnInit {
   actionBy = '3fa85f64-5717-4562-b3fc-2c963f66afa6'; // Ideally from localStorage or auth service
   showOldPassword: boolean = false;
   showNewPassword: boolean = false;
+  emailId: string | null = '';
 
 
   constructor(
     private passwordService: PasswordDataShareService,
     private authService: AuthService,
     private toastr: ToastrService,
-    private router: Router
+    private router: Router,
+    private activatedRoute: ActivatedRoute
 
 
   ) { }
 
   ngOnInit() {
+    this.emailId = this.activatedRoute.snapshot.paramMap.get('email');
     this.changePasswordForm = new FormGroup({
       emailId: new FormControl('', [
         Validators.required,
@@ -40,6 +43,9 @@ export class ChangePasswordComponent implements OnInit {
       oldPassword: new FormControl('', [Validators.required, noWhitespaceValidator]),
       newPassword: new FormControl('', [Validators.required, noWhitespaceValidator, this.passwordValidator()]),
     });
+    this.changePasswordForm.patchValue({
+      emailId: this.emailId
+    })
   }
 
 

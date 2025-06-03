@@ -14,7 +14,7 @@ const routes: Routes = [
   { path: 'signup', component: SignupComponent },
   { path: 'otpValidation', component: OtpValidationComponent },
   { path: 'dashboard', component: DashboardComponent },
-  { path: 'change-password', component: ChangePasswordComponent },
+  { path: 'change-password/:email', component: ChangePasswordComponent },
   { path: 'forget-password', component: ForgetPasswordComponent }
   //   { path: 'reset-password', component: ResetPasswordComponent },
 ];
