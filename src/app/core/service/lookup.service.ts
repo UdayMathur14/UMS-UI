@@ -9,7 +9,7 @@ import { APIConstant } from '../constants/api.constant';
 })
 export class LookupService extends CRUDService<AuthRequest> {
 
-  maxCount: number = Number.MAX_VALUE;
+  maxCount: number = 9000000;
 
    constructor(
       protected override baseService: BaseService,

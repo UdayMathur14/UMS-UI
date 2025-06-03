@@ -21,7 +21,7 @@ export class AddEditUserComponent {
   lookups: any = [];
   roleList: any;
   app: any;
-  maxCount: number = Number.MAX_VALUE;
+  maxCount: number = 9000000;
   appData: any = [];
   apps: any[] = [];
 

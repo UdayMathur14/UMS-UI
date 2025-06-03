@@ -25,6 +25,9 @@ export class OtpValidationComponent {
 
   isChangePasswordFlow: boolean = false; // Flag to identify the flow
   isForgetPasswordFlow: boolean = false;
+  enterOtp: boolean= false;
+  enterPassword: boolean = false;
+  signUpFlow: boolean = false;
 
   constructor(
     private router: Router,
@@ -37,10 +40,21 @@ export class OtpValidationComponent {
     this.passwordData = this.passwordService.getPasswordData();
     this.changePasswordData = this.passwordService.getChangePasswordData();
     this.forgetPasswordData = this.passwordService.getForgetPassword();
-
     this.isChangePasswordFlow = this.changePasswordData && this.changePasswordData.userEmailId;
     this.isForgetPasswordFlow = !!(this.forgetPasswordData && this.forgetPasswordData.userEmailId);
+    this.signUpFlow = this.passwordData?.organisation;
     this.startTimer();
+    this.passwordFlag();
+  }
+
+  passwordFlag(){
+   const otpMessage = this.forgetPasswordData.message.replace(/\s+/g, '').toLowerCase();
+    console.log(otpMessage)
+if (otpMessage.includes('otpsentsuccessfully')) {
+  this.enterOtp = true;
+  this.enterPassword = false;
+}
+
   }
 
   startTimer() {
@@ -91,7 +105,7 @@ export class OtpValidationComponent {
         err => this.toastr.error(err?.error?.message, 'Error')
       );
 
-    } else if (this.isForgetPasswordFlow) {
+    } else if (this.isForgetPasswordFlow && this.enterOtp) {
       const data = {
         userEmailId: this.forgetPasswordData.userEmailId,
         otp: '',
@@ -147,7 +161,39 @@ export class OtpValidationComponent {
         }
       );
 
-    } else if (this.isForgetPasswordFlow) {
+    } else if (this.isForgetPasswordFlow && this.enterOtp) {
+      // const validation = this.passwordValidator(this.newPassword);
+      // if (validation) {
+      //   this.toastr.warning(validation, 'Validation Error');
+      //   return;
+      // }
+
+      const data = {
+        userEmailId: this.forgetPasswordData.userEmailId,
+        otp: this.otp?.toString() || '',
+        // password: this.forgetPasswordData.password,
+        password: ''
+      };
+
+      this.authService.forgetPassword(data).subscribe(
+        res => {
+          if (res.code === 200) {
+            this.toastr.success(res?.message, 'Success');
+            const newPassword = res.message.replace(/\s+/g, '').toLowerCase();
+            if(newPassword.includes('pleasesetyourpassword')){
+              this.enterPassword = true;
+              this.enterOtp = false;
+              console.log(this.enterPassword);
+              
+            } else {
+            this.router.navigate(['/auth/login']);
+            }
+          }
+        },
+        (error) => {
+          this.toastr.error(error?.error?.message, 'Error');
+        });
+    } else if (this.isForgetPasswordFlow && this.enterPassword) {
       const validation = this.passwordValidator(this.newPassword);
       if (validation) {
         this.toastr.warning(validation, 'Validation Error');
@@ -156,7 +202,7 @@ export class OtpValidationComponent {
 
       const data = {
         userEmailId: this.forgetPasswordData.userEmailId,
-        otp: this.otp?.toString() || '',
+        otp: '',
         // password: this.forgetPasswordData.password,
         password: this.newPassword
       };
@@ -164,8 +210,16 @@ export class OtpValidationComponent {
       this.authService.forgetPassword(data).subscribe(
         res => {
           if (res.code === 200) {
-            this.toastr.success('Password changed Successfully', 'Success');
+            this.toastr.success(res?.message, 'Success');
+            const newPassword = res.message.replace(/\s+/g, '').toLowerCase();
+            if(newPassword.includes('pleasesetyourpassword')){
+              this.enterPassword = true;
+              this.enterOtp = false;
+              console.log(this.enterPassword);
+              
+            } else {
             this.router.navigate(['/auth/login']);
+            }
           }
         },
         (error) => {

@@ -4,6 +4,7 @@
             <tr class="header">
                 <th>Domain Name</th>
                 <th>Project Name</th>
+                <th>Project Manager</th>
                 <th>Status</th>
                 <th>Action</th>
             </tr>
@@ -13,6 +14,7 @@
             <tr *ngFor="let data of domainProjects">
                 <td>{{data?.domainName || '-'}}</td>
                 <td>{{data?.projectName || '-'}}</td>
+                <td>{{data?.projectManager || '-'}}</td>
                 <td>{{data?.status || '-'}}</td>
                 <td style="cursor: pointer">
                     <button class="icon-button">

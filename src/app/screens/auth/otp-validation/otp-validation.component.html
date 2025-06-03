@@ -9,11 +9,11 @@
             <div class="card shadow">
                 <div class="text-center password-header mb-2 pt-4">Verify OTP</div>
                 <div class="card-body">
-                    <div class="input-field-login">
+                    <div class="input-field-login" *ngIf="(isChangePasswordFlow) || (isForgetPasswordFlow && enterOtp) || signUpFlow">
                         <input class="form-control" (keypress)="validateNo($event)" placeholder="Enter Otp"
                             [(ngModel)]="otp">
                     </div>
-                    <div *ngIf="isForgetPasswordFlow" class="input-field-login mt-3 position-relative">
+                    <div *ngIf="isForgetPasswordFlow && enterPassword" class="input-field-login mt-3 position-relative">
                         <input [type]="showNewPassword ? 'text' : 'password'" class="form-control"
                             placeholder="Enter New Password" [(ngModel)]="newPassword">
                         <img src="assets/images/icons/viewPassword.svg" alt="Toggle Password"

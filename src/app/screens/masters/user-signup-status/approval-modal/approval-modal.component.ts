@@ -16,7 +16,7 @@ export class ApprovalModalComponent implements OnInit {
   userCategory: string = '';
   loadSpinner: boolean = true;
   userId: string = '';
-  maxCount: number = Number.MAX_VALUE;
+  maxCount: number = 9000000;
   roleData: any = [];
   lookups: any = [];
   roleList: any;
