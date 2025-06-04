@@ -401,10 +401,7 @@ export class AddEditAppRoleMenuMappingComponent implements OnInit {
   //my code --->
 
   onSubmit() {
-    if (this.menuForm.invalid) {
-      this.menuForm.markAllAsTouched();
-      return;
-    }
+    if(this.roleMenuId){
 
     const formData = this.menuForm.value;
     const allowedPermissions = ['ADD', 'EDIT', 'VIEW'];
@@ -477,6 +474,69 @@ export class AddEditAppRoleMenuMappingComponent implements OnInit {
         }
       });
     }
+  } else {
+    const formValue = this.menuForm.value;
+      console.log("FORM VALUE",formValue);
+      const appName = this.appsData.find(
+        (item: any) => item?.id == formValue.appName
+      )?.value;
+
+      const roleName = this.roleData?.find((item: any) => item?.id == formValue?.role)?.roleName
+      const payload = {
+        status: 'Active',
+        appId: formValue?.appName,
+        appName: appName,
+        roleId: formValue?.role,
+        roleName: roleName,
+        actionBy: this.userId,
+        menuDetails: formValue?.menu?.map((menuItem: any) => {
+          const matchedMenu = this.allMenus.find(
+            (m: any) => m.id === menuItem.menuName
+          );
+          const matchedSubMenus = menuItem.subMenu?.map((subMenuItem: any) => {
+            const matchedSubMenu = matchedMenu?.subMenu?.find(
+              (sm: any) => sm.id === subMenuItem.menuName
+            );
+
+            return {
+              menuId: subMenuItem.menuName || '',
+              menuName: matchedSubMenu?.menuName || '',
+              parentMenuId: menuItem.menuName || '',
+              parentMenuName: matchedMenu?.menuName || '',
+              permissionDetails: subMenuItem.permissions
+                ? subMenuItem.permissions.map((permission: any) => ({
+                  permissionId: permission.id || '',
+                  permissionName: permission.permissionName || '',
+                }))
+                : [],
+            };
+          }) || [];
+
+          return {
+            menuId: menuItem.menuName || '',
+            menuName: matchedMenu?.menuName || '',
+            subMenuLists: matchedSubMenus,
+            permissionDetails: menuItem.permissions
+              ? menuItem.permissions.map((permission: any) => ({
+                permissionId: permission.id || '',
+                permissionName: permission.permissionName || '',
+              }))
+              : [],
+          };
+        }) || [],
+      };
+      this.roleAppMenuMappingService.roleAppMenuCreate(payload).subscribe(
+        (response: any) => {
+          this.loadSpinner = false;
+          this.toastr.success('App Menu Mapping ' + response.message);
+          this.onCancel();
+        },
+        (error) => {
+          this.toastr.error(error?.error?.message, 'Error');
+          this.loadSpinner = false;
+        }
+      );
+  }
   }
 
 

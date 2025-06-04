@@ -7,7 +7,7 @@
     <div class="row justify-content-center align-items-center" style="height: 100vh;">
         <div class="col-md-6">
             <div class="card shadow">
-                <div class="text-center password-header mb-2 pt-4">Verify OTP</div>
+                <div class="text-center password-header mb-2 pt-4">{{isForgetPasswordFlow && enterPassword ? 'Enter Password': 'Verify OTP'}}</div>
                 <div class="card-body">
                     <div class="input-field-login" *ngIf="(isChangePasswordFlow) || (isForgetPasswordFlow && enterOtp) || signUpFlow">
                         <input class="form-control" (keypress)="validateNo($event)" placeholder="Enter Otp"
