@@ -9,9 +9,25 @@ import { Router } from '@angular/router';
 export class RoleAppMenuMappingGridTableComponent {
   @Input() roleAppMenuMapping: any;
 
-    constructor(private router: Router){}
+  constructor(private router: Router) { }
+
+  onEdit(id: string = '') {
+    this.router.navigate(['/masters/edit-app-role-menu-mapping', id])
+  }
   
-    onEdit(id: string = ''){
-      this.router.navigate(['/masters/edit-app-role-menu-mapping', id])
-    }
+  getPermissionActions(menuDetails: any[]): string[] {
+    const actions: string[] = [];
+
+    menuDetails?.forEach(menu => {
+      menu.permissionDetails?.forEach((perm: any) => {
+        const parts = perm.permissionName?.split('_');
+        const action = parts?.[parts.length - 1];
+        if (action && !actions.includes(action)) {
+          actions.push(action);
+        }
+      });
+    });
+
+    return actions;
+  }
 }
