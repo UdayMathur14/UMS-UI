@@ -12,6 +12,7 @@ import { InputIntegerValidator } from '../../core/utilities/inputIntegerValidato
 import { ChangePasswordComponent } from './change-password/change-password.component';
 import { ForgetPasswordComponent } from './forget-password/forget-password.component';
 import { NgSelectModule } from '@ng-select/ng-select';
+import { NewPasswordComponent } from './new-password/new-password.component';
 
 
 @NgModule({
@@ -23,6 +24,7 @@ import { NgSelectModule } from '@ng-select/ng-select';
     InputIntegerValidator,
     ChangePasswordComponent,
     ForgetPasswordComponent,
+    NewPasswordComponent,
   ],
   imports: [
     CommonModule,

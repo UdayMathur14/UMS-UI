@@ -179,11 +179,11 @@ if (otpMessage.includes('otpsentsuccessfully')) {
         res => {
           if (res.code === 200) {
             this.toastr.success(res?.message, 'Success');
+            this.router.navigate(['/auth/new-password', this.forgetPasswordData.userEmailId]);
             const newPassword = res.message.replace(/\s+/g, '').toLowerCase();
             if(newPassword.includes('pleasesetyourpassword')){
               this.enterPassword = true;
               this.enterOtp = false;
-              console.log(this.enterPassword);
               
             } else {
             this.router.navigate(['/auth/login']);
