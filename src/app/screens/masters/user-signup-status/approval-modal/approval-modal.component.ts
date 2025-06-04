@@ -95,6 +95,7 @@ export class ApprovalModalComponent implements OnInit {
   
 
   updateUserSignUpStatus() {
+    this.loadSpinner = true;
     const roleid = this.roleList.find((item:any) => item?.roleName == this.userCategory)?.id;
     const appList = this.app.map((item: any) => ({
       id: item.id,

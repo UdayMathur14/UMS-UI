@@ -22,15 +22,17 @@
 
       <label for="number" class="form-label">Phone Number</label>
       <input type="tel" class="form-control" id="number" formControlName="contactNo" inputIntegerValidator>
-      <small class="text-danger" *ngIf="isFieldRequired('contactNo')" >
+      <small class="text-danger" *ngIf="isFieldRequired('contactNo')">
         Phone number is required.
       </small>
 
-      <label for="name" class="form-label">Company/Organization Name</label>
-      <input type="text" class="form-control" id="name" formControlName="organisation">
-      <small class="text-danger" *ngIf="isFieldRequired('organisation')">
-        Organization name is required.
-      </small>
+      <label for="organisation">Company/Organization Name</label>
+      <div class="custom-form-input-signup">
+        <ng-select [items]="filteredOrganisations" bindLabel="organisation" bindValue="organisation" [searchable]="true"
+          placeholder="Search organisation..." formControlName="organisation" (search)="onSearchOrganisation($event)">
+        </ng-select>
+      </div>
+
 
       <label for="name" class="form-label">Designation</label>
       <input type="text" class="form-control" id="name" formControlName="designation">
@@ -46,4 +48,3 @@
 <div class="spinner" *ngIf="loadSpinner">
   Loading...
 </div>
-

@@ -40,5 +40,6 @@ export const APIConstant = {
   updateroleAppMenu: `${apiPath}/api/v1/role-app-menu/update`,
 
   forgetPassword: `${apiPath}/api/v1/user-setup/forget-password`,
-  changePassword:`${apiPath}/api/v1/user-setup/change-password`
+  changePassword:`${apiPath}/api/v1/user-setup/change-password`,
+  organisationsData: `${apiPath}/api/v1/domainsearch/search`
 };
