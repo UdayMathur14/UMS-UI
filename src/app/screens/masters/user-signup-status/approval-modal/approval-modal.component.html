@@ -34,7 +34,10 @@
             </div>
         </div>
         <div class="col-lg-4 col-md-4">
-            <button class="custom-button-regulr mt-4" (click)="updateUserSignUpStatus()">Submit</button>
+            <button class="custom-button-regulr mt-4" (click)="updateUserSignUpStatus()" [disabled]="!userCategory || !app">Submit</button>
         </div>
     </div>
+</div>
+<div class="spinner" *ngIf="loadSpinner">
+    Loading...
 </div>

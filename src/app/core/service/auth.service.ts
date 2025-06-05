@@ -50,4 +50,10 @@ export class AuthService extends CRUDService<AuthRequest> {
   forgetPassword(data: any) {
     return this.baseService.post(APIConstant.forgetPassword, data);
   }
+
+  organisationData(data: any, offset: any, count: any){
+     const url = `${APIConstant.organisationsData}?offset=${offset}&count=${count}`;
+      return this.baseService.post(url, data);
+  }
+
 }
