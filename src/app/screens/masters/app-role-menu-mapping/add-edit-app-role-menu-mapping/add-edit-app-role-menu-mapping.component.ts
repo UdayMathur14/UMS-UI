@@ -430,11 +430,15 @@ export class AddEditAppRoleMenuMappingComponent implements OnInit {
   //my code --->
 
   onSubmit() {
+<<<<<<< HEAD
   
     // if (this.menuForm.invalid) {
     //   this.menuForm.markAllAsTouched();
     //   return;
     // }
+=======
+    if(this.roleMenuId){
+>>>>>>> f892cff38bfd6ee27ad469b6d8103e6032401222
 
     const formData = this.menuForm.value;
     const allowedPermissions = ['ADD', 'EDIT', 'VIEW'];

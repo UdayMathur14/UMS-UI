@@ -22,7 +22,7 @@ export class AddEditDomainProjectMappingComponent implements OnInit {
   formattedProjectNames: any = []; // For ng-multiselect-dropdown
   selectedProjects: any = []; // Store selected projects
   offset = 0;
-  count: number = Number.MAX_VALUE;
+  count: number = 9000000;
   domainProjectForm = new FormGroup({
     domain: new FormControl('', Validators.required),
     project: new FormControl([], Validators.required), // Changed to array for multi-select

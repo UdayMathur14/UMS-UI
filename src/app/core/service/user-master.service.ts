@@ -9,7 +9,7 @@ import { catchError, throwError } from 'rxjs';
   providedIn: 'root',
 })
 export class UserMasterService extends CRUDService<AuthRequest> {
-  maxCount: number = Number.MAX_VALUE;
+  maxCount: number = 9000000;
 
   constructor(protected override baseService: BaseService) {
     super(baseService, APIConstant.basePath);

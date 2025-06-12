@@ -20,9 +20,14 @@ export class OtpValidationComponent {
   timerInterval: any;
   enableResend: boolean = false;
   otp: number | null = null;
+  newPassword: string = '';
+  showNewPassword: boolean = false;
 
   isChangePasswordFlow: boolean = false; // Flag to identify the flow
   isForgetPasswordFlow: boolean = false;
+  enterOtp: boolean= false;
+  enterPassword: boolean = false;
+  signUpFlow: boolean = false;
 
   constructor(
     private router: Router,
@@ -35,18 +40,12 @@ export class OtpValidationComponent {
     this.passwordData = this.passwordService.getPasswordData();
     this.changePasswordData = this.passwordService.getChangePasswordData();
     this.forgetPasswordData = this.passwordService.getForgetPassword();
-
-
-    // Check if this is change password flow
     this.isChangePasswordFlow = this.changePasswordData && this.changePasswordData.userEmailId;
-    console.log('Password Data:', this.passwordData);
-    console.log('Change Password Data:', this.changePasswordData);
-    console.log('Is Change Password Flow:', this.isChangePasswordFlow);
-
-    // Check if this is forget password flow
     this.isForgetPasswordFlow = !!(this.forgetPasswordData && this.forgetPasswordData.userEmailId);
+    this.signUpFlow = this.passwordData?.organisation;
     this.startTimer();
   }
+
 
   startTimer() {
     if (this.timerInterval) clearInterval(this.timerInterval);
@@ -68,6 +67,15 @@ export class OtpValidationComponent {
     }, 1000);
   }
 
+  passwordValidator(password: string): string | null {
+    if (!password) return 'Password is required.';
+    if (password.length < 6) return 'Password must be at least 6 characters.';
+    if (!/[A-Z]/.test(password) || !/\d/.test(password) || !/[!@#$%^&*(),.?":{}|<>]/.test(password)) {
+      return 'Password must include uppercase, number, and special character.';
+    }
+    return null;
+  }
+
   resendOtp() {
     if (!this.enableResend) return;
 
@@ -75,7 +83,6 @@ export class OtpValidationComponent {
     this.enableResend = false;
 
     if (this.isChangePasswordFlow) {
-      // Resend OTP for change password
       const data = {
         userEmailId: this.changePasswordData.userEmailId,
         oldPassword: this.changePasswordData.oldPassword,
@@ -83,7 +90,6 @@ export class OtpValidationComponent {
         otp: '',
         actionBy: this.changePasswordData.actionBy,
       };
-
       this.authService.changePassword(data).subscribe(
         res => res.code === 200 && this.toastr.success(res.message, 'Success'),
         err => this.toastr.error(err?.error?.message, 'Error')
@@ -93,9 +99,9 @@ export class OtpValidationComponent {
       const data = {
         userEmailId: this.forgetPasswordData.userEmailId,
         otp: '',
-        password: this.forgetPasswordData.password,
+        // password: this.forgetPasswordData.password,
+        password: this.newPassword // Might be empty here
       };
-
       this.authService.forgetPassword(data).subscribe(
         (response: any) => {
           if (response.code === 200) {
@@ -108,7 +114,6 @@ export class OtpValidationComponent {
       );
 
     } else {
-      // Existing signup resend OTP logic
       const data = {
         "name": this.passwordData.controls?.name,
         "emailId": this.passwordData.emailId,
@@ -127,8 +132,6 @@ export class OtpValidationComponent {
 
   submit() {
     if (this.isChangePasswordFlow) {
-      // Submit OTP for change password
-      console.log('Change Password Data:', this.changePasswordData);
       const data = {
         userEmailId: this.changePasswordData.userEmailId,
         oldPassword: this.changePasswordData.oldPassword,
@@ -140,7 +143,9 @@ export class OtpValidationComponent {
         (response: any) => {
           if (response.code === 200) {
             this.toastr.success(response.message, 'Success');
+             this.passwordService.clearChangePasswordData(); 
             this.router.navigate(['/auth/login']);
+
           }
         },
         (error) => {
@@ -149,25 +154,31 @@ export class OtpValidationComponent {
       );
 
     } else if (this.isForgetPasswordFlow) {
+      // const validation = this.passwordValidator(this.newPassword);
+      // if (validation) {
+      //   this.toastr.warning(validation, 'Validation Error');
+      //   return;
+      // }
+
       const data = {
         userEmailId: this.forgetPasswordData.userEmailId,
         otp: this.otp?.toString() || '',
-        password: this.forgetPasswordData.password,
+        // password: this.forgetPasswordData.password,
+        password: ''
       };
 
       this.authService.forgetPassword(data).subscribe(
         res => {
           if (res.code === 200) {
-            this.toastr.success(res.message, 'Success');
-            this.router.navigate(['/auth/login']);
+            this.toastr.success(res?.message, 'Success');
+             this.passwordService.clearForgetPasswordData(); 
+            this.router.navigate(['/auth/new-password', this.forgetPasswordData.userEmailId]);
           }
         },
         (error) => {
           this.toastr.error(error?.error?.message, 'Error');
         });
     } else {
-      // Existing signup OTP verification logic
-      console.log(this.passwordData);
       const data = {
         "name": this.passwordData?.name,
         "emailId": this.passwordData.emailId,

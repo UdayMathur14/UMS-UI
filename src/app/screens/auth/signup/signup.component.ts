@@ -5,6 +5,7 @@ import { Router } from '@angular/router';
 import { PasswordDataShareService } from '../../../core/service/password-data-share.service';
 import { ToastrService } from 'ngx-toastr';
 import { noWhitespaceValidator } from '../../../core/utilities/no-whitespace.validator';
+import { debounceTime, distinctUntilChanged, filter, Subject, switchMap } from 'rxjs';
 
 @Component({
   selector: 'app-signup',
@@ -16,7 +17,13 @@ export class SignupComponent implements OnInit {
   isMicrosoftLogin = false;
   passwordLabel = 'Password';
   loadSpinner: boolean = false;
-  loginType: string = 'Portal'
+  loginType: string = 'Portal';
+  count: number = 900000;
+  organisations: any[] = [];
+  filteredOrganisations: any[] = [];
+  hasFetchedOrganisations = false;
+  lastSearchTerm: string = '';
+
 
   constructor(
     private authService: AuthService,
@@ -83,7 +90,7 @@ export class SignupComponent implements OnInit {
         ]
       ),
       contactNo: new FormControl('', [Validators.required, noWhitespaceValidator]),
-      organisation: new FormControl('',[Validators.required, noWhitespaceValidator]),
+      organisation: new FormControl(null,[Validators.required, noWhitespaceValidator]),
       designation: new FormControl('', [Validators.required, noWhitespaceValidator]),
       methodType: new FormControl(''),
     });
@@ -169,4 +176,55 @@ isEmailInvalid(): any {
   //     return null;
   //   };
   // }
+
+  
+onSearchOrganisation(event: { term: string; items: any[] }) {
+  const term = event.term;
+  console.log('Search term:', term);
+
+  if (term && term.length >= 2) {
+    if (!this.hasFetchedOrganisations) {
+      this.getOrganisationList();
+    } else {
+      this.filterOrganisations(term);
+    }
+  } else {
+    this.filteredOrganisations = [];
+  }
+}
+
+
+getOrganisationList(offset: number = 0, count: number = this.count) {
+  this.loadSpinner = true;
+
+  this.authService.organisationData({}, offset, count).subscribe(
+    (response: any) => {
+      this.organisations = response.registeredOrganisation || [];
+      console.log(this.organisations);
+      
+      this.hasFetchedOrganisations = true;
+      this.loadSpinner = false;
+      this.filterOrganisations(this.lastSearchTerm);
+    },
+    (error) => {
+      this.loadSpinner = false;
+    }
+  );
+}
+
+filterOrganisations(term: string) {
+  this.filteredOrganisations = this.organisations
+    .filter((org: any) =>
+      org.organisation.toLowerCase().includes(term.toLowerCase())
+    );
+
+  const staticOrg = { organisation: 'Diverse Infotech Private Limited' };
+  const exists = this.filteredOrganisations.some(
+    (org) => org.organisation === staticOrg.organisation
+  );
+
+  if (!exists) {
+    this.filteredOrganisations.push(staticOrg);
+  }
+}
 }

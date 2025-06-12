@@ -1,5 +1,5 @@
 import { Component, OnInit } from '@angular/core';
-import { FormGroup, FormControl, Validators, AbstractControl } from '@angular/forms';
+import { FormGroup, FormControl, Validators } from '@angular/forms';
 import { Router } from '@angular/router';
 import { noWhitespaceValidator } from '../../../core/utilities/no-whitespace.validator';
 import { AuthService } from '../../../core/service/auth.service';
@@ -14,7 +14,6 @@ import { PasswordDataShareService } from '../../../core/service/password-data-sh
 export class ForgetPasswordComponent implements OnInit {
   forgetPasswordForm!: FormGroup;
   loadSpinner: boolean = false;
-  showNewPassword: boolean = false;
 
   constructor(
     private router: Router,
@@ -29,12 +28,6 @@ export class ForgetPasswordComponent implements OnInit {
         Validators.required,
         Validators.pattern(/^[a-zA-Z0-9._%+-]+@[a-zA-Z0-9.-]+\.[a-zA-Z]{2,}$/),
         noWhitespaceValidator
-      ]),
-      newPassword: new FormControl('', [
-        Validators.required,
-        Validators.minLength(6),
-        noWhitespaceValidator,
-        this.passwordValidator()
       ])
     });
   }
@@ -45,25 +38,23 @@ export class ForgetPasswordComponent implements OnInit {
     if (this.forgetPasswordForm.valid) {
       const data = {
         userEmailId: this.forgetPasswordForm.controls['emailId'].value,
-        otp: '', // Will be filled in the OTP screen
-        password: this.forgetPasswordForm.controls['newPassword'].value
+        otp: ''
       };
 
-      // Store this data in a service (like Change Password flow), if needed later
-      this.passwordService.setForgetPassword({
-        userEmailId: data.userEmailId,
-        password: data.password,
-      });
 
       this.forgetPassword.forgetPassword(data).subscribe(
         (res: any) => {
           if (res.code === 200) {
-            this.toastr.success(res.message || 'Password reset request successful', 'Success');
+            this.toastr.success(res.message || 'OTP sent successfully', 'Success');
+                this.passwordService.setForgetPassword({
+        userEmailId: data.userEmailId,
+        password: '',
+      });
             this.router.navigate(['/auth/otpValidation'], {
               queryParams: { email: data.userEmailId }
             });
           } else {
-            this.toastr.error(res.message || 'Failed to reset password', 'Error');
+            this.toastr.error(res.message || 'Failed to send OTP', 'Error');
           }
           this.loadSpinner = false;
         },
@@ -73,51 +64,13 @@ export class ForgetPasswordComponent implements OnInit {
         }
       );
     } else {
-      this.markFormGroupTouched(this.forgetPasswordForm);
-      this.toastr.warning('Please fill out all required fields correctly.', 'Validation Error');
+      this.toastr.warning('Please enter a valid email.', 'Validation Error');
       this.loadSpinner = false;
     }
   }
 
-  markFormGroupTouched(formGroup: FormGroup) {
-    Object.values(formGroup.controls).forEach(control => {
-      control.markAsTouched();
-      if (control instanceof FormGroup) {
-        this.markFormGroupTouched(control);
-      }
-    });
-  }
-
   isFieldRequired(field: string): boolean {
     const control = this.forgetPasswordForm.get(field);
-    return control?.touched && (control.hasError('required') || control.hasError('whitespace')) ? true : false;
-  }
-
-  passwordValidator() {
-    return (control: AbstractControl) => {
-      const password = control.value;
-      if (!password) {
-        return null;
-      }
-
-      const errors: any = {};
-
-      // Check minimum length
-      if (password.length < 6) {
-        errors.minLength = true;
-      }
-
-      // Check for special character, uppercase, and number
-      const hasSpecial = /[!@#$%^&*(),.?":{}|<>]/.test(password);
-      const hasUpperCase = /[A-Z]/.test(password);
-      const hasNumber = /\d/.test(password);
-
-      if (!hasSpecial || !hasUpperCase || !hasNumber) {
-        errors.invalidCombination = true;
-      }
-
-      // Return errors object if any errors exist, otherwise null
-      return Object.keys(errors).length > 0 ? errors : null;
-    };
+    return !!control?.touched && (control.hasError('required') || control.hasError('whitespace'));
   }
 }

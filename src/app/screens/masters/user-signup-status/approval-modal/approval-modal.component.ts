@@ -16,7 +16,7 @@ export class ApprovalModalComponent implements OnInit {
   userCategory: string = '';
   loadSpinner: boolean = true;
   userId: string = '';
-  maxCount: number = Number.MAX_VALUE;
+  maxCount: number = 9000000;
   roleData: any = [];
   lookups: any = [];
   roleList: any;
@@ -95,6 +95,7 @@ export class ApprovalModalComponent implements OnInit {
   
 
   updateUserSignUpStatus() {
+    this.loadSpinner = true;
     const roleid = this.roleList.find((item:any) => item?.roleName == this.userCategory)?.id;
     const appList = this.app.map((item: any) => ({
       id: item.id,

@@ -70,5 +70,20 @@ export class PasswordDataShareService {
     return this.forgetPasswordData;
   }
 
+  clearChangePasswordData() {
+  this.changePasswordData = {
+    userEmailId: null,
+    oldPassword: null,
+    newPassword: null,
+    actionBy: null
+  };
+}
+
+clearForgetPasswordData() {
+  this.forgetPasswordData = {
+    userEmailId: null,
+    password: null,
+  };
+}
 
 }

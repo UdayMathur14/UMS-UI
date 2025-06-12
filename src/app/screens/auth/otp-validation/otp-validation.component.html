@@ -1,6 +1,6 @@
 <div class="header d-flex bd-highlight">
-    <div class="mt-3 ms-3" >
-            <img src="../../../assets/images/diplogo.png" class="full-logo">
+    <div class="mt-3 ms-3">
+        <img src="../../../assets/images/diplogo.png" class="full-logo">
     </div>
 </div>
 <div class="container">
@@ -10,23 +10,31 @@
                 <div class="text-center password-header mb-2 pt-4">Verify OTP</div>
                 <div class="card-body">
                     <div class="input-field-login">
-                        <input class="form-control" (keypress)="validateNo($event)"  placeholder="Enter Otp" [(ngModel)]="otp">
+                        <input class="form-control" (keypress)="validateNo($event)" placeholder="Enter Otp"
+                            [(ngModel)]="otp">
+                    </div>
+                    <div *ngIf="isForgetPasswordFlow && enterPassword" class="input-field-login mt-3 position-relative">
+                        <input [type]="showNewPassword ? 'text' : 'password'" class="form-control"
+                            placeholder="Enter New Password" [(ngModel)]="newPassword">
+                        <img src="assets/images/icons/viewPassword.svg" alt="Toggle Password"
+                            (click)="showNewPassword = !showNewPassword"
+                            style="position: absolute; top: 50%; right: 10px; transform: translateY(-50%); width: 12px; height: 12px; cursor: pointer;" />
                     </div>
                     <div class="text-center mt-4">
-                        <button (click)="submit()" [disabled]="!otp" type="button" class="password-button mb-3">Submit OTP</button>
+                        <button (click)="submit()" [disabled]="!otp" type="button" class="password-button mb-3">Submit
+                            OTP</button>
                     </div>
                     <div class="d-flex justify-content-between mt-4">
                         <p class="time">Time Remaining: {{ minutes }}:{{ seconds | number: '2.0' }}</p>
-                        <button type="button" 
-                        class="resend-otp-button" 
-                        [disabled]="!enableResend"
-                        (click)="resendOtp()">Resend OTP</button>
+                        <button type="button" class="resend-otp-button" [disabled]="!enableResend"
+                            (click)="resendOtp()">Resend OTP</button>
                     </div>
-                    
+
                 </div>
             </div>
             <div class="text-center mt-2" style="cursor: pointer;">
-                <p><span (click)="onBackSignUp()" class="pointer"><img src="assets/images/icons/left-angle.svg" alt="" width="6px"> Back</span></p>
+                <p><span (click)="onBackSignUp()" class="pointer"><img src="assets/images/icons/left-angle.svg" alt=""
+                            width="6px"> Back</span></p>
             </div>
         </div>
     </div>

@@ -11,6 +11,8 @@ import { LayoutModule } from '../../layout/layout.module';
 import { InputIntegerValidator } from '../../core/utilities/inputIntegerValidator.directive';
 import { ChangePasswordComponent } from './change-password/change-password.component';
 import { ForgetPasswordComponent } from './forget-password/forget-password.component';
+import { NgSelectModule } from '@ng-select/ng-select';
+import { NewPasswordComponent } from './new-password/new-password.component';
 
 
 @NgModule({
@@ -22,13 +24,15 @@ import { ForgetPasswordComponent } from './forget-password/forget-password.compo
     InputIntegerValidator,
     ChangePasswordComponent,
     ForgetPasswordComponent,
+    NewPasswordComponent,
   ],
   imports: [
     CommonModule,
     AuthRoutingModule,
     ReactiveFormsModule,
     FormsModule,
-    LayoutModule
+    LayoutModule,
+    NgSelectModule
   ]
 })
 export class AuthModule { }
