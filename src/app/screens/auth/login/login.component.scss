@@ -1,196 +1,323 @@
-@import '../../../../assets/SCSS/mixins.scss';
-
-.login-container {
-  display: flex;
+.login-page {
+  font-family: 'Inter', sans-serif;
+  width: 100vw;
   height: 100vh;
-  background: var(--white);
+  display: flex;
 
-  .image-container {
-    background-image: url('../../../../assets/images/tms-login.jpg');
-    background-size: cover;
-    background-repeat: no-repeat;
-    background-position: center center;
-    width: 50%;
+  .login-container {
+    display: flex;
+    width: 100%;
+    height: 100%;
+    overflow: hidden;
   }
 
-  .form-container {
+  .form-section {
     flex: 1;
-    display: flex;
-    justify-content: center;
-    align-items: center;
-    flex-direction: column;
+    padding: 3rem;
+    background: #fff;
+    overflow-y: auto;
 
-    .login-header {
-      width: 400px;
+    .form-header {
+      margin-bottom: 2rem;
 
-      h1 {
-        font-size: var(--spacer-26);
-        font-weight: 600;
-        margin-bottom: 0;
+      .logo {
+        height: 40px;
+        margin-bottom: 1rem;
+      }
+
+      h2 {
+        font-size: 2rem;
+        font-weight: 700;
+        color: #111827;
       }
 
       p {
-        font-size: var(--spacer-12);
-        color: var(--gray1);
-        margin-top: var(--spacer-10);
+        font-size: 1rem;
+        color: #6b7280;
       }
     }
-  }
 
-  .lg-logo img {
-    max-width: var(--spacer-100);
-  }
+    .social-buttons {
+      display: flex;
+      gap: 1rem;
+      margin-bottom: 1rem;
+    }
 
-  form {
-    text-align: center;
+    .microsoft-login-button {
+      flex: 1;
+      padding: 0.75rem;
+      font-size: 0.9rem;
+      font-weight: 600;
+      border: 1px solid #d1d5db;
+      border-radius: 10px;
+      background: #fff;
+      color: #374151;
+      cursor: pointer;
+      transition: 0.2s ease;
+      display: flex;
+      align-items: center;
+      justify-content: center;
 
-    .input-field-login {
-      position: relative;
+      img {
+        margin-right: 6px;
+      }
+
+      &:hover {
+        background: #f9fafb;
+        border-color: #9ca3af;
+      }
+    }
+
+    .google-login-button {
+      flex: 1;
+      padding: 0.75rem;
+      font-size: 0.9rem;
+      font-weight: 600;
+      border: 1px solid #d1d5db;
+      border-radius: 10px;
+      background: #fff;
+      color: #374151;
+      cursor: pointer;
+      transition: 0.2s ease;
+      display: flex;
+      align-items: center;
+      justify-content: center;
+
+      img {
+        margin-right: 6px;
+      }
+
+      &:hover {
+        background: #f9fafb;
+        border-color: #9ca3af;
+      }
+    }
+
+    .form-group {
+      margin-bottom: 1.5rem;
+
+      label {
+        font-weight: 600;
+        font-size: 0.95rem;
+        display: block;
+        margin-bottom: 0.5rem;
+        color: #374151;
+      }
 
       input {
-        width: 400px;
-        outline: none;
-        @include inputFieldLogin(50px);
+        width: 100%;
+        padding: 0.75rem 0.75rem 0.75rem 2.5rem;
+        border: 1px solid #d1d5db;
+        border-radius: 10px;
+        background: #f9fafb;
+        font-size: 1rem;
+
+        &:focus {
+          border-color: #4f46e5;
+          box-shadow: 0 0 0 3px rgba(99, 102, 241, 0.15);
+          outline: none;
+        }
       }
 
-      .img-icon-left,
-      .img-icon-right {
-        position: absolute;
-        width: var(--spacer-15);
+      .input-icon {
+        position: relative;
+
+        i {
+          position: absolute;
+          top: 50%;
+          left: 0.75rem;
+          transform: translateY(-50%);
+          color: #9ca3af;
+        }
+
+        .password-toggle {
+          left: auto;
+          right: 0.75rem;
+          cursor: pointer;
+          color: #6b7280;
+
+          &:hover {
+            color: #374151;
+          }
+        }
       }
 
-      .img-icon-left {
-        left: var(--spacer-10);
-        top: calc(50% - var(--spacer-8));
-      }
-
-      .img-icon-right {
-        cursor: pointer;
-        right: var(--spacer-10);
-        top: calc(50% - var(--spacer-4));
+      .error {
+        font-size: 0.75rem;
+        color: #ef4444;
+        margin-top: 0.25rem;
       }
     }
 
-    .login-button {
-      @include buttonLogin;
-    }
-
-    .reset-password-text {
-      margin-top: var(--spacer-10);
-      font-size: var(--spacer-14);
+    .submit-btn {
+      width: 100%;
+      padding: 0.75rem;
+      font-size: 1rem;
       font-weight: 600;
+      border: none;
+      border-radius: 999px;
+      background: linear-gradient(to right, #4f46e5, #3b82f6);
+      color: #fff;
       cursor: pointer;
+      transition: 0.2s ease;
+      margin-bottom: 1rem;
+
+      &:hover:enabled {
+        background: linear-gradient(to right, #4338ca, #2563eb);
+        transform: translateY(-1px);
+      }
+
+      &:disabled {
+        background: #c7d2fe;
+        cursor: not-allowed;
+      }
+    }
+
+    .buttons {
+      display: flex;
+      justify-content: center;
+      margin-bottom: 1rem;
+
+      .reset-password-text {
+        font-size: 0.9rem;
+        font-weight: 600;
+        cursor: pointer;
+        color: #4f46e5;
+        margin: 0;
+
+        &:hover {
+          text-decoration: underline;
+        }
+      }
+    }
+
+    .redirect {
+      text-align: center;
+      margin-top: 1.5rem;
+      font-size: 0.9rem;
+
+      a {
+        color: #4f46e5;
+        text-decoration: none;
+
+        &:hover {
+          text-decoration: underline;
+        }
+      }
+    }
+
+    .separator {
+      text-align: center;
+      position: relative;
+      width: 100%;
+      margin: 1rem 0;
+
+      span {
+        background: #fff;
+        padding: 0 10px;
+        font-size: 14px;
+        font-weight: 600;
+        color: #6b7280;
+      }
+
+      &:before {
+        content: "";
+        display: block;
+        width: 100%;
+        height: 1px;
+        background: #d1d5db;
+        position: absolute;
+        top: 50%;
+        left: 0;
+        z-index: -1;
+      }
+    }
+
+    #google-signin-button {
+      flex: 1;
+      display: flex;
+      justify-content: center;
+    }
+  }
+
+  .preview-section {
+    flex: 1;
+    background: linear-gradient(to bottom right, #4f46e5, #3b82f6);
+    background-image: url('/assets/images/bg-doodle.png');
+    background-repeat: no-repeat;
+    background-position: center;
+    background-size: cover;
+    color: #fff;
+    padding: 3rem 2rem;
+    display: flex;
+    flex-direction: column;
+    align-items: center;
+    justify-content: center;
+    position: relative;
+
+    img {
+      width: 100%;
+      height: auto;
+      margin-bottom: 2rem;
+      z-index: 2;
+    }
+
+    .caption {
+      text-align: center;
+      z-index: 2;
+
+      h3 {
+        font-size: 1.5rem;
+        font-weight: 600;
+        margin-bottom: 0.5rem;
+      }
+
+      p {
+        font-size: 0.95rem;
+        color: #dbeafe;
+      }
+    }
+
+    &::before {
+      content: "";
+      position: absolute;
+      width: 100%;
+      height: 100%;
+      top: 0;
+      right: 0;
+      background: rgba(79, 70, 229, 0.6);
+      z-index: 1;
+    }
+  }
+
+  .loader {
+    position: absolute;
+    top: 1rem;
+    right: 1rem;
+    font-size: 1rem;
+    color: #6366f1;
+  }
+
+  @media (max-width: 900px) {
+    .login-container {
+      flex-direction: column;
+
+      .preview-section {
+        order: -1;
+        padding: 2rem;
+
+        img {
+          max-width: 250px;
+        }
+
+        .caption h3 {
+          font-size: 1.2rem;
+        }
+      }
+
+      .form-section {
+        padding: 2rem;
+      }
     }
   }
 }
-
-.sign-in-button {
-  display: flex;
-  align-items: center;
-  justify-content: center;
-  // border-radius: 50px;
-  padding: 8px 16px;
-  font-size: 0.9rem;
-  font-weight: 500;
-  color: white;
-  background: linear-gradient(90deg, #0078d4, #005a9e);
-  box-shadow: 0px 4px 6px rgba(0, 0, 0, 0.1);
-  transition: all 0.3s ease;
-  cursor: pointer;
-  text-decoration: none;
-
-  img {
-      margin-right: 8px;
-      transition: transform 0.3s ease;
-  }
-
-  &:hover {
-      background: linear-gradient(90deg, #005a9e, #003a6d);
-      box-shadow: 0px 6px 10px rgba(0, 0, 0, 0.2);
-      transform: translateY(-2px);
-      color: #f1f1f1;
-  }
-
-  &:hover img {
-      transform: scale(1.1);
-  }
-
-  &:active {
-      transform: translateY(1px);
-      box-shadow: 0px 2px 4px rgba(0, 0, 0, 0.1);
-  }
-}
-
-.buttons {
-  display: flex;
-  flex-direction: row;
-  justify-content: space-around;
-}
-
-// Don't remove the below commented scss, it is used for the login button in the login page later
-.microsoft-login-button {
-  // margin-bottom: 20px; // Adds space below the button
-  // width: 100%;
-  max-width: 190px;
-  // max-height: 40px;
-  // display: flex;
-  justify-content: center;
-  align-items: center;
-}
-
-.separator {
-  text-align: center;
-  position: relative;
-  width: 100%;
-  max-width: 400px;
-  margin: 5px 0;
-
-  span {
-    background: var(--white);
-    padding: 0 10px;
-    font-size: 14px;
-    font-weight: 600;
-    color: var(--gray1);
-  }
-
-  &:before {
-    content: "";
-    display: block;
-    width: 100%;
-    height: 1px;
-    background: var(--gray2);
-    position: absolute;
-    top: 50%;
-    left: 0;
-    z-index: -1;
-  }
-}
-
-.google-signin-wrapper {
-  display: flex;
-  justify-content: center;
-  align-items: center;
-}
-
-// #google-signin-button {
-//   width: 400px !important;
-//   height: 50px !important;
-//   display: inline-block;
-// }
-
-// ::ng-deep.nsm7Bb-HzV7m-LgbsSe .nsm7Bb-HzV7m-LgbsSe-Bz112c {
-//   height: 18px;
-//   margin-right: 8px;
-//   min-width: 18px;
-//   width: 18px;
-//   margin-left: 110px !important;
-//   // margin-left: 100px !important;
-//   // justify-content: center !important;
-//   align-items: center;
-//   display: flex;
-//   justify-content: center;
-// }
-
-// ::ng-deep.nsm7Bb-HzV7m-LgbsSe-BPrWId{
-//   padding-right: 110px !important;
-// }
