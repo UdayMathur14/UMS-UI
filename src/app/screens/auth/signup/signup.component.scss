@@ -1,77 +1,137 @@
-.login-container {
+.signup-page {
+  font-family: 'Inter', sans-serif;
+  width: 100vw;
+  height: 100vh;
+  display: flex;
+
+  .signup-container {
     display: flex;
-    height: 100vh;
-    
-    .image-container {
-      background-image: url('../../../../assets/images/tms-login.jpg');
-      background-size: cover;
-      background-repeat: no-repeat;
-      background-position: center center;
-      width: 50%;
-    }
-  }
-  
-  .login-right,
-  .login-left {
-    flex: 1;
-    display: flex;
-    align-items: center;
-    justify-content: center;
-    padding: 2rem;
-  }
-  
-  .login-right {
-    flex-direction: column;
-    background-color: white
-  }
-  
-  .login-right h2 {
-    font-size: 3rem;
-  }
-  
-  .login-right p {
-    margin-bottom: 2rem;
-    font-size: medium;
-  }
-  
-  .login-right form {
     width: 100%;
-    max-width: 300px;
-    display: flex;
-    flex-direction: column;
-  }
-  
-  .login-right form label {
-    margin-top: 1rem;
-  }
-  
-  .login-right form input {
-    padding: 0.5rem;
-    border: 1px solid #ccc;
-    border-radius: 4px;
-  }
-  
-  .btn {
-    padding: 0.75rem;
-    margin-top: 1rem;
-    border: none;
-    border-radius: 4px;
-    cursor: pointer;
-  }
-  
-  .btn-signup {
-    background-color: #4a90e2;
-    color: white;
-  }
-  
-  .login-left {
-    background-color: rgb(218, 104, 104);
-  }
-  
-  .login-info img {
-    max-width: 100%;
     height: 100%;
-    border: 1px solid #ccc;
-    border-radius: 4px;
+    overflow: hidden;
   }
 
+  .form-section {
+    flex: 1;
+    padding: 3rem;
+    background: #fff;
+    overflow-y: auto;
+
+    .form-header {
+      margin-bottom: 2rem;
+
+      .logo {
+        height: 40px;
+        margin-bottom: 1rem;
+      }
+
+      h2 {
+        font-size: 2rem;
+        font-weight: 700;
+        color: #111827;
+      }
+
+      p {
+        font-size: 1rem;
+        color: #6b7280;
+      }
+    }
+
+    .form-group {
+      margin-bottom: 1.5rem;
+
+      label {
+        font-weight: 600;
+        font-size: 0.95rem;
+        display: block;
+        margin-bottom: 0.5rem;
+        color: #374151;
+      }
+
+      input {
+        width: 100%;
+        padding: 0.75rem 0.75rem 0.75rem 2.5rem;
+        border: 1px solid #d1d5db;
+        border-radius: 10px;
+        background: #f9fafb;
+        font-size: 1rem;
+
+        &:focus {
+          border-color: #4f46e5;
+          box-shadow: 0 0 0 3px rgba(99, 102, 241, 0.15);
+          outline: none;
+        }
+      }
+
+      ng-select {
+        width: 100%;
+
+        ::ng-deep .ng-select-container {
+          border: 1px solid #d1d5db;
+          border-radius: 10px;
+          background: #f9fafb;
+        }
+      }
+
+      .input-icon {
+        position: relative;
+
+        i {
+          position: absolute;
+          top: 50%;
+          left: 0.75rem;
+          transform: translateY(-50%);
+          color: #9ca3af;
+        }
+      }
+
+      .error {
+        font-size: 0.75rem;
+        color: #ef4444;
+        margin-top: 0.25rem;
+      }
+    }
+
+    .submit-btn {
+      width: 30%;
+      padding: 10px 20px;
+      font-size: 1rem;
+      font-weight: 600;
+      align-self: center;
+      display: block;
+      margin: 0 auto;
+      border: none;
+      border-radius: 999px;
+      background: linear-gradient(to right, #4f46e5, #3b82f6);
+      color: #fff;
+      cursor: pointer;
+      transition: 0.2s ease;
+      margin-bottom: 1rem;
+
+      &:hover:enabled {
+        background: linear-gradient(to right, #4338ca, #2563eb);
+        transform: translateY(-1px);
+      }
+
+      &:disabled {
+        background: #c7d2fe;
+        cursor: not-allowed;
+      }
+    }
+
+    .redirect {
+      text-align: center;
+      margin-top: 1.5rem;
+      font-size: 0.9rem;
+
+      a {
+        color: #4f46e5;
+        text-decoration: none;
+
+        &:hover {
+          text-decoration: underline;
+        }
+      }
+    }
+  }
+}
