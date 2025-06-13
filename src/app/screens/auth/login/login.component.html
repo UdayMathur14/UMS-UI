@@ -53,7 +53,16 @@
     </div>
 
     <div class="preview-section">
-      <img src="assets/images/dashboard-preview.png" alt="Product Preview" />
+      <div class="image-carousel">
+        <img *ngFor="let img of carouselImages; let i = index" [src]="img" [class.active]="i === currentImageIndex"
+          alt="Preview Image" />
+      </div>
+
+      <div class="carousel-dots">
+        <span *ngFor="let img of carouselImages; let i = index" [class.active]="i === currentImageIndex" class="dot"
+          (click)="currentImageIndex = i"></span>
+      </div>
+
       <div class="caption">
         <h3>Welcome back to your workspace.</h3>
         <p>Continue your journey with our smart productivity platform.</p>
@@ -61,5 +70,5 @@
     </div>
   </div>
 
-  <div class="loader" *ngIf="loadSpinner">Loading...</div>
+  <div class="spinner" *ngIf="loadSpinner">Loading...</div>
 </div>
