@@ -13,6 +13,7 @@ import { RoleAppMenuMappingService } from '../../../../core/service/role-app-men
   styleUrl: './add-edit-app-role-menu-mapping.component.scss',
 })
 export class AddEditAppRoleMenuMappingComponent implements OnInit {
+  deletedSubMenus: any[] = [];
   appsData: any;
   loadSpinner: boolean = true;
   userId: string = '';
@@ -79,14 +80,6 @@ export class AddEditAppRoleMenuMappingComponent implements OnInit {
         this.getAllMenus();
       }, 2000);
     }
-
-    //     if (this.roleMenuId) {
-    //   this.isUpdateMode = true;
-    // }
-    // this.getAllMenus(); 
-
-
-
   }
 
   getApps() {
@@ -151,6 +144,7 @@ export class AddEditAppRoleMenuMappingComponent implements OnInit {
       const newSubMenu = this.formBuilder.group({
         menuName: ['', Validators.required],
         permissions: [[]],
+        isPrefilled: [false],
       });
 
       subMenuArray.push(newSubMenu);
@@ -220,48 +214,6 @@ export class AddEditAppRoleMenuMappingComponent implements OnInit {
     return parts.length > 1 ? parts[parts.length - 1] : "";
   }
 
-  // getAllMenus() {
-  //   // debugger;
-  //   const menuPermissions: string[] = [];
-  //   const uniquePermissions = new Set<string>();
-  //   this.loadSpinner = true;
-  //   const data = {
-  //     status: 'Active',
-  //     menuName: this.menuName,
-  //     appName: ""
-  //   };
-  //   console.log(this.menuName, "MENU NAME");
-
-  //   this.appMenuMappingService
-  //     .appMenuMappingData(this.userId, this.offset, this.count, data)
-  //     .subscribe(
-  //       (response: any) => {
-  //         this.allMenus = response.menus;
-  //         console.log(this.allMenus, "permissionName");
-
-  //         this.allMenus.forEach((menu: any) => {
-  //           // Handle top-level menu permissions
-  //           if (menu.permissions) {
-  //             menu.permissions.forEach((perm: any) => {
-  //               const type = this.extractPermissionType(perm.permissionName);
-  //               if (type) uniquePermissions.add(type);
-  //             });
-  //           }
-  //         });
-  //         menuPermissions.push(...Array.from(uniquePermissions));
-  //         console.log(menuPermissions, "menuPermissions");
-
-
-
-  //         this.loadSpinner = false;
-  //       },
-  //       (error) => {
-  //         this.toastr.error(error?.error?.message, 'Error');
-  //         this.loadSpinner = false;
-  //       }
-  //     );
-  // }
-
   getAllMenus() {
     const data = {
       status: 'Active',
@@ -277,8 +229,6 @@ export class AddEditAppRoleMenuMappingComponent implements OnInit {
         (response: any) => {
           this.allMenus = response.menus;
           this.loadSpinner = false;
-
-          // ✅ Wait until menus are loaded before calling patch
           if (this.isUpdateMode && this.roleMenuByIdData) {
             this.patchMenuForm(this.roleMenuByIdData);
           }
@@ -336,75 +286,12 @@ export class AddEditAppRoleMenuMappingComponent implements OnInit {
     this.getSelectedMenu(menuIndex);
   }
 
-  // onSubmit() {
-  //     const formValue = this.menuForm.value;
-  //     console.log("FORM VALUE",formValue);
-  //     const appName = this.appsData.find(
-  //       (item: any) => item?.id == formValue.appName
-  //     )?.value;
-
-  //     const roleName = this.roleData?.find((item: any) => item?.id == formValue?.role)?.roleName
-  //     const payload = {
-  //       status: 'Active',
-  //       appId: formValue?.appName,
-  //       appName: appName,
-  //       roleId: formValue?.role,
-  //       roleName: roleName,
-  //       actionBy: this.userId,
-  //       menuDetails: formValue?.menu?.map((menuItem: any) => {
-  //         const matchedMenu = this.allMenus.find(
-  //           (m: any) => m.id === menuItem.menuName
-  //         );
-  //         const matchedSubMenus = menuItem.subMenu?.map((subMenuItem: any) => {
-  //           const matchedSubMenu = matchedMenu?.subMenu?.find(
-  //             (sm: any) => sm.id === subMenuItem.menuName
-  //           );
-
-  //           return {
-  //             menuId: subMenuItem.menuName || '',
-  //             menuName: matchedSubMenu?.menuName || '',
-  //             parentMenuId: menuItem.menuName || '',
-  //             parentMenuName: matchedMenu?.menuName || '',
-  //             permissionDetails: subMenuItem.permissions
-  //               ? subMenuItem.permissions.map((permission: any) => ({
-  //                 permissionId: permission.id || '',
-  //                 permissionName: permission.permissionName || '',
-  //               }))
-  //               : [],
-  //           };
-  //         }) || [];
-
-  //         return {
-  //           menuId: menuItem.menuName || '',
-  //           menuName: matchedMenu?.menuName || '',
-  //           subMenuLists: matchedSubMenus,
-  //           permissionDetails: menuItem.permissions
-  //             ? menuItem.permissions.map((permission: any) => ({
-  //               permissionId: permission.id || '',
-  //               permissionName: permission.permissionName || '',
-  //             }))
-  //             : [],
-  //         };
-  //       }) || [],
-  //     };
-  //     this.roleAppMenuMappingService.roleAppMenuCreate(payload).subscribe(
-  //       (response: any) => {
-  //         this.loadSpinner = false;
-  //         this.toastr.success('App Menu Mapping ' + response.message);
-  //         this.onCancel();
-  //       },
-  //       (error) => {
-  //         this.toastr.error(error?.error?.message, 'Error');
-  //         this.loadSpinner = false;
-  //       }
-  //     );
-  // }
-
-  //my code --->
-
   onSubmit() {
 
-    const formData = this.menuForm.value;
+    console.log(this.deletedSubMenus, "deletedSubMenus");
+
+    // const formData = this.menuForm.value;
+    const formData = this.menuForm.getRawValue();
     const allowedPermissions = ['ADD', 'EDIT', 'VIEW'];
 
     const menuDetail = formData.menu.map((menuItem: any, menuIndex: number) => {
@@ -414,10 +301,8 @@ export class AddEditAppRoleMenuMappingComponent implements OnInit {
         permissionName: perm.permissionName,
         status: 'Active',
       }));
-
-      const subMenuLists = (menuItem.subMenu || []).map((subMenuItem: any) => {
+      const activeSubMenuLists = (menuItem.subMenu || []).map((subMenuItem: any) => {
         const matchedSub = matchedMenu?.subMenu?.find((s: any) => s.id === subMenuItem.menuName);
-
         const subPermissions = (subMenuItem.permissions || []).map((perm: any) => ({
           permissionId: perm.id,
           permissionName: perm.permissionName,
@@ -433,6 +318,23 @@ export class AddEditAppRoleMenuMappingComponent implements OnInit {
           permissionDetails: subPermissions,
         };
       });
+
+      const deletedSubsForMenu = this.deletedSubMenus
+        .filter((d) => d.parentMenuId === menuItem.menuName)
+        .map((d) => ({
+          status: 'Inactive',
+          menuId: d.menuId,
+          menuName: d.menuName,
+          parentMenuId: d.parentMenuId,
+          parentMenuName: d.parentMenuName,
+          permissionDetails: d.permissions.map((p: any) => ({
+            permissionId: p.id || '',
+            permissionName: p.permissionName,
+            status: 'Inactive'
+          }))
+        }));
+
+      const subMenuLists = [...activeSubMenuLists, ...deletedSubsForMenu];
 
       return {
         id: this.roleMenuId || '',
@@ -460,14 +362,6 @@ export class AddEditAppRoleMenuMappingComponent implements OnInit {
       menuDetail: menuDetail
     };
 
-    // const payload = {
-    //   appId: formData.appName,
-    //   roleId: formData.role,
-    //   status: formData.status,
-    //   actionBy: this.userId,
-    //   menuDetails: menuDetail
-    // };
-
     if (this.roleMenuId) {
       // Update logic
       this.roleAppMenuMappingService.updateRoleAppMenu(this.roleMenuId, payload).subscribe({
@@ -480,19 +374,9 @@ export class AddEditAppRoleMenuMappingComponent implements OnInit {
         }
       });
     } else {
-      // Create logic
-      //   this.roleAppMenuMappingService.roleAppMenuCreate(payload).subscribe({
-      //     next: () => {
-      //       this.toastr.success('Role menu mapping created successfully');
-      //     },
-      //     error: (error) => {
-      //       this.toastr.error(error?.error?.message || 'Creation failed');
-      //     }
-      //   });
-      // }
 
       console.log('Inside CREATE block');
-      // ✅ Create logic
+      // Create logic
       const menuDetails = formData.menu.map((menuItem: any) => {
         const matchedMenu = this.allMenus.find((m: any) => m.id === menuItem.menuName);
         const subMenuLists = menuItem.subMenu?.map((subMenuItem: any) => {
@@ -548,71 +432,58 @@ export class AddEditAppRoleMenuMappingComponent implements OnInit {
     this.router.navigate(['/masters/app-role-menu-mapping']);
   }
 
-  // removeSubMenu(menuIndex: number, subMenuIndex: number) {
-  //   const subMenuArray = this.subMenus(menuIndex);
-  //   if (subMenuArray) {
-  //     subMenuArray.removeAt(subMenuIndex);
-  //   }
-  // }
+  removeSubMenu(menuIndex: number, subMenuIndex: number) {
+    const subMenuArray = this.subMenus(menuIndex);
+    if (!subMenuArray) return;
 
+    const subMenuGroup = subMenuArray.at(subMenuIndex);
+    const existingSubMenuId = subMenuGroup.get('id')?.value;
+    const menuId = subMenuGroup.get('menuName')?.value;
+    const permissions = subMenuGroup.get('permissions')?.value || [];
 
-removeSubMenu(menuIndex: number, subMenuIndex: number) {
-  const subMenuArray = this.subMenus(menuIndex);
+    // Find parent and submenu names
+    const parentMenuId = this.menus().at(menuIndex).get('menuName')?.value;
+    const parentMenuName = this.allMenus.find((m: any) => m.id === parentMenuId)?.menuName;
+    const menuName = this.allSubmenus?.find((sub: any) => sub.id === menuId)?.menuName || '';
 
-  if (!subMenuArray) return;
+    if (existingSubMenuId) {
+      this.deletedSubMenus.push({
+        menuId,
+        menuName,
+        parentMenuId,
+        parentMenuName,
+        status: 'Inactive',
+        permissions
+      });
+    }
 
-  const subMenuGroup = subMenuArray.at(subMenuIndex);
-
-  // Case 1: Newly added submenu (doesn’t have ID or only exists in form)
-  if (!subMenuGroup.get('id')?.value) {
-    subMenuArray.removeAt(subMenuIndex);
-  } else {
-    // Case 2: Existing submenu – set status to Inactive so it's excluded from UI but sent in payload
-    subMenuGroup.patchValue({ status: 'Inactive' });
     subMenuArray.removeAt(subMenuIndex);
   }
-}
 
+  getAvailableSubMenus(menuIndex: number, subMenuIndex: number) {
+    const selectedIds = this.subMenus(menuIndex).controls
+      .map((ctrl, idx) => idx !== subMenuIndex ? ctrl.get('menuName')?.value : null)
+      .filter(id => !!id);
 
+    return this.allSubmenus?.filter((submenu: any) => !selectedIds.includes(submenu.id)) || [];
+  }
 
-getAvailableSubMenus(menuIndex: number): any[] {
-  const selectedIds = this.subMenus(menuIndex).controls
-    .map(ctrl => ctrl.get('menuName')?.value)
-    .filter(Boolean);
-  return this.allSubmenus?.filter((sub:any) => !selectedIds.includes(sub.id));
-}
-
-
-
-  // getRoleAppMenuById() {
-  //   this.loadSpinner = true;
-  //   this.roleAppMenuMappingService.roleAppMenuDataById(this.roleMenuId).subscribe(
-  //     (response: any) => {
-  //       if (response) {
-  //         this.roleMenuByIdData = response;
-  //         console.log("roleMenuByIdData", this.roleMenuByIdData);
-  //         this.menuName = this.roleMenuByIdData?.menuDetails[0]?.menuName;
-  //         console.log(this.menuName, "MENU NAME last");
-
-
-  //         this.patchMenuForm(this.roleMenuByIdData);
-  //       }
-  //       this.loadSpinner = false;
-  //     },
-  //     (error) => {
-  //       this.loadSpinner = false;
-  //     }
-  //   );
+  // onSubMenuChange(event: any, i: number, j: number) {
+  //   debugger;
+  //   this.subMenus(i).at(j).get('menuName')?.setValue(event);
+  //   this.getSubMenuPermissions(event, i, j);
   // }
+
+
 
   getRoleAppMenuById() {
     this.loadSpinner = true;
     this.roleAppMenuMappingService.roleAppMenuDataById(this.roleMenuId).subscribe(
       (response: any) => {
         if (response) {
-          this.roleMenuByIdData = response; // ✅ Just store data here
+          this.roleMenuByIdData = response;
           this.menuName = this.roleMenuByIdData?.menuDetails[0]?.menuName;
-          this.getAllMenus(); // ✅ Patch happens *after* menus load
+          this.getAllMenus();
         }
         this.loadSpinner = false;
       },
@@ -680,16 +551,16 @@ getAvailableSubMenus(menuIndex: number): any[] {
             permissionName: perm.permissionName.split('_').pop()
           })) || [];
 
-          this.allSubmenus = parentMenu?.subMenu || []; //to show submenus name only insteadof id in dropdown
+          this.allSubmenus = parentMenu?.subMenu || [];
 
           const selectedSubPermissions = this.mapPermissions(subMenuItem.permissionDetails);
 
           this.subMenuPermissionsMap[`${index}-${subIndex}`] = allSubPermissions;
-
           const subMenuGroup = this.formBuilder.group({
             id: [subMenuId],
-            menuName: [subMenuId, Validators.required],
+            menuName: [{ value: subMenuId, disabled: true }, Validators.required],
             permissions: [selectedSubPermissions],
+            isPrefilled: [true],
           });
 
           subMenuArray.push(subMenuGroup);
