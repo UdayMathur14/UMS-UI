@@ -24,13 +24,21 @@ export class SignupComponent implements OnInit {
   hasFetchedOrganisations = false;
   lastSearchTerm: string = '';
 
+  carouselImages: string[] = [
+    'assets/images/carousel-1.png',
+    'assets/images/carousel-2.png',
+    'assets/images/carousel-3.png',
+    'assets/images/carousel-4.png'
+  ];
+
+  currentImageIndex: number = 0;
 
   constructor(
     private authService: AuthService,
     private router: Router,
     private passwordService: PasswordDataShareService,
     private toastr: ToastrService
-  ) {}
+  ) { }
 
   ngOnInit() {
     const storedProfile = localStorage.getItem('userProfile');
@@ -90,7 +98,7 @@ export class SignupComponent implements OnInit {
         ]
       ),
       contactNo: new FormControl('', [Validators.required, noWhitespaceValidator]),
-      organisation: new FormControl(null,[Validators.required, noWhitespaceValidator]),
+      organisation: new FormControl(null, [Validators.required, noWhitespaceValidator]),
       designation: new FormControl('', [Validators.required, noWhitespaceValidator]),
       methodType: new FormControl(''),
     });
@@ -106,6 +114,15 @@ export class SignupComponent implements OnInit {
     if (this.isMicrosoftLogin) {
       this.passwordLabel = 'New Password';
     }
+
+    this.startCarousel();
+
+  }
+
+  startCarousel() {
+    setInterval(() => {
+      this.currentImageIndex = (this.currentImageIndex + 1) % this.carouselImages.length;
+    }, 3000); // change image every 3 seconds
   }
 
   onSubmit() {
@@ -144,14 +161,14 @@ export class SignupComponent implements OnInit {
   }
 
   isFieldRequired(field: string): any {
-  const control = this.signUpForm.get(field);
-  return control?.touched && (control.hasError('required') || control.hasError('whitespace'));
-}
+    const control = this.signUpForm.get(field);
+    return control?.touched && (control.hasError('required') || control.hasError('whitespace'));
+  }
 
-isEmailInvalid(): any {
-  const control = this.signUpForm.get('emailId');
-  return control?.touched && (control.hasError('email') || control.hasError('pattern'));
-}
+  isEmailInvalid(): any {
+    const control = this.signUpForm.get('emailId');
+    return control?.touched && (control.hasError('email') || control.hasError('pattern'));
+  }
 
 
   // passwordValidator() {
@@ -177,54 +194,54 @@ isEmailInvalid(): any {
   //   };
   // }
 
-  
-onSearchOrganisation(event: { term: string; items: any[] }) {
-  const term = event.term;
-  console.log('Search term:', term);
 
-  if (term && term.length >= 2) {
-    if (!this.hasFetchedOrganisations) {
-      this.getOrganisationList();
+  onSearchOrganisation(event: { term: string; items: any[] }) {
+    const term = event.term;
+    console.log('Search term:', term);
+
+    if (term && term.length >= 2) {
+      if (!this.hasFetchedOrganisations) {
+        this.getOrganisationList();
+      } else {
+        this.filterOrganisations(term);
+      }
     } else {
-      this.filterOrganisations(term);
+      this.filteredOrganisations = [];
     }
-  } else {
-    this.filteredOrganisations = [];
   }
-}
 
 
-getOrganisationList(offset: number = 0, count: number = this.count) {
-  this.loadSpinner = true;
+  getOrganisationList(offset: number = 0, count: number = this.count) {
+    this.loadSpinner = true;
 
-  this.authService.organisationData({}, offset, count).subscribe(
-    (response: any) => {
-      this.organisations = response.registeredOrganisation || [];
-      console.log(this.organisations);
-      
-      this.hasFetchedOrganisations = true;
-      this.loadSpinner = false;
-      this.filterOrganisations(this.lastSearchTerm);
-    },
-    (error) => {
-      this.loadSpinner = false;
-    }
-  );
-}
+    this.authService.organisationData({}, offset, count).subscribe(
+      (response: any) => {
+        this.organisations = response.registeredOrganisation || [];
+        console.log(this.organisations);
 
-filterOrganisations(term: string) {
-  this.filteredOrganisations = this.organisations
-    .filter((org: any) =>
-      org.organisation.toLowerCase().includes(term.toLowerCase())
+        this.hasFetchedOrganisations = true;
+        this.loadSpinner = false;
+        this.filterOrganisations(this.lastSearchTerm);
+      },
+      (error) => {
+        this.loadSpinner = false;
+      }
+    );
+  }
+
+  filterOrganisations(term: string) {
+    this.filteredOrganisations = this.organisations
+      .filter((org: any) =>
+        org.organisation.toLowerCase().includes(term.toLowerCase())
+      );
+
+    const staticOrg = { organisation: 'Diverse Infotech Private Limited' };
+    const exists = this.filteredOrganisations.some(
+      (org) => org.organisation === staticOrg.organisation
     );
 
-  const staticOrg = { organisation: 'Diverse Infotech Private Limited' };
-  const exists = this.filteredOrganisations.some(
-    (org) => org.organisation === staticOrg.organisation
-  );
-
-  if (!exists) {
-    this.filteredOrganisations.push(staticOrg);
+    if (!exists) {
+      this.filteredOrganisations.push(staticOrg);
+    }
   }
-}
 }
