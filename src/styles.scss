@@ -5,30 +5,30 @@
 @import "./assets/SCSS/colors.scss";
 
 * {
-    margin: 0;
-    padding: 0;
-    font-size: 13px;
-  }
-  
-  h1,
-  h2,
-  h3,
-  h4,
-  h5,
-  h6,
-  p,
-  a,
-  span,
-  ul,
-  li,
-  div,
-  header,
-  nav,
-  button {
-    font-family: "Inter", sans-serif;
-  }
+  margin: 0;
+  padding: 0;
+  font-size: 13px;
+}
 
-  //NG SELECT GLOBAL CSS
+h1,
+h2,
+h3,
+h4,
+h5,
+h6,
+p,
+a,
+span,
+ul,
+li,
+div,
+header,
+nav,
+button {
+  font-family: "Inter", sans-serif;
+}
+
+//NG SELECT GLOBAL CSS
 .ng-select {
   .ng-select-container {
     min-height: 30px;
@@ -53,7 +53,7 @@
   .ng-select.ng-select-single .ng-select-container {
     height: 36px;
     border: 1px solid #ccc !important;
-}
+  }
 }
 
 .page-title {
@@ -75,39 +75,39 @@
   }
 
   .action-buttons {
-      display: flex;
-      align-items: center;
-      column-gap: var(--spacer-10);
+    display: flex;
+    align-items: center;
+    column-gap: var(--spacer-10);
 
-      .search-field {
-          position: relative;
-          display: inline-block;
+    .search-field {
+      position: relative;
+      display: inline-block;
 
-          input {
-              padding: 7px 28px 7px 18px;
-              border-radius: var(--spacer-20);
-              border: 1px solid var(--inputBorder);
+      input {
+        padding: 7px 28px 7px 18px;
+        border-radius: var(--spacer-20);
+        border: 1px solid var(--inputBorder);
 
-              &:disabled {
-                  background-color: var(--gray2);
-              }
+        &:disabled {
+          background-color: var(--gray2);
+        }
 
-              &:focus {
-                  outline: none;
-                  border-color: var(--secondaryColor);
-              }
-          }
-
-          span {
-              position: absolute;
-              right: 16px;
-              top: 9px;
-
-              img {
-                  width: 14px;
-              }
-          }
+        &:focus {
+          outline: none;
+          border-color: var(--secondaryColor);
+        }
       }
+
+      span {
+        position: absolute;
+        right: 16px;
+        top: 9px;
+
+        img {
+          width: 14px;
+        }
+      }
+    }
   }
 }
 
@@ -314,6 +314,7 @@
     }
   }
 }
+
 .filter-section {
   padding: var(--spacer-10) var(--spacer-15);
   background-color: var(--white);
@@ -321,23 +322,25 @@
   box-shadow: 0px 1px 4px rgba(0, 0, 0, 0.1411764706);
   margin-bottom: var(--spacer-10);
 }
+
 .grid-table {
   display: flex;
   flex-direction: column;
   height: 100%;
 
   .table-container {
-      flex: 1;
-      overflow-y: auto;
-    }
-    ngb-pagination ul>li.active>a {
-      background-color: var(--gray1) !important;
-      border-color: var(--gray1) !important;
+    flex: 1;
+    overflow-y: auto;
+  }
+
+  ngb-pagination ul>li.active>a {
+    background-color: var(--gray1) !important;
+    border-color: var(--gray1) !important;
   }
 
   .custom-select {
-      height:30px;
-      cursor: pointer;
+    height: 30px;
+    cursor: pointer;
   }
 }
 
@@ -345,8 +348,8 @@
   @include buttonsPrimaryOutline(13px, 4px, 20px);
 
   &:disabled {
-      opacity: 0.5;
-      cursor: not-allowed
+    opacity: 0.5;
+    cursor: not-allowed
   }
 }
 
@@ -354,16 +357,17 @@
   @include buttonsPrimaryOutline(13px, 7px, 20px);
 
   &:disabled {
-      opacity: 0.5;
-      cursor: not-allowed
+    opacity: 0.5;
+    cursor: not-allowed
   }
 }
+
 .custom-button-secondary {
   @include buttonsSecondaryOutline(13px, 7px, 20px);
 
   &:disabled {
-      opacity: 0.5;
-      cursor: not-allowed
+    opacity: 0.5;
+    cursor: not-allowed
   }
 }
 
@@ -371,19 +375,19 @@
   padding: var(--spacer-30);
 
   .ngmodal-header {
-      h3 {
-          font-size: var(--spacer-26);
-          font-weight: 600;
-          text-align: center;
-          margin-bottom: var(--spacer-20);
-          position: relative;
+    h3 {
+      font-size: var(--spacer-26);
+      font-weight: 600;
+      text-align: center;
+      margin-bottom: var(--spacer-20);
+      position: relative;
 
-          span {
-              position: absolute;
-              right: -10px;
-              top: -15px;
-          }
+      span {
+        position: absolute;
+        right: -10px;
+        top: -15px;
       }
+    }
   }
 }
 
@@ -393,10 +397,10 @@
   border: none;
   padding: 0;
   cursor: pointer;
-    
-.icon-button img {
-  display: block;
-}
+
+  .icon-button img {
+    display: block;
+  }
 }
 
 .icon-button:disabled {
@@ -407,4 +411,101 @@
 .page-title {
   margin-top: 6rem;
 }
-  
+
+.preview-section {
+  flex: 1;
+  background: linear-gradient(to bottom right, #4f46e5, #3b82f6);
+  background-image: url('/assets/images/bg-doodle.png');
+  background-repeat: no-repeat;
+  background-position: center;
+  background-size: cover;
+  color: #fff;
+  padding: 3rem 2rem;
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+  justify-content: center;
+  position: relative;
+  overflow: hidden;
+
+  .image-carousel {
+    position: relative;
+    width: 95%; // Increased width even more
+    max-width: 800px; // Much larger max-width
+    height: 75vh; // Increased to 75% of viewport height
+    min-height: 450px; // Increased minimum height
+    max-height: 700px; // Increased maximum height
+    overflow: hidden;
+    border-radius: 16px;
+    z-index: 2;
+
+    img {
+      position: absolute;
+      width: 100%;
+      height: 100%;
+      object-fit: cover;
+      opacity: 0;
+      transition: opacity 1s ease-in-out;
+      border-radius: 16px;
+      border: none !important;
+      outline: none !important;
+      box-shadow: 0 8px 32px rgba(0, 0, 0, 0.3); // Added shadow for better visibility
+      pointer-events: none;
+      user-select: none;
+    }
+
+    img.active {
+      opacity: 1;
+      z-index: 2;
+    }
+  }
+
+  .carousel-dots {
+    display: flex;
+    gap: 12px; // Slightly increased gap
+    margin-top: 20px; // Increased margin
+    z-index: 2;
+
+    .dot {
+      width: 14px; // Slightly larger dots
+      height: 14px;
+      border-radius: 50%;
+      background-color: rgba(255, 255, 255, 0.4);
+      transition: background-color 0.3s ease;
+      cursor: pointer;
+    }
+
+    .dot.active {
+      background-color: #ffffff;
+    }
+  }
+
+  .caption {
+    text-align: center;
+    z-index: 2;
+    margin-top: 2rem;
+
+    h3 {
+      font-size: 1.8rem; // Increased font size
+      font-weight: 600;
+      margin-bottom: 0.5rem;
+      color: #fff;
+    }
+
+    p {
+      font-size: 1rem; // Increased font size
+      color: #dbeafe;
+    }
+  }
+
+  &::before {
+    content: "";
+    position: absolute;
+    width: 100%;
+    height: 100%;
+    top: 0;
+    right: 0;
+    background: rgba(79, 70, 229, 0.6);
+    z-index: 1;
+  }
+}
