@@ -15,6 +15,15 @@ export class ForgetPasswordComponent implements OnInit {
   forgetPasswordForm!: FormGroup;
   loadSpinner: boolean = false;
 
+  carouselImages: string[] = [
+    'assets/images/carousel-1.png',
+    'assets/images/carousel-2.png',
+    'assets/images/carousel-3.png',
+    'assets/images/carousel-4.png'
+  ];
+
+  currentImageIndex: number = 0;
+
   constructor(
     private router: Router,
     private forgetPassword: AuthService,
@@ -30,6 +39,15 @@ export class ForgetPasswordComponent implements OnInit {
         noWhitespaceValidator
       ])
     });
+
+    this.startCarousel();
+
+  }
+
+  startCarousel() {
+    setInterval(() => {
+      this.currentImageIndex = (this.currentImageIndex + 1) % this.carouselImages.length;
+    }, 3000); // change image every 3 seconds
   }
 
   onSubmit() {
@@ -46,10 +64,10 @@ export class ForgetPasswordComponent implements OnInit {
         (res: any) => {
           if (res.code === 200) {
             this.toastr.success(res.message || 'OTP sent successfully', 'Success');
-                this.passwordService.setForgetPassword({
-        userEmailId: data.userEmailId,
-        password: '',
-      });
+            this.passwordService.setForgetPassword({
+              userEmailId: data.userEmailId,
+              password: '',
+            });
             this.router.navigate(['/auth/otpValidation'], {
               queryParams: { email: data.userEmailId }
             });
