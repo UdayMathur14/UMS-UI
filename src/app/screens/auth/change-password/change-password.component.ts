@@ -21,6 +21,14 @@ export class ChangePasswordComponent implements OnInit {
   showNewPassword: boolean = false;
   emailId: string | null = '';
 
+  carouselImages: string[] = [
+    'assets/images/carousel-1.png',
+    'assets/images/carousel-2.png',
+    'assets/images/carousel-3.png',
+    'assets/images/carousel-4.png'
+  ];
+
+  currentImageIndex: number = 0;
 
   constructor(
     private passwordService: PasswordDataShareService,
@@ -46,8 +54,16 @@ export class ChangePasswordComponent implements OnInit {
     this.changePasswordForm.patchValue({
       emailId: this.emailId
     })
+
+    this.startCarousel();
+
   }
 
+  startCarousel() {
+    setInterval(() => {
+      this.currentImageIndex = (this.currentImageIndex + 1) % this.carouselImages.length;
+    }, 3000); // change image every 3 seconds
+  }
 
   onSubmit() {
     this.loadSpinner = true;

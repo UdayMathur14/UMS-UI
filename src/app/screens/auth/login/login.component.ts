@@ -21,6 +21,15 @@ export class LoginComponent implements OnInit, AfterViewInit {
   loadSpinner: boolean = false;
   userEmail: string = '';
 
+  carouselImages: string[] = [
+    'assets/images/carousel-1.png',
+    'assets/images/carousel-2.png',
+    'assets/images/carousel-3.png',
+    'assets/images/carousel-4.png'
+  ];
+
+  currentImageIndex: number = 0;
+
   constructor(
     private router: Router,
     private msalService: MsalService,
@@ -68,6 +77,15 @@ export class LoginComponent implements OnInit, AfterViewInit {
     });
 
     this.checkLoginStatus();
+
+    this.startCarousel();
+
+  }
+
+  startCarousel() {
+    setInterval(() => {
+      this.currentImageIndex = (this.currentImageIndex + 1) % this.carouselImages.length;
+    }, 3000); // change image every 3 seconds
   }
 
   ngAfterViewInit() {
@@ -105,7 +123,7 @@ export class LoginComponent implements OnInit, AfterViewInit {
             } else if (!firstAttempt) {
               this.router.navigate(['/dashboard']);
             } else {
-             this.router.navigate(['/change-password/', email]);
+              this.router.navigate(['/change-password/', email]);
             }
 
             // if (userApp) {
