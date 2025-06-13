@@ -50,6 +50,8 @@ export class GoogleAuthService {
         theme: 'outline',
         size: 'large',
         text: 'continue_with',
+        width: '280',
+         shape: 'pill',
       }
     );
   }
