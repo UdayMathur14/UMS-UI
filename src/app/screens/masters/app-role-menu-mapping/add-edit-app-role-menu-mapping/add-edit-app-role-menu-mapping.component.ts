@@ -548,12 +548,41 @@ export class AddEditAppRoleMenuMappingComponent implements OnInit {
     this.router.navigate(['/masters/app-role-menu-mapping']);
   }
 
-  removeSubMenu(menuIndex: number, subMenuIndex: number) {
-    const subMenuArray = this.subMenus(menuIndex);
-    if (subMenuArray) {
-      subMenuArray.removeAt(subMenuIndex);
-    }
+  // removeSubMenu(menuIndex: number, subMenuIndex: number) {
+  //   const subMenuArray = this.subMenus(menuIndex);
+  //   if (subMenuArray) {
+  //     subMenuArray.removeAt(subMenuIndex);
+  //   }
+  // }
+
+
+removeSubMenu(menuIndex: number, subMenuIndex: number) {
+  const subMenuArray = this.subMenus(menuIndex);
+
+  if (!subMenuArray) return;
+
+  const subMenuGroup = subMenuArray.at(subMenuIndex);
+
+  // Case 1: Newly added submenu (doesn’t have ID or only exists in form)
+  if (!subMenuGroup.get('id')?.value) {
+    subMenuArray.removeAt(subMenuIndex);
+  } else {
+    // Case 2: Existing submenu – set status to Inactive so it's excluded from UI but sent in payload
+    subMenuGroup.patchValue({ status: 'Inactive' });
+    subMenuArray.removeAt(subMenuIndex);
   }
+}
+
+
+
+getAvailableSubMenus(menuIndex: number): any[] {
+  const selectedIds = this.subMenus(menuIndex).controls
+    .map(ctrl => ctrl.get('menuName')?.value)
+    .filter(Boolean);
+  return this.allSubmenus?.filter((sub:any) => !selectedIds.includes(sub.id));
+}
+
+
 
   // getRoleAppMenuById() {
   //   this.loadSpinner = true;

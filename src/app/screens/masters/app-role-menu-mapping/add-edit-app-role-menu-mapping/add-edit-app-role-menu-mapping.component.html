@@ -86,39 +86,49 @@
         <div *ngIf="subMenus(i).length > 0" formArrayName="subMenu" class="mt-4 submenu-section p-3 bg-light rounded">
           <h6 class="fw-bold text-secondary">Sub Menus</h6>
           <div *ngIf="subMenus(i) as subMenuArray">
-            <div *ngFor="let _subSubMenu of subMenuArray.controls; let j = index" [formGroupName]="j"
-              class="submenu-item mt-3 p-2 border rounded">
-              <div class="row">
-                <div class="mb-3 fw-bold text-success">
-                  Sub Menu {{i+1}}.{{j+1}}
-                </div>
-                <div class="col-lg-4">
-                  <div class="custom-form-input">
-                    <label>Name<span class="text-danger">*</span></label>
-                    <ng-select class="input-field" dropdownPosition="bottom" placeholder="Select Menu Name"
-                      formControlName="menuName" (change)="getSubMenuPermissions($event, i, j)"
-                      >
-                      <!-- [readonly]="isUpdateMode" -->
-                      <ng-option *ngFor="let submenu of allSubmenus"
-                        [value]="submenu?.id">{{submenu?.menuName}}</ng-option>
-                    </ng-select>
-                  </div>
-                </div>
-                <div class="col-lg-4">
-                  <div class="custom-form-input">
-                    <label>Permissions</label>
-                    <ng-multiselect-dropdown [settings]="permissionDropdown"
-                      [data]="subMenuPermissionsMap[i + '-' + j] || []" formControlName="permissions">
-                    </ng-multiselect-dropdown>
-                  </div>
-                </div>
-                <div class="col-lg-1" *ngIf="!isUpdateMode">
-                  <button type="button" class="btn btn-danger mt-4" (click)="removeSubMenu(i, j)">
-                    <i class="bi bi-trash"></i>
-                  </button>
-                </div>
-              </div>
-            </div>
+      <div *ngFor="let subMenu of subMenuArray.controls; let j = index">
+  <div [formGroupName]="j" *ngIf="subMenu.get('status')?.value !== 'Inactive'" class="submenu-item mt-3 p-2 border rounded">
+    <div class="row">
+      <div class="mb-3 fw-bold text-success">
+        Sub Menu {{ i + 1 }}.{{ j + 1 }}
+      </div>
+
+      <div class="col-lg-4">
+        <div class="custom-form-input">
+          <label>Name<span class="text-danger">*</span></label>
+          <ng-select class="input-field"
+                     dropdownPosition="bottom"
+                     placeholder="Select Menu Name"
+                     formControlName="menuName"
+                     (change)="getSubMenuPermissions($event, i, j)">
+            <ng-option *ngFor="let submenu of getAvailableSubMenus(i)" [value]="submenu?.id">
+              {{ submenu?.menuName }}
+            </ng-option>
+          </ng-select>
+        </div>
+      </div>
+
+      <div class="col-lg-4">
+        <div class="custom-form-input">
+          <label>Permissions</label>
+          <ng-multiselect-dropdown
+            [settings]="permissionDropdown"
+            [data]="subMenuPermissionsMap[i + '-' + j] || []"
+            formControlName="permissions">
+          </ng-multiselect-dropdown>
+        </div>
+      </div>
+
+      <div class="col-lg-1">
+        <button type="button" class="btn btn-danger mt-4" (click)="removeSubMenu(i, j)">
+          <i class="bi bi-trash"></i>
+        </button>
+      </div>
+
+    </div>
+  </div>
+</div>
+
           </div>
         </div>
       </div>
