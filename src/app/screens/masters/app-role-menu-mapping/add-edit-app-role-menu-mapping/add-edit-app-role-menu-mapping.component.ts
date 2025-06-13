@@ -262,60 +262,33 @@ export class AddEditAppRoleMenuMappingComponent implements OnInit {
   //     );
   // }
 
-  // getAllMenus() {
-  //   const data = {
-  //     status: 'Active',
-  //     menuName: this.menuName,
-  //     appName: ""
-  //   };
-
-  //   this.loadSpinner = true;
-
-  //   this.appMenuMappingService
-  //     .appMenuMappingData(this.userId, this.offset, this.count, data)
-  //     .subscribe(
-  //       (response: any) => {
-  //         this.allMenus = response.menus;
-  //         this.loadSpinner = false;
-
-  //         if (this.isUpdateMode) {
-  //           this.getRoleAppMenuById();
-  //         }
-  //       },
-  //       (error) => {
-  //         this.toastr.error(error?.error?.message, 'Error');
-  //         this.loadSpinner = false;
-  //       }
-  //     );
-  // }
-
   getAllMenus() {
-  const data = {
-    status: 'Active',
-    menuName: this.menuName,
-    appName: ""
-  };
+    const data = {
+      status: 'Active',
+      menuName: this.menuName,
+      appName: ""
+    };
 
-  this.loadSpinner = true;
+    this.loadSpinner = true;
 
-  this.appMenuMappingService
-    .appMenuMappingData(this.userId, this.offset, this.count, data)
-    .subscribe(
-      (response: any) => {
-        this.allMenus = response.menus;
-        this.loadSpinner = false;
+    this.appMenuMappingService
+      .appMenuMappingData(this.userId, this.offset, this.count, data)
+      .subscribe(
+        (response: any) => {
+          this.allMenus = response.menus;
+          this.loadSpinner = false;
 
-        // ✅ Wait until menus are loaded before calling patch
-        if (this.isUpdateMode && this.roleMenuByIdData) {
-          this.patchMenuForm(this.roleMenuByIdData);
+          // ✅ Wait until menus are loaded before calling patch
+          if (this.isUpdateMode && this.roleMenuByIdData) {
+            this.patchMenuForm(this.roleMenuByIdData);
+          }
+        },
+        (error) => {
+          this.toastr.error(error?.error?.message, 'Error');
+          this.loadSpinner = false;
         }
-      },
-      (error) => {
-        this.toastr.error(error?.error?.message, 'Error');
-        this.loadSpinner = false;
-      }
-    );
-}
+      );
+  }
 
 
 
@@ -430,11 +403,6 @@ export class AddEditAppRoleMenuMappingComponent implements OnInit {
   //my code --->
 
   onSubmit() {
-  
-    // if (this.menuForm.invalid) {
-    //   this.menuForm.markAllAsTouched();
-    //   return;
-    // }
 
     const formData = this.menuForm.value;
     const allowedPermissions = ['ADD', 'EDIT', 'VIEW'];
@@ -476,21 +444,21 @@ export class AddEditAppRoleMenuMappingComponent implements OnInit {
         permissionDetails: parentPermissions,
       };
     });
-  const appId = formData.appName;
-const appName = this.appsData.find((item: any) => item.id === appId)?.value;
+    const appId = formData.appName;
+    const appName = this.appsData.find((item: any) => item.id === appId)?.value;
 
-const roleId = formData.role;
-const roleName = this.roleData.find((item: any) => item.id === roleId)?.roleName;
+    const roleId = formData.role;
+    const roleName = this.roleData.find((item: any) => item.id === roleId)?.roleName;
 
-const payload = {
-  appId: appId,
-  appName: appName || '',
-  roleId: formData.role,
-   roleName: roleName || '',
-  status: formData.status,
-  actionBy: this.userId,
-  menuDetail: menuDetail
-};
+    const payload = {
+      appId: appId,
+      appName: appName || '',
+      roleId: formData.role,
+      roleName: roleName || '',
+      status: formData.status,
+      actionBy: this.userId,
+      menuDetail: menuDetail
+    };
 
     // const payload = {
     //   appId: formData.appName,
@@ -505,6 +473,7 @@ const payload = {
       this.roleAppMenuMappingService.updateRoleAppMenu(this.roleMenuId, payload).subscribe({
         next: () => {
           this.toastr.success('Role menu mapping updated successfully');
+          this.getRoleAppMenuById();
         },
         error: (error) => {
           this.toastr.error(error?.error?.message || 'Update failed');
@@ -512,348 +481,68 @@ const payload = {
       });
     } else {
       // Create logic
-    //   this.roleAppMenuMappingService.roleAppMenuCreate(payload).subscribe({
-    //     next: () => {
-    //       this.toastr.success('Role menu mapping created successfully');
-    //     },
-    //     error: (error) => {
-    //       this.toastr.error(error?.error?.message || 'Creation failed');
-    //     }
-    //   });
-    // }
+      //   this.roleAppMenuMappingService.roleAppMenuCreate(payload).subscribe({
+      //     next: () => {
+      //       this.toastr.success('Role menu mapping created successfully');
+      //     },
+      //     error: (error) => {
+      //       this.toastr.error(error?.error?.message || 'Creation failed');
+      //     }
+      //   });
+      // }
 
-     console.log('Inside CREATE block');
-    // ✅ Create logic
-    const menuDetails = formData.menu.map((menuItem: any) => {
-      const matchedMenu = this.allMenus.find((m: any) => m.id === menuItem.menuName);
-      const subMenuLists = menuItem.subMenu?.map((subMenuItem: any) => {
-        const matchedSubMenu = matchedMenu?.subMenu?.find((sm: any) => sm.id === subMenuItem.menuName);
+      console.log('Inside CREATE block');
+      // ✅ Create logic
+      const menuDetails = formData.menu.map((menuItem: any) => {
+        const matchedMenu = this.allMenus.find((m: any) => m.id === menuItem.menuName);
+        const subMenuLists = menuItem.subMenu?.map((subMenuItem: any) => {
+          const matchedSubMenu = matchedMenu?.subMenu?.find((sm: any) => sm.id === subMenuItem.menuName);
+          return {
+            menuId: subMenuItem.menuName || '',
+            menuName: matchedSubMenu?.menuName || '',
+            parentMenuId: menuItem.menuName || '',
+            parentMenuName: matchedMenu?.menuName || '',
+            permissionDetails: subMenuItem.permissions?.map((permission: any) => ({
+              permissionId: permission.id || '',
+              permissionName: permission.permissionName || '',
+              status: 'Active'
+            })) || []
+          };
+        }) || [];
+
         return {
-          menuId: subMenuItem.menuName || '',
-          menuName: matchedSubMenu?.menuName || '',
-          parentMenuId: menuItem.menuName || '',
-          parentMenuName: matchedMenu?.menuName || '',
-          permissionDetails: subMenuItem.permissions?.map((permission: any) => ({
+          menuId: menuItem.menuName || '',
+          menuName: matchedMenu?.menuName || '',
+          subMenuLists: subMenuLists,
+          permissionDetails: menuItem.permissions?.map((permission: any) => ({
             permissionId: permission.id || '',
             permissionName: permission.permissionName || '',
             status: 'Active'
           })) || []
         };
-      }) || [];
+      });
 
-      return {
-        menuId: menuItem.menuName || '',
-        menuName: matchedMenu?.menuName || '',
-        subMenuLists: subMenuLists,
-        permissionDetails: menuItem.permissions?.map((permission: any) => ({
-          permissionId: permission.id || '',
-          permissionName: permission.permissionName || '',
-          status: 'Active'
-        })) || []
+      const payload = {
+        status: 'Active',
+        appId,
+        appName,
+        roleId,
+        roleName,
+        actionBy: this.userId,
+        menuDetails: menuDetails
       };
-    });
 
-    const payload = {
-      status: 'Active',
-      appId,
-      appName,
-      roleId,
-      roleName,
-      actionBy: this.userId,
-      menuDetails: menuDetails
-    };
-
-    this.roleAppMenuMappingService.roleAppMenuCreate(payload).subscribe({
-      next: (response: any) => {
-        this.toastr.success('App Menu Mapping created successfully');
-        this.onCancel();
-      },
-      error: (error) => {
-        this.toastr.error(error?.error?.message || 'Creation failed');
-      }
-    });
+      this.roleAppMenuMappingService.roleAppMenuCreate(payload).subscribe({
+        next: (response: any) => {
+          this.toastr.success('App Menu Mapping created successfully');
+          this.onCancel();
+        },
+        error: (error) => {
+          this.toastr.error(error?.error?.message || 'Creation failed');
+        }
+      });
+    }
   }
-  }
-
-
-// without permission id or empty id
-// onSubmit() {
-//   if (this.menuForm.invalid) {
-//     this.menuForm.markAllAsTouched();
-//     return;
-//   }
-
-//   const formData = this.menuForm.value;
-
-//  const menuDetail = formData.menu.map((menuItem: any, menuIndex: number) => {
-//   const matchedMenu = this.allMenus.find((m: any) => m.id === menuItem.menuName);
-//   const originalMenuItem = this.roleMenuByIdData?.menuDetails?.find((m: any) => m.menuId === menuItem.menuName);
-//   const menuNameStr = matchedMenu?.menuName;
-
-//   //  Handle parent menu permissions
-//   const parentPermissions = (menuItem.permissions || []).map((perm: any) => {
-//     const fullPermissionName = `${menuNameStr}_${perm.permissionName}`; // E.g., Board_VIEW
-//     const matchedPerm = originalMenuItem?.permissionDetails?.find((p: any) => p.permissionName === fullPermissionName);
-
-//     return {
-//       permissionId: matchedPerm ? matchedPerm.permissionId : '',
-//       permissionName: perm.permissionName,
-//       status: 'Active',
-//     };
-//   });
-
-// //   const parentPermissions = (menuItem.permissions || []).map((perm: any) => {
-// //   const fullPermissionName = `${menuNameStr}_${perm.permissionName}`;
-// //   const matchedPerm = originalMenuItem?.permissionDetails?.find(
-// //     (p: any) => p.permissionName === fullPermissionName
-// //   );
-
-// //   const obj: any = {
-// //     permissionName: perm.permissionName,
-// //     status: 'Active',
-// //   };
-// //   if (matchedPerm?.permissionId) {
-// //     obj.permissionId = matchedPerm.permissionId;
-// //   }
-// //   return obj;
-// // });
-
-
-//   //  Handle submenus
-//   const subMenuLists = (menuItem.subMenu || []).map((subMenuItem: any) => {
-//     const matchedSub = matchedMenu?.subMenu?.find((s: any) => s.id === subMenuItem.menuName);
-//     const subMenuNameStr = matchedSub?.menuName;
-//     const originalSub = originalMenuItem?.subMenuLists?.find((s: any) => s.menuId === subMenuItem.menuName);
-
-//     const subPermissions = (subMenuItem.permissions || []).map((perm: any) => {
-//       const fullPermissionName = `${subMenuNameStr}_${perm.permissionName}`; // E.g., Board_Status_EDIT
-//       const matchedPerm = originalSub?.permissionDetails?.find((p: any) => p.permissionName === fullPermissionName);
-
-//       return {
-//         permissionId: matchedPerm ? matchedPerm.permissionId : '',
-//         permissionName: perm.permissionName,
-//         status: 'Active',
-//       };
-//     });
-// // const subPermissions = (subMenuItem.permissions || []).map((perm: any) => {
-// //   const fullPermissionName = `${subMenuNameStr}_${perm.permissionName}`;
-// //   const matchedPerm = originalSub?.permissionDetails?.find(
-// //     (p: any) => p.permissionName === fullPermissionName
-// //   );
-
-// //   const obj: any = {
-// //     permissionName: perm.permissionName,
-// //     status: 'Active',
-// //   };
-// //   if (matchedPerm?.permissionId) {
-// //     obj.permissionId = matchedPerm.permissionId;
-// //   }
-// //   return obj;
-// // });
-
-//     return {
-//       status: 'Active',
-//       menuId: subMenuItem.menuName,
-//       menuName: subMenuNameStr || '',
-//       parentMenuId: menuItem.menuName,
-//       parentMenuName: menuNameStr || '',
-//       permissionDetails: subPermissions,
-//     };
-//   });
-
-//   return {
-//     id: this.roleMenuId || '',
-//     actionBy: this.userId,
-//     status: 'Active',
-//     menuId: menuItem.menuName,
-//     menuName: menuNameStr || '',
-//     subMenuLists,
-//     permissionDetails: parentPermissions,
-//   };
-// });
-
-
-//   // const payload = {
-//   //   appId: formData.appName,
-//   //   roleId: formData.role,
-//   //   status: formData.status,
-//   //   actionBy: this.userId,
-//   //   menuDetail: menuDetail
-//   // };
-
-//   const appId = formData.appName;
-// const appName = this.appsData.find((item: any) => item.id === appId)?.value;
-
-// const payload = {
-//   appId: appId,
-//   appName: appName || '',
-//   roleId: formData.role,
-//   status: formData.status,
-//   actionBy: this.userId,
-//   menuDetail: menuDetail
-// };
-
-
-//   if (this.roleMenuId) {
-//     this.roleAppMenuMappingService.updateRoleAppMenu(this.roleMenuId, payload).subscribe({
-//       next: () => this.toastr.success('Role menu mapping updated successfully'),
-//       error: (error) => this.toastr.error(error?.error?.message || 'Update failed')
-//     });
-//   } else {
-//     this.roleAppMenuMappingService.roleAppMenuCreate(payload).subscribe({
-//       next: () => this.toastr.success('Role menu mapping created successfully'),
-//       error: (error) => this.toastr.error(error?.error?.message || 'Creation failed')
-//     });
-//   }
-// }
-
-
-
-// onSubmit() {
-//   console.log('Save clicked. roleMenuId =', this.roleMenuId);
-  
-//   // if (this.menuForm.invalid) {
-//   //   this.menuForm.markAllAsTouched();
-//   //   return;
-//   // }
-
-//   const formData = this.menuForm.value;
-//   const appId = formData.appName;
-//   const appName = this.appsData.find((item: any) => item.id === appId)?.value || '';
-//   const roleId = formData.role;
-//   const roleName = this.roleData.find((item: any) => item.id === roleId)?.roleName || '';
-
-//   if (this.roleMenuId && this.roleMenuId !== 'null' && this.roleMenuId !== '') {
-//     console.log('Inside UPDATE block');
-//     // ✅ Update logic
-//     const menuDetail = formData.menu.map((menuItem: any) => {
-//       const matchedMenu = this.allMenus.find((m: any) => m.id === menuItem.menuName);
-//       const originalMenuItem = this.roleMenuByIdData?.menuDetails?.find((m: any) => m.menuId === menuItem.menuName);
-//       const menuNameStr = matchedMenu?.menuName;
-
-//       const parentPermissions = (menuItem.permissions || []).map((perm: any) => {
-//         const fullPermissionName = `${menuNameStr}_${perm.permissionName}`;
-//         const matchedPerm = originalMenuItem?.permissionDetails?.find((p: any) => p.permissionName === fullPermissionName);
-
-//         return {
-//           permissionId: matchedPerm ? matchedPerm.permissionId : '',
-//           permissionName: perm.permissionName,
-//           status: 'Active',
-//         };
-//       });
-
-//       const subMenuLists = (menuItem.subMenu || []).map((subMenuItem: any) => {
-//         const matchedSub = matchedMenu?.subMenu?.find((s: any) => s.id === subMenuItem.menuName);
-//         const subMenuNameStr = matchedSub?.menuName;
-//         const originalSub = originalMenuItem?.subMenuLists?.find((s: any) => s.menuId === subMenuItem.menuName);
-
-//         const subPermissions = (subMenuItem.permissions || []).map((perm: any) => {
-//           const fullPermissionName = `${subMenuNameStr}_${perm.permissionName}`;
-//           const matchedPerm = originalSub?.permissionDetails?.find((p: any) => p.permissionName === fullPermissionName);
-
-//           return {
-//             permissionId: matchedPerm ? matchedPerm.permissionId : '',
-//             permissionName: perm.permissionName,
-//             status: 'Active',
-//           };
-//         });
-
-//         return {
-//           status: 'Active',
-//           menuId: subMenuItem.menuName,
-//           menuName: subMenuNameStr || '',
-//           parentMenuId: menuItem.menuName,
-//           parentMenuName: menuNameStr || '',
-//           permissionDetails: subPermissions,
-//         };
-//       });
-
-//       return {
-//         id: this.roleMenuId || '',
-//         actionBy: this.userId,
-//         status: 'Active',
-//         menuId: menuItem.menuName,
-//         menuName: menuNameStr || '',
-//         subMenuLists,
-//         permissionDetails: parentPermissions,
-//       };
-//     });
-
-//     const payload = {
-//       appId,
-//       appName,
-//       roleId,
-//       roleName,
-//       status: formData.status,
-//       actionBy: this.userId,
-//       menuDetail
-//     };
-
-//     this.roleAppMenuMappingService.updateRoleAppMenu(this.roleMenuId, payload).subscribe({
-//       next: () => {
-//         this.toastr.success('Role menu mapping updated successfully');
-//         this.onCancel();
-//       },
-//       error: (error) => {
-//         this.toastr.error(error?.error?.message || 'Update failed');
-//       }
-//     });
-
-//   } else {
-//     console.log('Inside CREATE block');
-//     // ✅ Create logic
-//     const menuDetails = formData.menu.map((menuItem: any) => {
-//       const matchedMenu = this.allMenus.find((m: any) => m.id === menuItem.menuName);
-//       const subMenuLists = menuItem.subMenu?.map((subMenuItem: any) => {
-//         const matchedSubMenu = matchedMenu?.subMenu?.find((sm: any) => sm.id === subMenuItem.menuName);
-//         return {
-//           menuId: subMenuItem.menuName || '',
-//           menuName: matchedSubMenu?.menuName || '',
-//           parentMenuId: menuItem.menuName || '',
-//           parentMenuName: matchedMenu?.menuName || '',
-//           permissionDetails: subMenuItem.permissions?.map((permission: any) => ({
-//             permissionId: permission.id || '',
-//             permissionName: permission.permissionName || '',
-//             status: 'Active'
-//           })) || []
-//         };
-//       }) || [];
-
-//       return {
-//         menuId: menuItem.menuName || '',
-//         menuName: matchedMenu?.menuName || '',
-//         subMenuLists: subMenuLists,
-//         permissionDetails: menuItem.permissions?.map((permission: any) => ({
-//           permissionId: permission.id || '',
-//           permissionName: permission.permissionName || '',
-//           status: 'Active'
-//         })) || []
-//       };
-//     });
-
-//     const payload = {
-//       status: 'Active',
-//       appId,
-//       appName,
-//       roleId,
-//       roleName,
-//       actionBy: this.userId,
-//       menuDetails: menuDetails
-//     };
-
-//     this.roleAppMenuMappingService.roleAppMenuCreate(payload).subscribe({
-//       next: (response: any) => {
-//         this.toastr.success('App Menu Mapping created successfully');
-//         this.onCancel();
-//       },
-//       error: (error) => {
-//         this.toastr.error(error?.error?.message || 'Creation failed');
-//       }
-//     });
-//   }
-// }
-
-
 
   onCancel() {
     this.router.navigate(['/masters/app-role-menu-mapping']);
@@ -888,21 +577,21 @@ const payload = {
   // }
 
   getRoleAppMenuById() {
-  this.loadSpinner = true;
-  this.roleAppMenuMappingService.roleAppMenuDataById(this.roleMenuId).subscribe(
-    (response: any) => {
-      if (response) {
-        this.roleMenuByIdData = response; // ✅ Just store data here
-        this.menuName = this.roleMenuByIdData?.menuDetails[0]?.menuName;
-        this.getAllMenus(); // ✅ Patch happens *after* menus load
+    this.loadSpinner = true;
+    this.roleAppMenuMappingService.roleAppMenuDataById(this.roleMenuId).subscribe(
+      (response: any) => {
+        if (response) {
+          this.roleMenuByIdData = response; // ✅ Just store data here
+          this.menuName = this.roleMenuByIdData?.menuDetails[0]?.menuName;
+          this.getAllMenus(); // ✅ Patch happens *after* menus load
+        }
+        this.loadSpinner = false;
+      },
+      (error) => {
+        this.loadSpinner = false;
       }
-      this.loadSpinner = false;
-    },
-    (error) => {
-      this.loadSpinner = false;
-    }
-  );
-}
+    );
+  }
 
 
   mapPermissions(permissions: any[]): any[] {

@@ -45,7 +45,8 @@
           <div class="col-6">
             <h5 class="fw-bold text-primary">Menu {{ i + 1 }}</h5>
           </div>
-          <div class="col-6 text-end" *ngIf="!isUpdateMode">
+          <!-- *ngIf="!isUpdateMode" -->
+          <div class="col-6 text-end">
             <button type="button" class="custom-button-regulr" [ngbPopover]="popContent" [autoClose]="'outside'"
               triggers="manual" #p="ngbPopover" (click)="p.open()">
               Add Sub Menu
@@ -96,7 +97,8 @@
                     <label>Name<span class="text-danger">*</span></label>
                     <ng-select class="input-field" dropdownPosition="bottom" placeholder="Select Menu Name"
                       formControlName="menuName" (change)="getSubMenuPermissions($event, i, j)"
-                      [readonly]="isUpdateMode">
+                      >
+                      <!-- [readonly]="isUpdateMode" -->
                       <ng-option *ngFor="let submenu of allSubmenus"
                         [value]="submenu?.id">{{submenu?.menuName}}</ng-option>
                     </ng-select>
