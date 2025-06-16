@@ -9,7 +9,6 @@ import { APIConstant } from '../../core/constants/api.constant';
 })
 export class HeaderComponent implements OnInit {
   @ViewChild('subProfileWrap', { static: false }) subProfileWrap!: ElementRef;
-  // @ViewChild('subNotifyWrap', { static: false }) subNotifyWrap!: ElementRef;
 
   isProfileOpen = false;
 
@@ -18,25 +17,76 @@ export class HeaderComponent implements OnInit {
   userEmailId: string = 'N/A';
   organisation: string = 'N/A';
   greetingMessage: string = '';
-
-  // notifications: string[] = [
-  //   'Ticket #12352 has been created. Our support team will get back to you soon.',
-  //   'Ticket #12353 has been assigned to Priya Sharma for further investigation.',
-  //   'Ticket #12354 status updated to "Under Review."',
-  //   'Ticket #12355 requires additional information. Please check and respond.',
-  //   'Ticket #12356 has been resolved. Let us know if you need further assistance.',
-  //   'Ticket #12357 has been escalated to the technical team for urgent review.',
-  //   'Ticket #12358 has been closed. We appreciate your patience!',
-  //   'Ticket #12359 has been marked as "Pending Customer Response."',
-  //   'Ticket #12360 has been reopened for further troubleshooting.',
-  //   'Ticket #12361 has been updated with the latest resolution steps. Please review and confirm.'
-  // ];
+  userCategory: string = 'N/A';
 
   constructor(private router: Router) { }
 
   ngOnInit(): void {
     this.setGreetingMessage();
     this.getUserDetails();
+  }
+
+  getAvatarColor(name: string): string {
+    if (!name) return '#e8f4fd'; // Default light blue
+
+    // Microsoft Teams-like color palette (lighter backgrounds)
+    const colors = [
+      '#f9cfd3', // Slightly darker light red
+      '#cce4f7', // Slightly darker light blue
+      '#cce5cc', // Slightly darker light green
+      '#ffe0b2', // Slightly darker light orange
+      '#dab6ff', // Slightly darker light purple
+      '#b2f5ea', // Slightly darker light teal
+      '#e2e8f0', // Slightly darker light gray
+      '#ffe08a', // Slightly darker light yellow
+      '#e0e0e0', // Slightly darker very light gray
+      '#bbdefb', // Slightly darker light blue variant
+      '#dcedc8', // Slightly darker light green variant
+      '#ffe082', // Slightly darker light amber
+      '#e1bee7', // Slightly darker light pink
+      '#b2dfdb', // Slightly darker light cyan
+      '#ffe082'  // Slightly darker light lime
+    ];
+
+    // Generate a hash from the name to consistently assign colors
+    let hash = 0;
+    for (let i = 0; i < name.length; i++) {
+      hash = name.charCodeAt(i) + ((hash << 5) - hash);
+    }
+    // Use the hash to select a color from the palette
+    const colorIndex = Math.abs(hash) % colors.length;
+    return colors[colorIndex];
+  }
+
+  getAvatarTextColor(name: string): string {
+    if (!name) return '#1976d2'; // Default dark blue
+
+    // Corresponding dark colors for the light backgrounds
+    const textColors = [
+      '#c62828', // Dark red
+      '#1976d2', // Dark blue
+      '#388e3c', // Dark green
+      '#f57c00', // Dark orange
+      '#7b1fa2', // Dark purple
+      '#00695c', // Dark teal
+      '#424242', // Dark gray
+      '#f57f17', // Dark yellow
+      '#616161', // Dark gray variant
+      '#0277bd', // Dark blue variant
+      '#689f38', // Dark green variant
+      '#ff8f00', // Dark amber
+      '#ad1457', // Dark pink
+      '#00796b', // Dark cyan
+      '#827717'  // Dark lime
+    ];
+
+    // Use the same hash logic to get corresponding text color
+    let hash = 0;
+    for (let i = 0; i < name.length; i++) {
+      hash = name.charCodeAt(i) + ((hash << 5) - hash);
+    }
+    const colorIndex = Math.abs(hash) % textColors.length;
+    return textColors[colorIndex];
   }
 
   getUserDetails(): void {
@@ -47,19 +97,10 @@ export class HeaderComponent implements OnInit {
         this.userName = userData.username || 'N/A';
         this.userEmailId = userData.userEmailId || 'N/A';
         this.organisation = userData.organisation || 'N/A';
-      } else {
-        console.log('No data found in localStorage');
-        // Set default values
-        this.userName = 'N/A';
-        this.userEmailId = 'N/A';
-        this.organisation = 'N/A';
+        this.userCategory = userData.userCategory || 'N/A';
       }
     } catch (error) {
       console.error('Error parsing localStorage:', error);
-      // Set default values on error
-      this.userName = 'N/A';
-      this.userEmailId = 'N/A';
-      this.organisation = 'N/A';
     }
   }
 
@@ -69,7 +110,7 @@ export class HeaderComponent implements OnInit {
       try {
         return JSON.parse(value);
       } catch (e) {
-        return value; // If not JSON, return as is
+        return value;
       }
     }
     return '';
@@ -100,18 +141,6 @@ export class HeaderComponent implements OnInit {
     }
   }
 
-  // toggleProfile() {
-  //   this.isProfileOpen = !this.isProfileOpen;
-  //   this.isNotifyOpen = false; // Close notifications when opening the profile
-  //   this.updateToggleStates();
-  // }
-
-  // toggleNotifications() {
-  //   this.isNotifyOpen = !this.isNotifyOpen;
-  //   this.isProfileOpen = false; // Close profile when opening notifications
-  //   this.updateToggleStates();
-  // }
-
   toggleProfile() {
     this.isProfileOpen = !this.isProfileOpen;
     this.updateToggleStates();
@@ -124,9 +153,6 @@ export class HeaderComponent implements OnInit {
     if (
       this.subProfileWrap?.nativeElement.contains(clickedElement) ||
       clickedElement.closest('.user-profile')
-      // this.subNotifyWrap?.nativeElement.contains(clickedElement) ||
-      // clickedElement.closest('.user-profile') ||
-      // clickedElement.closest('.notifications')
     ) {
       // Click is inside profile dropdown or trigger
       return;
@@ -143,9 +169,6 @@ export class HeaderComponent implements OnInit {
     if (this.subProfileWrap?.nativeElement) {
       this.subProfileWrap.nativeElement.classList.toggle('open-profile', this.isProfileOpen);
     }
-    // if (this.subNotifyWrap?.nativeElement) {
-    //   this.subNotifyWrap.nativeElement.classList.toggle('open-notify', this.isNotifyOpen);
-    // }
   }
 
   logout() {

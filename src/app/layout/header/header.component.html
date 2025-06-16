@@ -1,5 +1,5 @@
 <div class="header d-flex bd-highlight">
-    <h3 class="message">{{greetingMessage}} {{userName}} !</h3>
+    <h3 class="message">{{greetingMessage}} <span class="user-name">{{userName}},</span></h3>
     <!-- <div class="home">
         <img src="../../../assets/images/icons/home.svg" alt="" routerLink="/home">
     </div> -->
@@ -32,12 +32,12 @@
     </div> -->
 
     <div class="user-profile" (click)="toggleProfile()">
-        <div class="user-avatar">
-            <span class="avatar-initials">{{getUserInitials()}}</span>
+        <div class="">
+            <span class="avatar-initials" [style.background-color]="getAvatarColor(userName)"
+                [style.color]="getAvatarTextColor(userName)">{{getUserInitials()}}</span>
         </div>
         <span class="user-name">{{userName}}
-            <img src="../../../assets/images/icons/down.svg" alt="" [class.rotate-up]="isProfileOpen"
-                class="toggle-icon">
+            <i class="bi bi-caret-down-fill toggle-icon" [class.rotate-up]="isProfileOpen"></i>
         </span>
     </div>
 
@@ -45,14 +45,24 @@
         <div class="sub-profile">
             <div class="user-info">
                 <div class="user-avatar-large">
-                    <span class="avatar-initials-large">{{getUserInitials()}}</span>
+                    <span class="avatar-initials-large" [style.background-color]="getAvatarColor(userName)"
+                        [style.color]="getAvatarTextColor(userName)">{{getUserInitials()}}</span>
                 </div>
                 <h3>{{userName}}</h3>
                 <p class="user-email">{{userEmailId}}</p>
             </div>
-            <div class="organization-info">
-                <h5>Organisation</h5>
-                <p class="organization-name">{{organisation}}</p>
+            <div class="user-details">
+                <div class="org-role-container">
+                    <div class="detail-section">
+                        <h5>Organisation</h5>
+                        <p class="detail-value">{{organisation}}</p>
+                    </div>
+
+                    <div class="detail-section">
+                        <h5>Role</h5>
+                        <p class="detail-value">{{userCategory}}</p>
+                    </div>
+                </div>
             </div>
             <div class="profile-actions">
                 <button class="action-button logout" (click)="logout()">

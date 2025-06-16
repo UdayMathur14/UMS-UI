@@ -11,10 +11,11 @@
   background-color: rgba(255, 255, 255, 0.95);
   box-shadow: 0 8px 32px rgba(0, 0, 0, 0.08);
   border-radius: 20px;
-  border: 2px solid black;
+  border: 2px solid rgb(97, 97, 97);
   z-index: 1000;
   margin-left: 250px;
   transition: all 0.3s cubic-bezier(0.4, 0, 0.2, 1);
+  height: 60px;
 
   @media (max-width: 1024px) {
     margin: 12px;
@@ -26,14 +27,6 @@
     padding: 8px 12px;
     flex-wrap: wrap;
     gap: 8px;
-  }
-
-  &.sidebar-collapsed {
-    margin-left: calc(10% - 60px);
-
-    @media (max-width: 768px) {
-      margin-left: 8px;
-    }
   }
 
   .message {
@@ -49,13 +42,19 @@
       width: 100%;
       order: -1;
     }
+
+    .user-name {
+      font-weight: 600;
+      font-size: 1.75rem;
+      color: #da0719;
+    }
   }
 
   .user-profile {
     display: flex;
     align-items: center;
-    gap: 12px;
-    padding: 8px 16px;
+    gap: 10px;
+    padding: 5.5px;
     background-color: #f9fafb;
     border: 2px solid #e5e7eb;
     border-radius: 12px;
@@ -71,23 +70,22 @@
       border-color: #d1d5db;
     }
 
-    .user-avatar {
-      width: 36px;
-      height: 36px;
+    .avatar-initials {
+      width: 38px;
+      height: 38px;
       border-radius: 50%;
-      background-color: #3b82f6;
       display: flex;
       align-items: center;
       justify-content: center;
-      border: 2px solid white;
-      box-shadow: 0 0 0 2px #e5e7eb;
-
-      .avatar-initials {
-        color: white;
-        font-weight: 600;
-        font-size: 1rem;
-        text-transform: uppercase;
-      }
+      font-size: 13px;
+      text-transform: uppercase;
+      letter-spacing: 0.5px;
+      border: 1px solid rgba(0, 0, 0, 0.08);
+      box-shadow: 0 1px 3px rgba(0, 0, 0, 0.12), 0 1px 2px rgba(0, 0, 0, 0.08);
+      transition: all 0.2s ease;
+      cursor: pointer;
+      position: relative;
+      overflow: hidden;
     }
 
     .user-name {
@@ -155,22 +153,28 @@
     border-bottom: 1px solid #e5e7eb;
 
     .user-avatar-large {
-      width: 80px;
-      height: 80px;
-      border-radius: 50%;
       margin: 0 auto 16px;
-      background-color: #3b82f6;
       display: flex;
       align-items: center;
       justify-content: center;
-      border: 3px solid white;
-      box-shadow: 0 0 0 2px #e5e7eb;
 
       .avatar-initials-large {
-        color: white;
+        width: 80px;
+        height: 80px;
         font-weight: 700;
-        font-size: 2rem;
+        border-radius: 50%;
+        display: flex;
+        align-items: center;
+        justify-content: center;
+        font-size: 30px;
         text-transform: uppercase;
+        letter-spacing: 0.5px;
+        border: 1px solid rgba(0, 0, 0, 0.08);
+        box-shadow: 0 1px 3px rgba(0, 0, 0, 0.12), 0 1px 2px rgba(0, 0, 0, 0.08);
+        transition: all 0.2s ease;
+        cursor: pointer;
+        position: relative;
+        overflow: hidden;
       }
     }
 
@@ -187,25 +191,50 @@
     }
   }
 
-  .organization-info {
+  .user-details {
     margin-bottom: 24px;
     padding-bottom: 16px;
     border-bottom: 1px solid #e5e7eb;
 
-    h5 {
-      color: #6b7280;
-      margin: 0 0 8px 0;
-      font-weight: 600;
-      font-size: 0.9rem;
-      text-transform: uppercase;
-      letter-spacing: 0.05em;
+    .org-role-container {
+      display: flex;
+      justify-content: space-between;
+      align-items: flex-start;
+      gap: 16px;
+
+      .detail-section {
+        flex: 1;
+
+        h5 {
+          color: #6b7280;
+          margin: 0 0 8px 0;
+          font-weight: 600;
+          font-size: 0.9rem;
+          text-transform: uppercase;
+          letter-spacing: 0.05em;
+        }
+
+        .detail-value {
+          color: #1f2937;
+          font-weight: 600;
+          font-size: 1.1rem;
+          margin: 0;
+        }
+      }
+    }
+  }
+
+  .change-password {
+    background-color: #007bff;
+    color: white;
+    margin-bottom: 10px;
+
+    i {
+      margin-right: 5px;
     }
 
-    .organization-name {
-      color: #1f2937;
-      font-weight: 600;
-      font-size: 1.1rem;
-      margin: 0;
+    &:hover {
+      background-color: #0056b3;
     }
   }
 
