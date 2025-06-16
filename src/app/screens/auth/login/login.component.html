@@ -1,6 +1,25 @@
 <div class="login-page">
   <div class="login-container">
 
+    <!-- Preview Section (Now on Left) -->
+    <div class="preview-section">
+      <div class="image-carousel">
+        <img *ngFor="let img of carouselImages; let i = index" [src]="img" [class.active]="i === currentImageIndex"
+          alt="Preview Image" />
+      </div>
+
+      <div class="carousel-dots">
+        <span *ngFor="let img of carouselImages; let i = index" [class.active]="i === currentImageIndex" class="dot"
+          (click)="currentImageIndex = i"></span>
+      </div>
+
+      <div class="caption">
+        <h3>Welcome back to your workspace.</h3>
+        <p>Continue your journey with our smart productivity platform.</p>
+      </div>
+    </div>
+
+    <!-- Form Section (Now on Right) -->
     <div class="form-section">
       <div class="d-flex flex-column align-items-center text-center">
         <div class="form-header">
@@ -10,8 +29,6 @@
           Welcome back, Please login to your account!
         </div>
       </div>
-
-
 
       <div class="social-buttons">
         <button class="microsoft-login-button" (click)="loginWithMicrosoft()">
@@ -23,7 +40,6 @@
           <span>OR</span>
         </div>
 
-        <!-- Google Login Button -->
         <div id="google-signin-button"></div>
       </div>
 
@@ -56,31 +72,14 @@
           <button type="submit" class="submit-btn" (click)="onSignIn()">Sign In</button>
 
           <div class="text-center mt-3">
-            <p class="reset-password-text text-primary" style="cursor: pointer;" (click)="onForgotPassword()">Forgot
-              Password?</p>
+            <p class="reset-password-text text-primary" style="cursor: pointer;" (click)="onForgotPassword()">
+              Forgot Password?
+            </p>
           </div>
         </form>
       </div>
 
-
       <p class="redirect">Don't have an account? <a href="/auth/signup">Sign Up</a></p>
-    </div>
-
-    <div class="preview-section">
-      <div class="image-carousel">
-        <img *ngFor="let img of carouselImages; let i = index" [src]="img" [class.active]="i === currentImageIndex"
-          alt="Preview Image" />
-      </div>
-
-      <div class="carousel-dots">
-        <span *ngFor="let img of carouselImages; let i = index" [class.active]="i === currentImageIndex" class="dot"
-          (click)="currentImageIndex = i"></span>
-      </div>
-
-      <div class="caption">
-        <h3>Welcome back to your workspace.</h3>
-        <p>Continue your journey with our smart productivity platform.</p>
-      </div>
     </div>
   </div>
 
