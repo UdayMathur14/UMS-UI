@@ -140,6 +140,13 @@ export class AddEditAppRoleMenuMappingComponent implements OnInit {
     const subMenuArray = this.subMenus(menuIndex);
     if (!subMenuArray) return;
 
+    const availableSubMenus = this.getAvailableSubMenus(menuIndex, -1);
+    const availableCounts = availableSubMenus.length || 0;
+    if (availableCounts < numberOfSubMenus) {
+      this.toastr.warning('Not enough submenus available to add');
+      return;
+    }
+
     for (let i = 0; i < numberOfSubMenus; i++) {
       const newSubMenu = this.formBuilder.group({
         menuName: ['', Validators.required],
