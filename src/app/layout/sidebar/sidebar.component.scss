@@ -1,3 +1,14 @@
+// common colors and styles for the sidebar component
+$sidebar-width: 220px;
+$sidebar-bg: #131d2b;
+$sidebar-hover: #141d28;
+$sidebar-active: #0a0808;
+$sidebar-text: #cfcfcf;
+$sidebar-text-hover: #fff;
+$submenu-bg: #141d28;
+$transition-speed: 0.3s;
+$border-radius: 0px;
+
 .full-logo {
     display: flex;
     position: fixed;
@@ -7,110 +18,194 @@
     width: calc(200px - 10px);
     height: calc(70px - 10px);
     cursor: pointer;
+    margin-left: 12px;
 }
 
-.sidebar-container {
-    width: 220px;
-    height: 100vh;
-    background: linear-gradient(180deg, #0077b6, #0096c7, #48cae4);
-    border-right: 2px solid #00b4d8;
+.sidebar {
+    width: $sidebar-width;
+    height: calc(90vh - 10px);
+    background-color: $sidebar-bg;
     color: #e0f7fa;
     position: fixed;
-    padding: 5px;
     left: 0;
     top: 0;
     border-radius: 22px 22px 0px 0px;
     transition: width 0.3s ease;
-    overflow: hidden;
     z-index: 1000;
     margin-top: 6%;
-    overflow-y: auto;
+    border: 1px solid #ddd;
     overflow-x: hidden;
-    max-height: calc(100vh - 20px);
-    padding-right: 15px;
-    scrollbar-gutter: stable;
+    scrollbar-width: none;
+    -ms-overflow-style: none;
 }
 
-/* Fix scrollbar width and positioning */
-.sidebar-container::-webkit-scrollbar {
-    width: 6px;
-}
-
-.sidebar-container::-webkit-scrollbar-track {
-    background: transparent;
-    border-radius: 22px;
-    margin-top: 20px;
-}
-
-.sidebar-container::-webkit-scrollbar-thumb {
-    background: #48cae4;
-    border-radius: 10px;
-}
-
-.menu-list {
+.nav-menu {
     list-style: none;
     padding: 0;
-    margin-top: 20px;
-    width: 100%;
-    text-align: center;
+    margin: 1;
+}
 
-    li {
-        padding: 12px 15px;
-        font-size: 16px;
-        font-family: Arial, Helvetica, sans-serif;
-        display: flex;
-        align-items: center;
-        border-radius: 25px;
-        margin: 10px 15px;
-        flex-direction: column;
-        align-items: center;
-        color: #e0f7fa;
-        background-color: transparent;
-        transition: background-color 0.3s ease, color 0.3s ease;
-        cursor: pointer;
+.nav-item {
+    position: relative;
+    cursor: pointer;
+    margin-top: 10px;
 
-        img {
-            width: 20px;
-            height: 20px;
-            margin-bottom: 5px;
-            margin-right: 0;
-            filter: brightness(1);
-            transition: transform 0.2s ease, filter 0.3s ease;
+
+    &.active {
+        background-color: $sidebar-active;
+
+        >.nav-link {
+            color: $sidebar-text-hover;
         }
 
+        .chevron-icon {
+            transform: rotate(0deg);
+        }
+    }
+
+    &.expanded {
+        >.submenu {
+            max-height: 1000px;
+            opacity: 1;
+        }
+
+        >.nav-link .chevron-icon {
+            transform: rotate(180deg);
+        }
+    }
+}
+
+.nav-link {
+    display: block;
+    padding: 0;
+    color: $sidebar-text;
+    text-decoration: none;
+    transition: background-color $transition-speed ease;
+
+    &:hover {
+        background-color: rgba(255, 255, 255, 0.05);
+        color: $sidebar-text-hover;
+    }
+
+    .nav-content {
+        display: flex;
+        align-items: center;
+        padding: 12px 15px;
+    }
+}
+
+.nav-item.active .icon {
+    filter: brightness(1) invert(0);
+    opacity: 1;
+}
+
+
+.nav-item.active {
+    border-left: 4px solid #4fc3f7;
+    background-color: $sidebar-active;
+}
+
+.icon-container {
+    width: 24px;
+    height: 24px;
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    margin-right: 15px;
+}
+
+.icon {
+    display: inline-block;
+    width: 20px;
+    height: 20px;
+    background-size: contain;
+    background-repeat: no-repeat;
+    background-position: center;
+    filter: brightness(0) invert(1);
+    opacity: 0.8;
+}
+
+.user-signup-icon {
+    background-image: url(../../../assets/images/icons/user-signup-status.svg);
+}
+
+.user-master-icon {
+    background-image: url(../../../assets/images/icons/user-master.svg);
+}
+
+.lookup-master-icon {
+    background-image: url(../../../assets/images/icons/user-config.svg);
+}
+
+.domain-project-mapping-icon {
+    background-image: url(../../../assets/images/icons/user-mapping.svg);
+}
+
+.role-master-icon {
+    background-image: url(../../../assets/images/icons/user-role.svg);
+}
+
+.app-menu-mapping-icon {
+    background-image: url(../../../assets/images/icons/app-menu-mapping.svg);
+}
+
+.app-role-menu-mapping-icon {
+    background-image: url(../../../assets/images/icons/apps-role-menu-mapping.svg);
+}
+
+.chevron-icon {
+    width: 12px;
+    height: 12px;
+    margin-left: auto;
+    background-size: contain;
+    background-repeat: no-repeat;
+    transition: transform $transition-speed ease;
+
+    &.rotate {
+        transform: rotate(0deg);
+    }
+}
+
+// Submenu styles
+.submenu {
+    list-style: none;
+    padding: 0;
+    margin: 0;
+    max-height: 0;
+    overflow: hidden;
+    transition: max-height $transition-speed ease, opacity $transition-speed ease;
+    opacity: 0;
+
+    &.expanded {
+        max-height: 1000px;
+        opacity: 1;
+    }
+
+    li {
+        padding: 0;
+
+        a,
         span {
-            white-space: nowrap;
-            font-size: 12px;
-            font-family: Arial, Helvetica, sans-serif;
+            display: block;
+            padding: 10px 15px 10px 59px;
+            color: rgba(255, 255, 255, 0.7);
+            text-decoration: none;
+            cursor: pointer;
+
+            &:hover {
+                background-color: rgba(255, 255, 255, 0.05);
+                color: $sidebar-text-hover;
+            }
         }
 
         &.active {
-            background-color: #0096c7;
-            color: #ffffff;
+
+            a,
+            span {
+                color: $sidebar-text-hover;
+                background-color: $sidebar-active;
+                border-left: 4px solid #4fc3f7;
+            }
         }
     }
-
-    li:last-child {
-        margin-bottom: 80px;
-    }
-}
-
-.menu-list li:hover {
-    background-color: #48cae4;
-    color: #005f73;
-}
-
-.menu-list li img {
-    width: 20px;
-    height: 20px;
-    margin-bottom: 5px;
-    margin-right: 0;
-    filter: brightness(1);
-    transition: transform 0.2s ease, filter 0.3s ease;
-}
-
-.menu-list li:hover img,
-.menu-list li.active img {
-    transform: scale(1.1);
-    filter: brightness(1.2);
 }
