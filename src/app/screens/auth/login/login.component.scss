@@ -270,60 +270,6 @@
       }
     }
 
-    .animated-tickets {
-      position: absolute;
-      top: 4rem;
-      left: 1rem;
-      display: flex;
-      flex-direction: column;
-      gap: 1rem;
-      z-index: 5;
-      animation: floatGroup 4s ease-in-out infinite;
-
-      .ticket-card {
-        background: rgba(255, 255, 255, 0.08);
-        border: 1px solid rgba(255, 255, 255, 0.15);
-        backdrop-filter: blur(12px);
-        padding: 0.8rem 1.2rem;
-        border-radius: 15px;
-        color: #fff;
-        font-weight: 600;
-        font-size: 0.9rem;
-        box-shadow: 0 12px 25px rgba(0, 0, 0, 0.3);
-        min-width: 160px;
-        opacity: 0.9;
-        transform: translateZ(0);
-        will-change: transform, opacity;
-
-        &.one {
-          animation: floatSingle 4s ease-in-out infinite;
-          animation-delay: 0s;
-          background: linear-gradient(135deg, rgba(255, 107, 107, 0.15), rgba(255, 107, 107, 0.05));
-          border-color: rgba(255, 107, 107, 0.2);
-        }
-
-        &.two {
-          animation: floatSingle 4s ease-in-out infinite;
-          animation-delay: 0.15s;
-          background: linear-gradient(135deg, rgba(74, 144, 226, 0.15), rgba(74, 144, 226, 0.05));
-          border-color: rgba(74, 144, 226, 0.2);
-        }
-
-        &.three {
-          animation: floatSingle 4s ease-in-out infinite;
-          animation-delay: 0.3s;
-          background: linear-gradient(135deg, rgba(45, 212, 191, 0.15), rgba(45, 212, 191, 0.05));
-          border-color: rgba(45, 212, 191, 0.2);
-        }
-
-        &:hover {
-          transform: scale(1.08) translateZ(0);
-          opacity: 1;
-          box-shadow: 0 15px 35px rgba(0, 0, 0, 0.4);
-        }
-      }
-    }
-
     .vector-group {
       display: flex;
       flex-direction: row;
@@ -766,30 +712,6 @@
 
     100% {
       transform: rotate(360deg);
-    }
-  }
-
-  @keyframes floatGroup {
-
-    0%,
-    100% {
-      transform: translateY(0px);
-    }
-
-    50% {
-      transform: translateY(-15px);
-    }
-  }
-
-  @keyframes floatSingle {
-
-    0%,
-    100% {
-      transform: translateY(0px);
-    }
-
-    50% {
-      transform: translateY(-10px);
     }
   }
 
