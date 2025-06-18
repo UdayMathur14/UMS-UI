@@ -1,135 +1,192 @@
-.signup-page {
+.login-page {
   font-family: 'Inter', sans-serif;
-  width: 100vw;
-  height: 100vh;
+  font-size: 1.1rem;
   display: flex;
+  overflow-x: hidden;
+  flex-wrap: wrap;
+  width: 100%;
+  height: auto;
+  min-height: 100vh;
+  box-sizing: border-box;
 
-  .signup-container {
+  .login-container {
     display: flex;
     width: 100%;
     height: 100%;
     overflow: hidden;
+    min-height: 100vh;
+    box-sizing: border-box;
   }
 
   .form-section {
-    flex: 1;
-    padding: 3rem;
+    flex: 1 1 45%;
+    min-width: 320px;
+    max-width: 100%;
     background: #fff;
-    overflow-y: auto;
+    display: flex;
+    justify-content: center;
+    align-items: center;
+    min-height: 100vh;
+    padding: 0.5rem;
+    box-sizing: border-box;
 
-    .form-header {
-      margin-bottom: 2rem;
+    .login-card {
+      background: #fff;
+      border-radius: 16px;
+      box-shadow: 0 15px 40px rgba(0, 0, 0, 0.15);
+      padding: clamp(1.25rem, 2vw, 2.5rem);
+      width: 100%;
+      max-width: 420px;
+      max-height: 90vh; // Limit the card height
+      display: flex;
+      flex-direction: column;
 
-      .logo {
-        height: 40px;
+      .logo-wrapper {
+        text-align: center;
         margin-bottom: 1rem;
+        flex-shrink: 0; // Prevent shrinking
+
+        img {
+          max-width: 160px;
+        }
       }
 
-      h2 {
-        font-size: 2rem;
+      .login-title,
+      .login-subtitle {
+        text-align: center;
+        flex-shrink: 0; // Prevent shrinking
+      }
+
+      .login-title {
+        font-size: clamp(1.4rem, 1.6vw, 1.8rem);
         font-weight: 700;
         color: #111827;
+        margin-bottom: 0.4rem;
       }
 
-      p {
-        font-size: 1rem;
+      .login-subtitle {
+        margin-bottom: 1.2rem;
+        font-size: 0.85rem;
         color: #6b7280;
       }
-    }
 
-    .form-group {
-      margin-bottom: 1.5rem;
+      // Scrollable form container
+      .form-container {
+        flex: 1;
+        overflow-y: auto;
+        overflow-x: hidden;
+        padding-right: 0.5rem; // Space for scrollbar
+        margin-right: -0.5rem; // Compensate for padding
 
-      label {
-        font-weight: 600;
-        font-size: 0.95rem;
-        display: block;
-        margin-bottom: 0.5rem;
-        color: #374151;
-      }
+        // Custom scrollbar styling
+        &::-webkit-scrollbar {
+          width: 6px;
+        }
 
-      input {
-        width: 100%;
-        padding: 0.75rem 0.75rem 0.75rem 2.5rem;
-        border: 1px solid #d1d5db;
-        border-radius: 10px;
-        background: #f9fafb;
-        font-size: 1rem;
+        &::-webkit-scrollbar-track {
+          background: #f1f1f1;
+          border-radius: 3px;
+        }
 
-        &:focus {
-          border-color: #4f46e5;
-          box-shadow: 0 0 0 3px rgba(99, 102, 241, 0.15);
-          outline: none;
+        &::-webkit-scrollbar-thumb {
+          background: #c1c1c1;
+          border-radius: 3px;
+
+          &:hover {
+            background: #a8a8a8;
+          }
         }
       }
 
-      ng-select {
-        width: 100%;
+      form {
+        display: flex;
+        flex-direction: column;
+        gap: 1rem;
+        padding-right: 0.5rem; // Additional padding for form elements
 
-        ::ng-deep .ng-select-container {
-          border: 1px solid #d1d5db;
-          border-radius: 10px;
-          background: #f9fafb;
+        label {
+          font-weight: 500;
+          margin-bottom: 0.25rem;
         }
-      }
 
-      .input-icon {
-        position: relative;
+        .input-group {
+          position: relative;
+          display: flex;
+          align-items: center;
+          border: 1px solid #ccc;
+          border-radius: 8px;
+          padding: 0.5rem 0.75rem;
 
-        i {
-          position: absolute;
-          top: 50%;
-          left: 0.75rem;
-          transform: translateY(-50%);
-          color: #9ca3af;
+          i {
+            margin-right: 0.5rem;
+            color: #555;
+          }
+
+          input {
+            border: none;
+            outline: none;
+            flex: 1;
+            font-size: 1rem;
+            padding: 0.25rem 0;
+            background: transparent;
+          }
+
+          .bi-eye,
+          .bi-eye-slash {
+            cursor: pointer;
+          }
         }
-      }
 
-      .error {
-        font-size: 0.75rem;
-        color: #ef4444;
-        margin-top: 0.25rem;
-      }
-    }
+        ng-select {
+          .ng-select-container {
+            border-radius: 8px;
+            padding: 0.25rem 0.5rem;
+            min-height: 40px;
+            border: 1px solid #ccc;
+          }
+        }
 
-    .submit-btn {
-      width: 30%;
-      padding: 10px 20px;
-      font-size: 1rem;
-      font-weight: 600;
-      align-self: center;
-      display: block;
-      margin: 0 auto;
-      border: none;
-      border-radius: 999px;
-      background: linear-gradient(to right, #4f46e5, #3b82f6);
-      color: #fff;
-      cursor: pointer;
-      transition: 0.2s ease;
-      margin-bottom: 1rem;
+        .submit-btn {
+          margin: 1rem auto 0;
+          width: 60%;
+          padding: 0.75rem;
+          background-color: #c52d2f;
+          color: #fff;
+          border: none;
+          border-radius: 40px;
+          font-size: 1rem;
+          cursor: pointer;
+          display: block;
+          transition: background-color 0.3s ease;
 
-      &:hover:enabled {
-        background: linear-gradient(to right, #4338ca, #2563eb);
-        transform: translateY(-1px);
-      }
+          &:hover {
+            background-color: #a92325;
+          }
 
-      &:disabled {
-        background: #c7d2fe;
-        cursor: not-allowed;
-      }
-    }
+          &:disabled {
+            background-color: #ccc;
+            cursor: not-allowed;
+          }
+        }
 
-    .redirect {
-      text-align: center;
-      margin-top: 1.5rem;
-      font-size: 0.9rem;
+        .error {
+          font-size: 0.85rem;
+          color: red;
+        }
 
-      a {
-        color: #4f46e5;
-        text-decoration: none;
+        .redirect {
+          text-align: center;
+          margin-top: 1rem;
 
-        &:hover {
-          text-decoration: underline;
+          a {
+            color: #007bff;
+            font-weight: 500;
+            text-decoration: none;
+
+            &:hover {
+              text-decoration: underline;
+            }
+          }
         }
       }
     }
