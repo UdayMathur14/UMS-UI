@@ -21,14 +21,14 @@ export class LoginComponent implements OnInit, AfterViewInit {
   loadSpinner: boolean = false;
   userEmail: string = '';
 
-  carouselImages: string[] = [
-    'assets/images/carousel-1.png',
-    'assets/images/carousel-2.png',
-    'assets/images/carousel-3.png',
-    'assets/images/carousel-4.png'
-  ];
+  // carouselImages: string[] = [
+  //   'assets/images/carousel-1.png',
+  //   'assets/images/carousel-2.png',
+  //   'assets/images/carousel-3.png',
+  //   'assets/images/carousel-4.png'
+  // ];
 
-  currentImageIndex: number = 0;
+  // currentImageIndex: number = 0;
 
   constructor(
     private router: Router,
@@ -78,15 +78,15 @@ export class LoginComponent implements OnInit, AfterViewInit {
 
     this.checkLoginStatus();
 
-    this.startCarousel();
+    // this.startCarousel();
 
   }
 
-  startCarousel() {
-    setInterval(() => {
-      this.currentImageIndex = (this.currentImageIndex + 1) % this.carouselImages.length;
-    }, 3000); // change image every 3 seconds
-  }
+  // startCarousel() {
+  //   setInterval(() => {
+  //     this.currentImageIndex = (this.currentImageIndex + 1) % this.carouselImages.length;
+  //   }, 3000); // change image every 3 seconds
+  // }
 
   ngAfterViewInit() {
     this.googleAuthService.initializeGoogleSignIn();
