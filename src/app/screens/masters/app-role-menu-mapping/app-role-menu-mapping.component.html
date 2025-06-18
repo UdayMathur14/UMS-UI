@@ -1,11 +1,18 @@
-<div class="page-title">
-    <h3>App Role Menu Mapping </h3>
-    <div class="action-buttons">
-        <button class="custom-button-regulr" (click)="onCreate()">Create</button>
-    </div>
+<div class="d-flex align-items-center justify-content-between">
+      <div class="d-flex align-items-center">
+          <h3 class="screen-heading">App Role Menu Mapping </h3>
+           <div class="filter-toggle">
+        <div class="filter-toggle" (click)="toggleFilters()">
+          <i class="bi bi-funnel pointer" style="font-size: 1.5rem;"></i>
+        </div>
+      </div>
+        </div>
+        <div class="d-flex align-items-center mb-3">
+            <button class="lift-btn-info me-2 d-flex align-items-center" (click)="onCreate()"><i class="bi bi-plus-square me-2"></i> Create</button>
+        </div>
 </div>
 
-<div class="filter-section">
+<div class="filter-section" *ngIf="showFilters">
     <app-role-menu-mapping-filter [filters]="filters" (getData)="getData($event)"></app-role-menu-mapping-filter>
 </div>
 

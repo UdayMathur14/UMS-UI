@@ -1,10 +1,12 @@
 <div class="page-title">
-  <h1>{{ roleMenuId ? 'Edit' : 'Create' }} App Role Menu Mapping</h1>
-  <div class="action-buttons">
-    <button class="custom-button-regulr" (click)="onSubmit()">Save</button>
-    <button class="custom-button-regulr" (click)="addMenu()" [disabled]="!selectedRole" *ngIf="!roleMenuId">Add
+  <h1 class="screen-heading">{{ roleMenuId ? 'Edit' : 'Create' }} App Role Menu Mapping</h1>
+  <div class="d-flex gap-2 mt-2">
+    <button class="lift-btn me-2" (click)="onSubmit()" [disabled]="!menuForm.valid">Save</button>
+    <button class="lift-btn me-2" (click)="addMenu()" [disabled]="!selectedRole" *ngIf="!roleMenuId">Add
       Menu</button>
-    <button class="custom-button-secondary" (click)="onCancel()">Cancel</button>
+    <button class="lift-btn-cancel me-2" (click)="onCancel()">
+      <i class="bi bi-x-circle-fill me-1"></i> Cancel
+    </button>
   </div>
 </div>
 <div class="menu-container">
