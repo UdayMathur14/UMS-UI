@@ -1,50 +1,49 @@
 <div class="filters-box">
     <div class="row">
-        <div class="col-lg-3">
-            <div class="custom-form-input">
+        <div class="col-lg-2">
+            <div class="ng-select-wrapper">
                 <label for="">Name</label>
                 <ng-select class="input-field" [(ngModel)]="name" placeholder="Select Name">
                     <ng-option *ngFor="let data of filters?.Name" [value]="data">{{data}}</ng-option>
                 </ng-select>
             </div>
         </div>
-        <div class="col-lg-3">
-            <div class="custom-form-input">
+        <div class="col-lg-2">
+            <div class="ng-select-wrapper">
                 <label>Organisation</label>
                 <ng-select class="input-field" [(ngModel)]="organisation" placeholder="Select Organisation">
                     <ng-option *ngFor="let data of filters?.Organisation" [value]="data">{{data}}</ng-option>
                 </ng-select>
             </div>  
         </div>  
-        <div class="col-lg-3">
-            <div class="custom-form-input">
+        <div class="col-lg-2">
+            <div class="ng-select-wrapper">
                 <label>Status</label>
                 <ng-select class="input-field" [(ngModel)]="status" placeholder="Select Status">
                     <ng-option *ngFor="let status of filters?.Status" [value]="status">{{status}}</ng-option>
                 </ng-select>
             </div>
         </div>  
-        <div class="col-lg-3">
-            <div class="custom-form-input">
+        <div class="col-lg-2">
+            <div class="ng-select-wrapper">
                 <label>User Category</label>
                 <ng-select class="input-field" [(ngModel)]="userCategory" placeholder="Select User Category">
                     <ng-option *ngFor="let data of filters?.UserCategory" [value]="data">{{data}}</ng-option>
                 </ng-select>
             </div>  
         </div> 
-        <div class="col-lg-3">
-            <div class="custom-form-input">
+        <div class="col-lg-2">
+            <div class="ng-select-wrapper">
                 <label>User Type</label>
                 <ng-select class="input-field" [(ngModel)]="userType" placeholder="Select User Type">
                     <ng-option *ngFor="let data of filters?.UserType" [value]="data">{{data}}</ng-option>
                 </ng-select>
             </div>  
         </div> 
-        <div class="col-lg-3">
+        <div class="col">
             <div class="custom-form-input">
-                <label for="" class="d-block">&nbsp;</label>
                 <button class="custom-button-filters" (click)="onSearch()">Search</button>
-                <button class="custom-button-filters ms-2" (click)="onClearFilter()">Clear</button>
+                <button class="custom-button-filters" (click)="onClearFilter()">Clear</button>
             </div>
         </div>
     </div>
