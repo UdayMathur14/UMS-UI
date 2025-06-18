@@ -1,23 +1,23 @@
 <div class="filters-box">
     <div class="row">
-        <div class="col-lg-3">
-            <div class="custom-form-input">
+        <div class="col-lg-2">
+            <div class="ng-select-wrapper">
                 <label for="">App Name</label>
                 <ng-select class="input-field" [(ngModel)]="appName"  placeholder="Select App Name">
                     <ng-option *ngFor="let data of filters?.AppName" [value]="data">{{data}}</ng-option>
                 </ng-select>
             </div>
         </div>
-        <div class="col-lg-3">
-            <div class="custom-form-input">
+        <div class="col-lg-2">
+            <div class="ng-select-wrapper">
                 <label>Menu Name</label>
                 <ng-select class="input-field" [(ngModel)]="menuName" placeholder="Select Menu Name">
                     <ng-option *ngFor="let data of filters?.MenuName" [value]="data">{{data}}</ng-option>
                 </ng-select>
             </div>  
         </div>  
-        <div class="col-lg-3">
-            <div class="custom-form-input">
+        <div class="col-lg-2">
+            <div class="ng-select-wrapper">
                 <label>Status</label>
                 <ng-select class="input-field"[(ngModel)]="status" placeholder="Select Status">
                     <ng-option *ngFor="let data of filters?.Status" [value]="data">{{data}}</ng-option>
@@ -42,7 +42,6 @@
         </div>  -->
         <div class="col-lg-3">
             <div class="custom-form-input">
-                <label for="" class="d-block">&nbsp;</label>
                 <button class="custom-button-filters"(click)="onSearch()">Search</button>
                 <button class="custom-button-filters ms-2" (click)="onClear()">Clear</button>
             </div>
