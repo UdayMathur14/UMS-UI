@@ -1,19 +1,22 @@
 <div class="login-page">
   <div class="login-container">
 
-    <!-- Left Section -->
+    <!-- Preview Section (Left Side) -->
     <div class="preview-section">
+      <!-- Animated Tickets -->
       <div class="animated-tickets">
         <div class="ticket-card one">Bug Ticket</div>
         <div class="ticket-card two">Feature Request</div>
         <div class="ticket-card three">User Query</div>
       </div>
+
+      <!-- Caption -->
       <div class="caption">
         <h3>Tick Wiz</h3>
         <p>Continue your journey with our Ticket Management System</p>
       </div>
 
-
+      <!-- Vector Illustrations -->
       <div class="vector-group">
         <div class="vector-illustration first">
           <img src="assets/images/login.svg" alt="Vector 1" />
@@ -23,21 +26,33 @@
         </div>
       </div>
 
+      <!-- Ticket Actions Grid -->
       <div class="ticket-actions-grid">
-        <div class="action-card"><i class="bi bi-clipboard-data"></i><span>Track Tickets</span></div>
-        <div class="action-card"><i class="bi bi-person-lines-fill"></i><span>User Management</span></div>
-        <div class="action-card"><i class="bi bi-bar-chart-line-fill"></i><span>Analytics</span></div>
-        <div class="action-card"><i class="bi bi-bell-fill"></i><span>Notifications</span></div>
+        <div class="action-card">
+          <i class="bi bi-clipboard-data"></i>
+          <span>Progress Tracker</span>
+        </div>
+        <div class="action-card">
+          <i class="bi bi-person-lines-fill"></i>
+          <span>User Management</span>
+        </div>
+        <div class="action-card">
+          <i class="bi bi-bar-chart-line-fill"></i>
+          <span>Analytics</span>
+        </div>
+        <div class="action-card">
+          <i class="bi bi-ticket-detailed-fill"></i>
+          <span>Tickets Progress</span>
+        </div>
       </div>
-
 
       <!-- Floating Bootstrap Icons -->
       <div class="floating-icons">
-        <i class="bi bi-lightning-fill icon" style="top: 10%; left: 15%;"></i>
-        <i class="bi bi-gear-fill icon" style="top: 30%; left: 70%;"></i>
-        <i class="bi bi-chat-dots-fill icon" style="top: 50%; left: 40%;"></i>
-        <i class="bi bi-shield-lock-fill icon" style="top: 75%; left: 20%;"></i>
-        <i class="bi bi-bug-fill icon" style="top: 85%; left: 80%;"></i>
+        <i class="bi bi-person-fill icon" style="top: 10%; left: 15%;"></i>
+        <i class="bi bi-clipboard-data icon" style="top: 30%; left: 70%;"></i>
+        <i class="bi bi-person-lines-fill icon" style="top: 50%; left: 40%;"></i>
+        <i class="bi bi-bar-chart-line-fill icon" style="top: 75%; left: 20%;"></i>
+        <i class="bi bi-ticket-detailed-fill icon" style="top: 85%; left: 80%;"></i>
       </div>
 
       <!-- Floating Particles -->
@@ -46,10 +61,19 @@
         <div class="particle"></div>
         <div class="particle"></div>
         <div class="particle"></div>
+        <div class="particle"></div>
+        <div class="particle"></div>
+      </div>
+
+      <!-- Cosmic Elements -->
+      <div class="cosmic-elements">
+        <div class="cosmic-ring ring-1"></div>
+        <div class="cosmic-ring ring-2"></div>
+        <div class="cosmic-ring ring-3"></div>
       </div>
     </div>
 
-    <!-- Right Section -->
+    <!-- Form Section (Right Side) -->
     <div class="form-section">
       <div class="login-card">
         <div class="logo-wrapper">
@@ -83,10 +107,10 @@
           <div class="divider">Or continue with</div>
 
           <div class="social-login">
-            <button class="social-button" (click)="loginWithMicrosoft()">
+            <button type="button" class="social-button" (click)="loginWithMicrosoft()">
               <i class="bi bi-microsoft"></i>
             </button>
-            <button class="social-button google-button">
+            <button type="button" class="social-button google-button">
               <i class="bi bi-google"></i>
             </button>
           </div>
@@ -95,7 +119,9 @@
         </form>
       </div>
     </div>
+
   </div>
 
-  <div class="spinner" *ngIf="loadSpinner">Loading...</div>
+  <!-- Loading Spinner -->
+  <div class="spinner" style="display: none;">Loading...</div>
 </div>
