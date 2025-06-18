@@ -154,6 +154,22 @@ button {
   cursor: pointer;
 }
 
+// style for components main screen
+.content-section {
+  display: flex;
+  flex-direction: column;
+  background: #fff;
+  border-radius: 10px;
+  box-shadow: 0px 1px 4px #00000024;
+  overflow: hidden;
+  height: calc(100vh - 190px);
+  transition: height 0.3s ease-in-out;
+}
+
+.filter-section + .content-section {
+  height: calc(100vh - 260px);
+}
+
 //NG SELECT GLOBAL CSS
 .ng-select {
   .ng-select-container {
