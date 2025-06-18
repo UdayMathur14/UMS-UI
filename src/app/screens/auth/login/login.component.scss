@@ -106,18 +106,15 @@
         }
 
         .forgot-password {
-          text-align: right;
-          font-size: 0.75rem;
-          margin: 0.2rem 0;
+          text-align: center;
+          margin-top: 1rem;
+          font-size: 0.95rem;
 
           a {
-            color: #3b82f6;
+            color: #0a66c2;
             text-decoration: none;
+            font-weight: 500;
             cursor: pointer;
-
-            &:hover {
-              text-decoration: underline;
-            }
           }
         }
 
@@ -215,16 +212,13 @@
 
         .redirect {
           text-align: center;
-          font-size: 0.75rem;
-          margin-top: 0.6rem;
+          margin-top: 1rem;
+          font-size: 0.95rem;
 
           a {
-            color: #3b82f6;
+            color: #0a66c2;
             text-decoration: none;
-
-            &:hover {
-              text-decoration: underline;
-            }
+            font-weight: 500;
           }
         }
       }
