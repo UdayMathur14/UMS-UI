@@ -1,29 +1,62 @@
 <div class="login-page">
   <div class="login-container">
 
-    <!-- Preview Section (Now on Left) -->
+    <!-- Left Section -->
     <div class="preview-section">
-      <div class="image-carousel">
-        <img *ngFor="let img of carouselImages; let i = index" [src]="img" [class.active]="i === currentImageIndex"
-          alt="Preview Image" />
+      <div class="animated-tickets">
+        <div class="ticket-card one">Bug Ticket</div>
+        <div class="ticket-card two">Feature Request</div>
+        <div class="ticket-card three">User Query</div>
       </div>
-
-      <div class="carousel-dots">
-        <span *ngFor="let img of carouselImages; let i = index" [class.active]="i === currentImageIndex" class="dot"
-          (click)="currentImageIndex = i"></span>
-      </div>
-
       <div class="caption">
-        <h3>Welcome back to your workspace.</h3>
-        <p>Continue your journey with our smart productivity platform.</p>
+        <h3>Tick Wiz</h3>
+        <p>Continue your journey with our Ticket Management System</p>
+      </div>
+
+
+      <div class="vector-group">
+        <div class="vector-illustration first">
+          <img src="assets/images/login.svg" alt="Vector 1" />
+        </div>
+        <div class="vector-illustration second">
+          <img src="assets/images/login-2.svg" alt="Vector 2" />
+        </div>
+      </div>
+
+      <div class="ticket-actions-grid">
+        <div class="action-card"><i class="bi bi-clipboard-data"></i><span>Track Tickets</span></div>
+        <div class="action-card"><i class="bi bi-person-lines-fill"></i><span>User Management</span></div>
+        <div class="action-card"><i class="bi bi-bar-chart-line-fill"></i><span>Analytics</span></div>
+        <div class="action-card"><i class="bi bi-bell-fill"></i><span>Notifications</span></div>
+      </div>
+
+
+      <!-- Floating Bootstrap Icons -->
+      <div class="floating-icons">
+        <i class="bi bi-lightning-fill icon" style="top: 10%; left: 15%;"></i>
+        <i class="bi bi-gear-fill icon" style="top: 30%; left: 70%;"></i>
+        <i class="bi bi-chat-dots-fill icon" style="top: 50%; left: 40%;"></i>
+        <i class="bi bi-shield-lock-fill icon" style="top: 75%; left: 20%;"></i>
+        <i class="bi bi-bug-fill icon" style="top: 85%; left: 80%;"></i>
+      </div>
+
+      <!-- Floating Particles -->
+      <div class="floating-particles">
+        <div class="particle"></div>
+        <div class="particle"></div>
+        <div class="particle"></div>
+        <div class="particle"></div>
       </div>
     </div>
 
-    <!-- Form Section (Now Card Style on Right) -->
-    <div class="form-section d-flex justify-content-center align-items-center">
+    <!-- Right Section -->
+    <div class="form-section">
       <div class="login-card">
-        <h2 class="login-title text-center">Welcome Back!</h2>
-        <p class="login-subtitle text-center">Sign in to your account</p>
+        <div class="logo-wrapper">
+          <img src="assets/images/diplogo.png" alt="Company Logo" />
+        </div>
+        <h2 class="login-title">Welcome Back!</h2>
+        <p class="login-subtitle">Sign in to your account</p>
 
         <form class="login-form">
           <label>Email Address</label>
@@ -41,7 +74,7 @@
               (click)="showPassword = !showPassword"></i>
           </div>
 
-          <div class="forgot-password text-end">
+          <div class="forgot-password">
             <a (click)="onForgotPassword()">Forgot password?</a>
           </div>
 
@@ -50,12 +83,15 @@
           <div class="divider">Or continue with</div>
 
           <div class="social-login">
-            <button class="social-button" (click)="loginWithMicrosoft()"><i class="bi bi-microsoft"></i></button>
-            <button class="social-button google-button"><i class="bi bi-google"></i></button>
-            <!-- <button class="social-button google-button" id="google-signin-button"><i class="bi bi-google"></i></button> -->
+            <button class="social-button" (click)="loginWithMicrosoft()">
+              <i class="bi bi-microsoft"></i>
+            </button>
+            <button class="social-button google-button">
+              <i class="bi bi-google"></i>
+            </button>
           </div>
 
-          <p class="redirect text-center">Don't have an account? <a href="/auth/signup">Sign Up</a></p>
+          <p class="redirect">Don't have an account? <a routerLink="/auth/signup">Sign Up</a></p>
         </form>
       </div>
     </div>
