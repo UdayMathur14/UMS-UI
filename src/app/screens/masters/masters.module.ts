@@ -75,7 +75,7 @@ import { AddEditAppRoleMenuMappingComponent } from './app-role-menu-mapping/add-
     FormsModule,
     NgbPaginationModule,
     NgbModule,
-    NgMultiSelectDropDownModule,
+    NgMultiSelectDropDownModule
   ],
 })
 export class MastersModule {}
