@@ -1,10 +1,10 @@
-<div class="container" style="margin-top: 6rem">
+
     <div class="page-title">
-        <h1>{{roleId ? 'Edit' : 'Add'}} Role</h1>
-        <div class="action-buttons d-flex align-items-start">
-            <button class="custom-button-regulr" (click)="onSubmit()">Save</button>
-            <button class="custom-button-secondary ms-1" (click)="onCancel()">
-                Cancel
+        <h1 class="screen-heading">{{roleId ? 'Edit' : 'Add'}} Role</h1>
+        <div class="d-flex gap-2 mt-2">
+            <button class="lift-btn me-2" (click)="onSubmit()" [disabled]="!roleForm.valid">Save</button>
+            <button class="lift-btn-cancel me-2" (click)="onCancel()">
+                <i class="bi bi-x-circle-fill me-1"></i> Cancel
             </button>
         </div>
     </div>
@@ -44,7 +44,7 @@
         </div>
     </form>
 
-</div>
+
 <div class="spinner" *ngIf="loadSpinner">
     Loading...
 </div>

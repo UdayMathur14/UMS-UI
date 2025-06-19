@@ -18,6 +18,7 @@ export class RoleMasterComponent {
   filters: any = [];
   appliedFilters: any = [];
   currentPage: number = 1;
+  showFilters: boolean = false;
 
   constructor(private roleService: RoleService, private router: Router) {}
 
@@ -73,5 +74,9 @@ export class RoleMasterComponent {
 
   onCreate() {
     this.router.navigate(['masters/add-role']);
+  }
+  
+    toggleFilters() {
+    this.showFilters = !this.showFilters;
   }
 }

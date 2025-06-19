@@ -18,6 +18,7 @@ export class DomainProjectMappingComponent {
   filters: any = [];
   appliedFilters: any = [];
   currentPage: number = 1;
+  showFilters: boolean = false;
 
   constructor(private domainService: DomainProjectMappingService, private router: Router) {}
 
@@ -76,6 +77,10 @@ export class DomainProjectMappingComponent {
 
   onCreate(){
     this.router.navigate(['masters/add-domain-project-mapping']);
+  }
+
+      toggleFilters() {
+    this.showFilters = !this.showFilters;
   }
 
 }
