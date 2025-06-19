@@ -1,0 +1,17 @@
+<div class="theme">
+    <button class="settings-btn" [class.move-right]="isSettingsOpen" (click)="toggleSettingsPanel()">
+        <i class="bi bi-gear-fill size"></i>
+    </button>
+</div>
+
+<div class="settings-panel" [class.open]="isSettingsOpen" (mouseleave)="closeSettingsPanel()">
+    <div class="toggle-containers">
+        <span>Theme</span>
+        <div class="toggle-wrapper blue mb-3">
+            <input type="checkbox" class="toggle-checkbox" [checked]="isDarkMode" (change)="toggleDarkMode()">
+            <div class="toggle-container">
+                <div class="toggle-ball"></div>
+            </div>
+        </div>
+    </div>
+</div>
