@@ -1,5 +1,5 @@
 import { Component, OnInit } from '@angular/core';
-import { FormArray, FormBuilder, FormGroup, Validators } from '@angular/forms';
+import { FormArray, FormBuilder, FormControl, FormGroup, Validators } from '@angular/forms';
 import { ActivatedRoute, Router } from '@angular/router';
 import { LookupService } from '../../../../core/service/lookup.service';
 import { AppMenuMappingService } from '../../../../core/service/app-menu-mapping.service';
@@ -29,6 +29,9 @@ export class AddEditAppMenuMappingComponent implements OnInit {
     { id: '', permissionName: 'VIEW' },
   ];
 
+  submenuInputVisible: boolean[] = []; //added for the ngbpopover alternative
+  submenuCountControls: { [key: number]: FormControl } = {};  //added for the ngbpopover alternative
+
   constructor(
     private router: Router,
     private formBuilder: FormBuilder,
@@ -56,6 +59,14 @@ export class AddEditAppMenuMappingComponent implements OnInit {
     this.getPermissions();
     if (this.menuId) {
       this.getAppMenuById();
+    }
+  }
+
+  // toggleSubmenuInput function added for the alternate of the ngbPopover and need to test first 6/20/2025
+  toggleSubmenuInput(menuIndex: number): void {
+    this.submenuInputVisible[menuIndex] = !this.submenuInputVisible[menuIndex];
+    if (!this.submenuCountControls[menuIndex]) {
+      this.submenuCountControls[menuIndex] = new FormControl('', [Validators.required, Validators.min(1)]);
     }
   }
 
