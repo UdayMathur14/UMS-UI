@@ -24,6 +24,7 @@
     "@ng-select/ng-select": "^14.2.2",
     "@react-oauth/google": "^0.12.1",
     "bootstrap": "^5.3.3",
+    "darkreader": "^4.9.105",
     "ng-multiselect-dropdown": "^1.0.0",
     "ngx-toastr": "^19.0.0",
     "rxjs": "~7.8.0",

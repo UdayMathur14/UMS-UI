@@ -17,11 +17,12 @@ export class AppMenuMappingComponent {
   appMenuMapping: any;
   filters: any;
   totalPages: number = 0;
+  showFilters: boolean = false;
 
   constructor(
     private router: Router,
     private appMenuMappingService: AppMenuMappingService
-  ) {}
+  ) { }
 
   ngOnInit(): void {
     const data = localStorage.getItem('data');
@@ -80,5 +81,9 @@ export class AppMenuMappingComponent {
 
   onCreate() {
     this.router.navigate(['/masters/add-app-menu-mapping']);
+  }
+
+  toggleFilters() {
+    this.showFilters = !this.showFilters;
   }
 }

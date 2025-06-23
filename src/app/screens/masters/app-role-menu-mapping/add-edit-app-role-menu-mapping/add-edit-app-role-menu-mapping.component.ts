@@ -40,6 +40,9 @@ export class AddEditAppRoleMenuMappingComponent implements OnInit {
   maxCount: number = 9000000; // Maximum count for pagination
   isUpdateMode: boolean = false;
 
+  subMenuCount: number = 1;
+  currentMenuIndex: number = 0;
+
   constructor(
     private lookupService: LookupService,
     private roleService: RoleService,
@@ -80,6 +83,16 @@ export class AddEditAppRoleMenuMappingComponent implements OnInit {
         this.getAllMenus();
       }, 2000);
     }
+  }
+
+  addSubMenusFromModal() {
+    if (!this.subMenuCount || this.subMenuCount < 1) {
+      this.toastr.warning('Please enter a valid number of submenus');
+      return;
+    }
+
+    this.addSubMenu(this.subMenuCount, this.currentMenuIndex);
+    this.subMenuCount = 1; // reset
   }
 
   getApps() {

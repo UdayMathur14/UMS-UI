@@ -16,6 +16,7 @@ export class UserSignupStatusComponent implements OnInit {
   filters: any = [];
   appliedFilters: any = [];
   currentPage: number = 1;
+  showFilters: boolean = false;
 
   constructor(private userService: UserSignupStatusService) {}
 
@@ -69,5 +70,8 @@ export class UserSignupStatusComponent implements OnInit {
     this.count = data;
     this.currentPage = 1;
     this.getSignUpUserList(0, this.count, this.appliedFilters);
+  }
+      toggleFilters() {
+    this.showFilters = !this.showFilters;
   }
 }

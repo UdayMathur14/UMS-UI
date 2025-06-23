@@ -16,6 +16,7 @@ export class UserMasterComponent implements OnInit {
   currentPage: number = 1;
   appliedFilters: any;
   fillters: any;
+  showFilters: boolean = false;
 
   constructor(private userMasterService: UserMasterService) {}
   ngOnInit(): void {
@@ -74,5 +75,9 @@ export class UserMasterComponent implements OnInit {
     this.count = data;
     this.currentPage = 1;
     this.getUserMasterData(0, this.count, this.appliedFilters);
+  }
+
+     toggleFilters() {
+    this.showFilters = !this.showFilters;
   }
 }

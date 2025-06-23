@@ -15,6 +15,7 @@ export class AppRoleMenuMappingComponent {
     roleAppMenuMapping: any;
     filters: any;
     totalPages: number = 0;
+    showFilters: boolean = false;
   
     constructor(
       private router: Router,
@@ -79,4 +80,8 @@ export class AppRoleMenuMappingComponent {
     onCreate() {
       this.router.navigate(['/masters/add-app-role-menu-mapping']);
     }
+
+        toggleFilters() {
+    this.showFilters = !this.showFilters;
+  }
 }

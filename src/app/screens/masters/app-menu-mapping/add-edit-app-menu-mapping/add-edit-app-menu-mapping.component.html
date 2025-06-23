@@ -1,9 +1,9 @@
 <div class="page-title">
-  <h1>{{ menuId ? 'Edit' : 'Create' }} App Menu Mapping</h1>
-  <div class="action-buttons">
-    <button class="custom-button-regulr" (click)="onSubmit()">Save</button>
-    <button class="custom-button-regulr" (click)="addMenu()" [disabled]="!appData" *ngIf="!menuId">+ Add Menu</button>
-    <button class="custom-button-secondary" (click)="onCancel()">Cancel</button>
+  <h1 class="screen-heading">{{ menuId ? 'Edit' : 'Create' }} App Menu Mapping</h1>
+  <div class="d-flex gap-2 mt-2">
+    <button class="lift-btn me-2" (click)="onSubmit()">Save</button>
+    <button class="lift-btn-info me-2" (click)="addMenu()" [disabled]="!appData" *ngIf="!menuId">+ Add Menu</button>
+    <button class="lift-btn-cancel me-2" (click)="onCancel()"><i class="bi bi-x-circle-fill me-1"></i>Cancel</button>
   </div>
 </div>
 <div class="menu-container">
@@ -45,7 +45,7 @@
             <h5 class="fw-bold text-primary">Menu {{ i + 1 }}</h5>
           </div>
           <div class="col-6 text-end">
-            <button type="button" class="custom-button-regulr" [ngbPopover]="popContent" [autoClose]="'outside'"
+            <!-- <button type="button" class="custom-button-regulr" [ngbPopover]="popContent" [autoClose]="'outside'"
               triggers="manual" #p="ngbPopover" (click)="p.open()" [disabled]="!isMenuName(i)">
               Add Sub Menu
             </button>
@@ -56,7 +56,31 @@
               <button class="custom-button-filters" (click)="p.close(); addSubMenu(subMenu.value, i)">
                 Add
               </button>
-            </ng-template>
+            </ng-template> -->
+
+            <!-- Alternate of NGBpopover -->
+            <div class="position-relative d-inline-block" [ngClass]="{'disabled-wrapper': !isMenuName(i)}">
+              <button type="button" class="custom-button-regulr" (click)="toggleSubmenuInput(i)"
+                [disabled]="!isMenuName(i)">
+                Add Sub Menu
+              </button>
+              <div *ngIf="submenuInputVisible[i]"
+                class="submenu-input-box shadow-sm p-2 bg-white border rounded position-absolute"
+                style="right: 0; z-index: 100;">
+                <div class="custom-form-input">
+                  <input type="number" min="1" [formControl]="submenuCountControls[i]" class="form-control"
+                    placeholder="Number of submenus" />
+                </div>
+                <div class="mt-2 text-end">
+                  <button class="btn btn-sm btn-primary"
+                    (click)="addSubMenu(submenuCountControls[i].value, i); toggleSubmenuInput(i)">
+                    Add
+                  </button>
+                </div>
+              </div>
+            </div>
+            <!-- End of alternate of ngbPopover -->
+
             <!-- Delete icon for Menu -->
             <button type="button" class="btn btn-danger btn-sm ms-2" (click)="removeMenu(i)" *ngIf="!menuId">
               <i class="bi bi-trash"></i>
@@ -179,7 +203,6 @@
     </div>
   </form>
 </div>
-
 
 <div class="spinner" *ngIf="loadSpinner">
   Loading...

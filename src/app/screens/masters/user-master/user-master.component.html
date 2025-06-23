@@ -1,33 +1,49 @@
-<div class="page-title">
-    <h3>User Master</h3>
-    <div class="action-buttons d-flex align-items-start">
-        <button class="custom-button-regulr"routerLink="/masters/add-user-master">
-            Create
-        </button>
-    </div>
-</div>
-
-<div class="filter-section">
-    <app-user-master-filter [filters]="fillters"  (getData)="getData($event)" ></app-user-master-filter>
-</div>
-
-<div class="content-section">
-    <div class="grid-table">
-        <div class="table-container">
-            <app-user-master-grid-table [userMaster]="userMaster"></app-user-master-grid-table>
+<div class="user-master-container">
+    <div class="d-flex align-items-center justify-content-between">
+        <div class="d-flex align-items-center">
+            <h3 class="screen-heading me-3">User Master</h3>
+      <div class="filter-toggle">
+        <div class="filter-toggle" (click)="toggleFilters()">
+          <i class="bi bi-funnel pointer" style="font-size: 1.5rem;"></i>
         </div>
-        <div class="d-flex justify-content-center mt-3">
-            <ngb-pagination [collectionSize]="totalUsersMasters" [(page)]="currentPage" [pageSize]="count"
-                (pageChange)="onPageChange($event)" [boundaryLinks]="true" [maxSize]="5"
-                [rotate]="true"></ngb-pagination>
-            <p class="mt-2 ms-3"> Items per page:</p>
-            <select class="custom-select ms-3" [(ngModel)]="count" (ngModelChange)="onPageSizeChange(count)">
-                <option [value]="10">10</option>
-                <option [value]="20">20</option>
-                <option [value]="50">50</option>
-                <option [value]="100">100</option>
-                <option [value]="500">500</option>
-            </select>
+      </div>
+        </div>
+            <div class="d-flex align-items-center mb-3">
+                <div class="action-buttons">
+                     <button type="button" class="lift-btn-info me-2 d-flex align-items-center" routerLink="/masters/add-user-master">
+           <i class="bi bi-plus-square me-2"></i> Create
+        </button>
+                </div>
+            </div>
+    </div>
+
+    <div class="action-buttons d-flex align-items-start">
+       
+    </div>
+
+
+    <div class="filter-section" *ngIf="showFilters">
+        <app-user-master-filter [filters]="fillters" (getData)="getData($event)"></app-user-master-filter>
+    </div>
+
+    <div class="content-section">
+        <div class="grid-table">
+            <div class="table-container">
+                <app-user-master-grid-table [userMaster]="userMaster"></app-user-master-grid-table>
+            </div>
+            <div class="d-flex justify-content-center mt-3">
+                <ngb-pagination [collectionSize]="totalUsersMasters" [(page)]="currentPage" [pageSize]="count"
+                    (pageChange)="onPageChange($event)" [boundaryLinks]="true" [maxSize]="5"
+                    [rotate]="true"></ngb-pagination>
+                <p class="mt-2 ms-3"> Items per page:</p>
+                <select class="custom-select ms-3" [(ngModel)]="count" (ngModelChange)="onPageSizeChange(count)">
+                    <option [value]="10">10</option>
+                    <option [value]="20">20</option>
+                    <option [value]="50">50</option>
+                    <option [value]="100">100</option>
+                    <option [value]="500">500</option>
+                </select>
+            </div>
         </div>
     </div>
 </div>

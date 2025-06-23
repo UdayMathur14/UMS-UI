@@ -1,7 +1,12 @@
-<div class="page-title">
-  <h3>User SignUp Status</h3>
+<div class="d-flex align-items-center justify-content-between">
+  <div class="d-flex align-items-center">
+    <h3 class="screen-heading me-3">User SignUp Status</h3>
+    <div class="filter-toggle" (click)="toggleFilters()">
+      <i class="bi bi-funnel pointer" style="font-size: 1.5rem;"></i>
+    </div>
+  </div>
 </div>
-<div class="filter-section">
+<div class="filter-section" *ngIf="showFilters">
   <app-user-signup-status-filter [filters]="filters" (getData)="getData($event)"></app-user-signup-status-filter>
 </div>
 <div class="content-section">

@@ -4,13 +4,16 @@ import { LayoutComponent } from './layout.component';
 import { HeaderComponent } from './header/header.component';
 import { SidebarComponent } from './sidebar/sidebar.component';
 import { RouterModule } from '@angular/router';
+import { ThemeComponent } from './theme/theme.component';
+
 
 
 @NgModule({
   declarations: [
     LayoutComponent,
     HeaderComponent,
-    SidebarComponent
+    SidebarComponent,
+    ThemeComponent
   ],
   imports: [
     CommonModule,

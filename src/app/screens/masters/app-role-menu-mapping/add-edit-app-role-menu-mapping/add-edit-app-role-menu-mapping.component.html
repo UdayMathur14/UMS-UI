@@ -1,10 +1,12 @@
 <div class="page-title">
-  <h1>{{ roleMenuId ? 'Edit' : 'Create' }} App Role Menu Mapping</h1>
-  <div class="action-buttons">
-    <button class="custom-button-regulr" (click)="onSubmit()">Save</button>
-    <button class="custom-button-regulr" (click)="addMenu()" [disabled]="!selectedRole" *ngIf="!roleMenuId">Add
+  <h1 class="screen-heading">{{ roleMenuId ? 'Edit' : 'Create' }} App Role Menu Mapping</h1>
+  <div class="d-flex gap-2 mt-2">
+    <button class="lift-btn me-2" (click)="onSubmit()" [disabled]="!menuForm.valid">Save</button>
+    <button class="lift-btn me-2" (click)="addMenu()" [disabled]="!selectedRole" *ngIf="!roleMenuId">Add
       Menu</button>
-    <button class="custom-button-secondary" (click)="onCancel()">Cancel</button>
+    <button class="lift-btn-cancel me-2" (click)="onCancel()">
+      <i class="bi bi-x-circle-fill me-1"></i> Cancel
+    </button>
   </div>
 </div>
 <div class="menu-container">
@@ -47,7 +49,7 @@
           </div>
           <!-- *ngIf="!isUpdateMode" -->
           <div class="col-6 text-end">
-            <button type="button" class="custom-button-regulr" [ngbPopover]="popContent" [autoClose]="'outside'"
+            <!-- <button type="button" class="custom-button-regulr" [ngbPopover]="popContent" [autoClose]="'outside'"
               triggers="manual" #p="ngbPopover" (click)="p.open()">
               Add Sub Menu
             </button>
@@ -58,7 +60,13 @@
               <button class="custom-button-filters" (click)="p.close(); addSubMenu(subMenu.value, i)">
                 Add
               </button>
-            </ng-template>
+            </ng-template> -->
+
+            <button type="button" class="custom-button-regulr" data-bs-toggle="modal" data-bs-target="#submenuModal"
+              (click)="currentMenuIndex = i">
+              Add Sub Menu
+            </button>
+
           </div>
         </div>
 
@@ -131,6 +139,27 @@
     </div>
   </form>
 </div>
+
+<!-- Modal -->
+<div class="modal fade" id="submenuModal" tabindex="-1" aria-labelledby="submenuModalLabel" aria-hidden="true">
+  <div class="modal-dialog modal-sm modal-dialog-centered">
+    <div class="modal-content p-3">
+      <div class="modal-header">
+        <h5 class="modal-title" id="submenuModalLabel">Add Sub Menus</h5>
+        <button type="button" class="btn-close" data-bs-dismiss="modal" aria-label="Close"></button>
+      </div>
+      <div class="modal-body">
+        <label for="submenuCount">Number of submenus</label>
+        <input type="number" min="1" class="form-control" [(ngModel)]="subMenuCount" id="submenuCount" />
+      </div>
+      <div class="modal-footer justify-content-between">
+        <button class="btn btn-secondary" data-bs-dismiss="modal">Cancel</button>
+        <button class="btn btn-primary" (click)="addSubMenusFromModal()" data-bs-dismiss="modal">Add</button>
+      </div>
+    </div>
+  </div>
+</div>
+
 <div class="spinner" *ngIf="loadSpinner">
   Loading...
 </div>

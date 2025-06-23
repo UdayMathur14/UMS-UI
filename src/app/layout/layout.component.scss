@@ -1,29 +1,30 @@
 .main-wrapper {
-    .main-article-wrapper {
-        display: flex;
-        padding: 0px 15px;
-        height: calc(100vh - 115px);
-        column-gap: 233px;
-        transition: column-gap 0.3s ease;
-        
-        /* Smooth transition for spacing */
-
-        &.collapsed-sidebar {
-            column-gap: 74px;
-            /* Adjust spacing when sidebar is collapsed */
-        }
-
-        .right-article-section {
-            padding: 20px 0px;
-            width: calc(100% - 250px);
-            /* Default width when sidebar is expanded */
-            transition: width 0.3s ease;
-            /* Smooth transition for width */
-        }
-
-        &.collapsed-sidebar .right-article-section {
-            width: calc(100% - 70px);
-            /* Adjust width when sidebar is collapsed */
-        }
+  display: flex;
+  flex-direction: column;
+  height: 100vh; // Set exact viewport height
+  overflow: hidden; // Prevent scrolling on the main container
+  
+  .main-article-wrapper {
+    display: flex;
+    position: relative;
+    height: calc(100vh - 110px); // Adjust based on header/footer height
+    margin-top: 70px; // Space for header
+    margin-bottom: 40px; // Space for footer
+    overflow-y: auto; // This is where the scrollbar will appear
+    overflow-x: hidden;
+    
+    .right-article-section {
+      width: calc(100% - 250px);
+      transition: width 0.3s ease;
+      padding: 20px 0;
+      margin-left: 240px; // Match sidebar width
+      // No overflow property here as the parent will handle scrolling
     }
+    
+    &.collapsed-sidebar {
+      .right-article-section {
+        width: calc(100% - 70px);
+      }
+    }
+  }
 }

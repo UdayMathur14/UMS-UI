@@ -17,6 +17,7 @@ export class LookupMasterComponent implements OnInit {
   filters: any = [];
   appliedFilters: any = [];
   currentPage: number = 1;
+  showFilters: boolean = false;
 
   constructor(private lookupService: LookupService, private router: Router) {}
 
@@ -75,5 +76,8 @@ export class LookupMasterComponent implements OnInit {
 
   onCreate(){
     this.router.navigate(['masters/add-lookup']);
+  }
+      toggleFilters() {
+    this.showFilters = !this.showFilters;
   }
 }

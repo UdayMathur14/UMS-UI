@@ -1,9 +1,9 @@
 <div class="page-title">
-    <h3>{{ isEditMode ? 'Edit User Master' : 'Create User Master' }}</h3>
+    <h3 class="screen-heading">{{ isEditMode ? 'Edit User Master' : 'Create User Master' }}</h3>
     <div class="action-buttons d-flex align-items-start">
-        <button class="custom-button-regulr" (click)="handleSave()">{{ isEditMode ? 'Update' : 'Submit' }}</button>
-        <button class="custom-button-secondary ms-1" (click)="onCancel()">
-          Cancel
+        <button class="lift-btn" (click)="handleSave()">{{ isEditMode ? 'Update' : 'Submit' }}</button>
+        <button class="lift-btn-cancel me-2" (click)="onCancel()">
+         <i class="bi bi-x-circle-fill me-1"></i> Cancel
         </button>
       </div>
 </div>

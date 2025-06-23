@@ -42,4 +42,17 @@ h5 {
     padding: 0 15px;
   }
   
+  .submenu-input-box {
+  width: 220px;
+  background-color: white;
+  border: 1px solid #ccc;
+  border-radius: 4px;
+  z-index: 999;
+}
+
+.disabled-wrapper {
+  pointer-events: none;
+  opacity: 0.6;
+}
+
   

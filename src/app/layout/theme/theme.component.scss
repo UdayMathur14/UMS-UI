@@ -1,0 +1,145 @@
+.theme {
+    position: fixed;
+    z-index: 1000;
+
+    .size {
+        font-size: 20px;
+    }
+}
+
+/* Floating settings button */
+.settings-btn {
+    position: fixed;
+    cursor: pointer;
+    top: 50%;
+    right: 0px;
+    background: #393fbf;
+    color: #fff;
+    border: none;
+    border-bottom-left-radius: 30%;
+    border-top-left-radius: 30%;
+    width: 40px;
+    height: 40px;
+    cursor: pointer;
+    transition: right 0.3s ease-in-out;
+    transform: translateY(-50%);
+    font-size: 24px;
+    display: flex;
+    align-items: center;
+    justify-content: center;
+}
+
+/* Move button with panel */
+.settings-btn.move-right {
+    right: 200px;
+
+}
+
+
+.settings-panel {
+    position: fixed;
+    top: 50%;
+    z-index: 100;
+    right: -200px;
+    width: 200px;
+    height: 50px;
+    border-bottom-left-radius: 5px;
+    border-top-left-radius: 5px;
+    background: linear-gradient(to right, #f8f9fa, #e8ecf1);
+    box-shadow: -3px 0 10px rgba(0, 0, 0, 0.2);
+    transition: right 0.3s ease-in-out;
+    transform: translateY(-50%);
+    background: rgba(255, 255, 255, 0.2);
+    backdrop-filter: blur(5px);
+    display: flex;
+    align-items: center;
+    padding: 0 10px;
+}
+
+.settings-panel.open {
+    right: 0;
+}
+
+/* Header Styling */
+// .settings-header {
+//     // background: rgba(0, 0, 0, 0.6);
+//     background: rgba(0, 0, 0, 0.2);
+//     color: #fff;
+//     padding: 12px 20px;
+//     font-size: 18px;
+//     font-weight: bold;
+//     display: flex;
+//     border-top-left-radius: 5px;
+//     justify-content: space-between;
+//     align-items: center;
+// }
+
+// .close-btn {
+//     background: none;
+//     border: none;
+//     font-size: 20px;
+//     cursor: pointer;
+//     color: #fff;
+// }
+
+/* Toggle switch */
+.toggle-containers {
+    display: flex;
+    justify-content: space-between;
+    align-items: center;
+    width: 100%;
+    margin: 0;
+    padding: 0 10px;
+}
+
+// .switch {
+//     position: relative;
+//     display: inline-block;
+//     width: 40px;
+//     height: 20px;
+// }
+
+// .switch input {
+//     opacity: 0;
+//     width: 0;
+//     height: 0;
+// }
+
+// .slider {
+//     position: absolute;
+//     top: 0;
+//     left: 0;
+//     right: 0;
+//     bottom: 0;
+//     background-color: #ccc;
+//     transition: 0.4s;
+//     border-radius: 20px;
+// }
+
+// .slider::before {
+//     position: absolute;
+//     content: "";
+//     height: 16px;
+//     width: 16px;
+//     left: 2px;
+//     bottom: 2px;
+//     background-color: white;
+//     transition: 0.4s;
+//     border-radius: 50%;
+// }
+
+/* Title */
+// .settings-title {
+
+//     font-size: 20px;
+//     font-weight: 600;
+//     margin-bottom: 15px;
+//     color: #333;
+//     text-align: center;
+// }
+
+// .mode-label {
+//     font-size: 14px;
+//     font-weight: 500;
+//     color: #555;
+// }
