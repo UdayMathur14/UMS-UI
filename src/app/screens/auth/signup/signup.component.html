@@ -62,14 +62,14 @@
             <label>Full Name</label>
             <div class="input-group">
               <i class="bi bi-person"></i>
-              <input type="text" formControlName="userName" placeholder="John Doe" />
+              <input type="text" formControlName="userName" placeholder="Enter full name" />
             </div>
             <small *ngIf="isFieldRequired('userName')" class="error">Full Name is required.</small>
 
             <label>Email Address</label>
             <div class="input-group">
               <i class="bi bi-envelope"></i>
-              <input type="email" formControlName="emailId" placeholder="email@example.com"
+              <input type="email" formControlName="emailId" placeholder="Enter email address"
                 [disabled]="isMicrosoftLogin" />
             </div>
             <small *ngIf="isFieldRequired('emailId')" class="error">Email is required.</small>
@@ -78,13 +78,13 @@
             <label>Phone Number</label>
             <div class="input-group">
               <i class="bi bi-telephone"></i>
-              <input type="tel" formControlName="contactNo" placeholder="9876543210" inputIntegerValidator />
+              <input type="tel" formControlName="contactNo" placeholder="Enter phone number" inputIntegerValidator />
             </div>
             <small *ngIf="isFieldRequired('contactNo')" class="error">Phone number is required.</small>
 
             <label>Organisation</label>
             <ng-select [items]="filteredOrganisations" bindLabel="organisation" bindValue="organisation"
-              [searchable]="true" placeholder="Search organisation..." formControlName="organisation"
+              [searchable]="true" placeholder="Search your organisation..." formControlName="organisation"
               (search)="onSearchOrganisation($event)">
             </ng-select>
             <small *ngIf="isFieldRequired('organisation')" class="error">Organisation is required.</small>
@@ -92,12 +92,11 @@
             <label>Designation</label>
             <div class="input-group">
               <i class="bi bi-briefcase"></i>
-              <input type="text" formControlName="designation" placeholder="Your Role" />
+              <input type="text" formControlName="designation" placeholder="Enter your designation" />
             </div>
             <small *ngIf="isFieldRequired('designation')" class="error">Designation is required.</small>
 
             <button type="submit" class="submit-btn" [disabled]="!signUpForm.valid">Sign Up</button>
-
             <p class="redirect">Already have an account? <a routerLink="/auth/login">Log In</a></p>
           </form>
         </div>

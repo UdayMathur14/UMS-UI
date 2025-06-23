@@ -131,6 +131,15 @@
             background: transparent;
           }
 
+          input::placeholder {
+            color: #aaa;
+            opacity: 1;
+          }
+
+          input:disabled {
+            background-color: #ececec;
+          }
+
           .bi-eye,
           .bi-eye-slash {
             cursor: pointer;
