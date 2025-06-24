@@ -158,9 +158,9 @@ export class LoginComponent implements OnInit, AfterViewInit {
     localStorage.removeItem('userProfile');
   }
 
-  onGoogleLoginClick() {
-    this.googleAuthService.startGoogleLogin(); 
-  }
+  // onGoogleLoginClick() {
+  //   this.googleAuthService.startGoogleLogin(); 
+  // }
 
   // checkLoginStatus(): void {
   //   const accounts = this.msalService.instance.getAllAccounts();

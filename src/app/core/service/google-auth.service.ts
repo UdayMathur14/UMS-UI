@@ -44,28 +44,28 @@ export class GoogleAuthService {
       callback: (response: any) => this.handleCredentialResponse(response),
     });
 
-    // window.google.accounts.id.renderButton(
-    //   document.getElementById('google-signin-button'),
-    //   {
-    //     theme: 'outline',
-    //     size: 'large',
-    //     text: 'continue_with',
-    //     width: '280',
-    //     shape: 'pill',
-    //   }
-    // );
+    window.google.accounts.id.renderButton(
+      document.getElementById('google-signin-button'),
+      {
+        theme: 'outline',
+        size: 'large',
+        text: 'continue_with',
+        width: '280',
+        shape: 'pill',
+      }
+    );
   }
 
-  startGoogleLogin() {
-    this.loadGoogleSDK().then(() => {
-      window.google.accounts.id.initialize({
-        client_id: this.clientId,
-        callback: (response: any) => this.handleCredentialResponse(response),
-      });
+  // startGoogleLogin() {
+  //   this.loadGoogleSDK().then(() => {
+  //     window.google.accounts.id.initialize({
+  //       client_id: this.clientId,
+  //       callback: (response: any) => this.handleCredentialResponse(response),
+  //     });
 
-      window.google.accounts.id.prompt(); // opens Google One Tap or popup
-    });
-  }
+  //     window.google.accounts.id.prompt(); // opens Google One Tap or popup
+  //   });
+  // }
 
   handleCredentialResponse(response: any) {
     const credential = JSON.parse(atob(response.credential.split('.')[1])); // Decode JWT
