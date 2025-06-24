@@ -1,9 +1,10 @@
 .login-page {
+  position: relative;
   background-image:
     linear-gradient(135deg,
-      rgba(15, 15, 15, 0.85), // deep black
-      rgba(15, 23, 42, 0.85), // dark navy blue
-      rgba(220, 38, 38, 0.7) // red (adjusted to not overpower)
+      rgba(15, 15, 15, 0.85),
+      rgba(15, 23, 42, 0.85),
+      rgba(220, 38, 38, 0.7)
     ),
     url('/assets/images/background.png');
   background-size: cover;
@@ -15,7 +16,26 @@
   justify-content: center;
   font-family: 'Segoe UI', sans-serif;
   padding: 1rem;
+  overflow: hidden;
 }
+
+.corner-img {
+  position: absolute;
+  width: 300px; 
+  opacity: 0.2;
+  z-index: 0;
+}
+
+.top-left {
+  top: 20px;
+  left: 10px;
+}
+
+.bottom-right {
+  bottom: 20px;
+  left: 10px
+}
+
 
 .login-container {
   display: flex;
