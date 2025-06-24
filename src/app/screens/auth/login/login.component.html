@@ -1,13 +1,20 @@
 <div class="login-page">
- <div class="corner-img-wrapper">
-  <img src="assets/images/left-background.png" class="corner-img" alt="Progress Tracker" />
-</div>
+  <!-- Left Section with Heading and Lottie -->
+  <div class="left-panel">
+    <div class="branding">
+      <h1>Tick Wiz</h1>
+      <p>Continue your journey with our Ticket Management System</p>
+      <iframe src="https://lottie.host/embed/fd6d205a-6f4d-4082-b3d0-e897cfd593c2/5DlfBK4y4T.lottie" frameborder="0"
+        class="lottie-frame"></iframe>
+    </div>
+  </div>
 
+  <!-- Right Section with Login Form -->
   <div class="login-container">
     <div class="form-section">
       <div class="login-card">
         <div class="logo-wrapper">
-          <img src="assets/images/diplogo-white.png" alt="Company Logo" />
+          <img src="assets/images/diplogo.png" alt="Company Logo" />
         </div>
         <h2 class="login-title">Welcome Back!</h2>
         <p class="login-subtitle">Sign in to your account</p>
@@ -17,7 +24,10 @@
             <i class="bi bi-microsoft me-2"></i> Continue with Microsoft
           </button>
           <div class="or-divider">OR</div>
-         <div id="google-signin-button"></div>
+          <button type="button" class="social-signin microsoft" (click)="onGoogleLoginClick()">
+            <i class="bi bi-google me-2"></i> Continue with Google
+          </button>
+          <!-- <div id="google-signin-button"></div> -->
         </div>
 
         <form class="login-form">
@@ -41,17 +51,6 @@
           </div>
 
           <button type="submit" class="submit-btn" (click)="onSignIn()">Sign In</button>
-
-          <!-- <div class="divider">Or continue with</div>
-
-          <div class="social-login">
-            <button type="button" class="social-button" (click)="loginWithMicrosoft()">
-              <i class="bi bi-microsoft"></i>
-            </button>
-            <button type="button" class="social-button google-button">
-              <i class="bi bi-google"></i>
-            </button>
-          </div> -->
 
           <p class="redirect">Don't have an account? <a routerLink="/auth/signup">Sign Up</a></p>
         </form>
