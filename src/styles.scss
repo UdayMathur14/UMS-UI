@@ -215,14 +215,14 @@ button {
 }
 
 .top-controls {
-    display: flex;
-    justify-content: flex-end;
-    align-items: center;
-    gap: 15px;
-    position: absolute;
-    right: 25px;
-    top: 80px;
-    z-index: 10;
+  display: flex;
+  justify-content: flex-end;
+  align-items: center;
+  gap: 15px;
+  position: absolute;
+  right: 25px;
+  top: 80px;
+  z-index: 10;
 }
 
 .lift-btn {
@@ -262,7 +262,7 @@ button {
   transition: height 0.3s ease-in-out;
 }
 
-.filter-section + .content-section {
+.filter-section+.content-section {
   height: calc(100vh - 260px);
 }
 
@@ -606,16 +606,16 @@ button {
 
 .custom-button-filters {
   @include buttonsPrimaryOutline(13px, 4px, 20px);
-    width: 60px;
-    padding: 3px 6px;
-    font-size: 12px;
-    margin-right: 6px;
-    white-space: nowrap;
-    margin-top: 3px;
+  width: 60px;
+  padding: 3px 6px;
+  font-size: 12px;
+  margin-right: 6px;
+  white-space: nowrap;
+  margin-top: 3px;
 
-    &:last-child {
+  &:last-child {
     margin-right: 0;
-}
+  }
 
   &:disabled {
     opacity: 0.5;
