@@ -1,7 +1,7 @@
 import { HttpClient, HttpHeaders } from '@angular/common/http';
 import { AfterViewInit, Component, OnInit } from '@angular/core';
 import { Router } from '@angular/router';
-// import { MsalService } from '@azure/msal-angular';
+import { MsalService } from '@azure/msal-angular';
 import { AccountInfo, EventMessage, EventType } from '@azure/msal-browser';
 import { AuthService } from '../../../core/service/auth.service';
 import { ToastrService } from 'ngx-toastr';
@@ -32,7 +32,7 @@ export class LoginComponent implements OnInit, AfterViewInit {
 
   constructor(
     private router: Router,
-    // private msalService: MsalService,
+    private msalService: MsalService,
     private http: HttpClient,
     private authService: AuthService,
     private toastr: ToastrService,
@@ -43,40 +43,40 @@ export class LoginComponent implements OnInit, AfterViewInit {
 
   ngOnInit() {
     // Subscribe to MSAL events
-    // this.msalService.instance.addEventCallback((event: EventMessage) => {
-    //   if (event.eventType === EventType.LOGIN_SUCCESS) {
-    //     const account = event.payload as AccountInfo;
-    //     this.msalService.instance.setActiveAccount(account);
-    //     this.updateLoginDisplay();
-    //     this.fetchUserProfile();
+    this.msalService.instance.addEventCallback((event: EventMessage) => {
+      if (event.eventType === EventType.LOGIN_SUCCESS) {
+        const account = event.payload as AccountInfo;
+        this.msalService.instance.setActiveAccount(account);
+        this.updateLoginDisplay();
+        this.fetchUserProfile();
 
-    //     this.loadSpinner = true;
+        this.loadSpinner = true;
 
-    //     // Redirect after successful Microsoft login
-    //     setTimeout(() => {
-    //       this.loadSpinner = false;
-    //       const userProfile = localStorage.getItem('userProfile');
-    //       if (!userProfile) {
-    //         this.toastr.warning(
-    //           'Failed to retrieve profile. Please try signing in again.',
-    //           'Profile Missing'
-    //         );
-    //         console.log('called');
+        // Redirect after successful Microsoft login
+        setTimeout(() => {
+          this.loadSpinner = false;
+          const userProfile = localStorage.getItem('userProfile');
+          if (!userProfile) {
+            this.toastr.warning(
+              'Failed to retrieve profile. Please try signing in again.',
+              'Profile Missing'
+            );
+            console.log('called');
 
-    //         this.logout(); // Clear state and redirect to login
-    //       } else {
-    //         this.getLoginStatus();
-    //       }
-    //     }, 3000);
-    //   }
+            this.logout(); // Clear state and redirect to login
+          } else {
+            this.getLoginStatus();
+          }
+        }, 3000);
+      }
 
-    //   if (event.eventType === EventType.LOGOUT_SUCCESS) {
-    //     this.updateLoginDisplay();
-    //     this.userProfile = null;
-    //   }
-    // });
+      if (event.eventType === EventType.LOGOUT_SUCCESS) {
+        this.updateLoginDisplay();
+        this.userProfile = null;
+      }
+    });
 
-    // this.checkLoginStatus();
+    this.checkLoginStatus();
 
     // this.startCarousel();
 
@@ -146,15 +146,15 @@ export class LoginComponent implements OnInit, AfterViewInit {
   }
 
   // 🔹 Microsoft Login
-  // loginWithMicrosoft(): void {
-  //   this.msalService.loginRedirect();
-  // }
+  loginWithMicrosoft(): void {
+    this.msalService.loginRedirect();
+  }
 
   logout(): void {
-    // this.msalService.logoutRedirect({
-    //   // postLogoutRedirectUri: 'http://localhost:4200',
-    //   postLogoutRedirectUri: window.location.origin,
-    // });
+    this.msalService.logoutRedirect({
+      // postLogoutRedirectUri: 'http://localhost:4200',
+      postLogoutRedirectUri: window.location.origin,
+    });
     localStorage.removeItem('userProfile');
   }
 
@@ -162,71 +162,71 @@ export class LoginComponent implements OnInit, AfterViewInit {
   //   this.googleAuthService.startGoogleLogin(); 
   // }
 
-  // checkLoginStatus(): void {
-  //   const accounts = this.msalService.instance.getAllAccounts();
-  //   if (accounts.length > 0) {
-  //     const activeAccount =
-  //       this.msalService.instance.getActiveAccount() || accounts[0];
-  //     this.msalService.instance.setActiveAccount(activeAccount);
-  //     this.updateLoginDisplay();
-  //     this.fetchUserProfile();
-  //   } else {
-  //     this.loginDisplay = false;
-  //   }
-  // }
+  checkLoginStatus(): void {
+    const accounts = this.msalService.instance.getAllAccounts();
+    if (accounts.length > 0) {
+      const activeAccount =
+        this.msalService.instance.getActiveAccount() || accounts[0];
+      this.msalService.instance.setActiveAccount(activeAccount);
+      this.updateLoginDisplay();
+      this.fetchUserProfile();
+    } else {
+      this.loginDisplay = false;
+    }
+  }
 
-  // updateLoginDisplay(): void {
-  //   const activeAccount = this.msalService.instance.getActiveAccount();
-  //   this.loginDisplay = !!activeAccount; // Set to true if active account exists
-  // }
+  updateLoginDisplay(): void {
+    const activeAccount = this.msalService.instance.getActiveAccount();
+    this.loginDisplay = !!activeAccount; // Set to true if active account exists
+  }
 
-  // fetchUserProfile(): void {
-  //   const graphEndpoint = 'https://graph.microsoft.com/v1.0/me';
-  //   const activeAccount = this.msalService.instance.getActiveAccount();
+  fetchUserProfile(): void {
+    const graphEndpoint = 'https://graph.microsoft.com/v1.0/me';
+    const activeAccount = this.msalService.instance.getActiveAccount();
 
-  //   if (!activeAccount) {
-  //     console.error('No active account found.');
-  //     return;
-  //   }
+    if (!activeAccount) {
+      console.error('No active account found.');
+      return;
+    }
 
-  //   this.msalService.instance
-  //     .acquireTokenSilent({
-  //       account: activeAccount,
-  //       scopes: ['User.Read'],
-  //     })
-  //     .then((response) => {
-  //       const headers = new HttpHeaders({
-  //         Authorization: `Bearer ${response.accessToken}`,
-  //       });
+    this.msalService.instance
+      .acquireTokenSilent({
+        account: activeAccount,
+        scopes: ['User.Read'],
+      })
+      .then((response) => {
+        const headers = new HttpHeaders({
+          Authorization: `Bearer ${response.accessToken}`,
+        });
 
-  //       this.http.get(graphEndpoint, { headers }).subscribe({
-  //         next: (profile) => {
-  //           this.userProfile = profile;
-  //           this.emailId = this.userProfile?.mail
+        this.http.get(graphEndpoint, { headers }).subscribe({
+          next: (profile) => {
+            this.userProfile = profile;
+            this.emailId = this.userProfile?.mail
 
-  //           localStorage.setItem(
-  //             'userProfile',
-  //             JSON.stringify(this.userProfile)
-  //           );
-  //         },
-  //         error: (err) => {
-  //           console.error('Error fetching user profile:', err);
-  //         },
-  //       });
-  //     })
-  //     .catch((error) => {
-  //       // console.error('Error acquiring token:', error);
-  //       console.warn(
-  //         'Silent token acquisition failed. Trying interactive redirect...'
-  //       );
-  //       console.warn(
-  //         'Silent token acquisition failed. Trying interactive redirect...'
-  //       );
-  //       this.msalService.instance.acquireTokenRedirect({
-  //         scopes: ['User.Read'],
-  //       });
-  //     });
-  // }
+            localStorage.setItem(
+              'userProfile',
+              JSON.stringify(this.userProfile)
+            );
+          },
+          error: (err) => {
+            console.error('Error fetching user profile:', err);
+          },
+        });
+      })
+      .catch((error) => {
+        // console.error('Error acquiring token:', error);
+        console.warn(
+          'Silent token acquisition failed. Trying interactive redirect...'
+        );
+        console.warn(
+          'Silent token acquisition failed. Trying interactive redirect...'
+        );
+        this.msalService.instance.acquireTokenRedirect({
+          scopes: ['User.Read'],
+        });
+      });
+  }
 
   onForgotPassword() {
     this.router.navigate(['forget-password']);
