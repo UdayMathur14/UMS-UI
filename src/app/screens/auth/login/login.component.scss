@@ -27,6 +27,7 @@
 
   .branding {
     max-width: 450px;
+    text-align: center; // Center-align text elements inside
 
     h1 {
       font-size: 32px;
@@ -71,7 +72,7 @@
   border: none;
 
   .logo-wrapper img {
-    width: 120px;
+    width: 190px;
     margin-bottom: 1rem;
   }
 
@@ -132,29 +133,13 @@
     .forgot-password {
       margin-top: 0.5rem;
       text-align: right;
+      font-size: 13px;
 
       a {
         color: #1d4ed8;
-        font-size: 13px;
+        font-weight: bold;
         cursor: pointer;
         text-decoration: none;
-      }
-    }
-
-    .submit-btn {
-      width: 100%;
-      margin-top: 1.5rem;
-      padding: 0.7rem;
-      background-color: #1d4ed8;
-      border: none;
-      border-radius: 10px;
-      color: #fff;
-      font-weight: bold;
-      cursor: pointer;
-      transition: background 0.3s ease;
-
-      &:hover {
-        background-color: #2563eb;
       }
     }
 
@@ -170,9 +155,32 @@
         text-decoration: none;
       }
     }
+
+    .submit-btn {
+      width: 60%;
+      margin: 1.5rem auto 0 auto; // top auto bottom spacing and center horizontally
+      padding: 0.7rem;
+      background-color: #1d4ed8;
+      border: none;
+      border-radius: 10px;
+      color: #fff;
+      font-weight: bold;
+      cursor: pointer;
+      transition: background 0.3s ease;
+      display: block; // ensure centering works
+
+      &:hover {
+        background-color: #2563eb;
+      }
+
+      &:disabled {
+        background-color: #9ca3af;
+        cursor: not-allowed;
+        opacity: 0.7;
+      }
+    }
   }
 }
-
 
 .social-signin-buttons {
   display: flex;
@@ -219,11 +227,6 @@
     }
   }
 
-  .or-divider {
-    display: none; // hide divider since buttons are now side by side
-  }
-
-
 }
 
 .or-continue-with {
@@ -240,7 +243,7 @@
     margin: 0 12px;
   }
 
-  font-size: 13px;
+  font-size: 15px;
   font-weight: 500;
   color: #6b7280;
 }

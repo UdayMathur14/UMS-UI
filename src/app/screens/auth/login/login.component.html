@@ -19,18 +19,19 @@
         <h2 class="login-title">Welcome Back!</h2>
         <p class="login-subtitle">Sign in to your account</p>
 
-        <form class="login-form">
+        <form #loginForm="ngForm" class="login-form">
           <label>Email Address</label>
           <div class="input-group">
             <i class="bi bi-envelope"></i>
-            <input type="text" [(ngModel)]="emailId" name="username" placeholder="Enter Email ID" />
+            <input type="text" [(ngModel)]="emailId" name="username" placeholder="Enter Email ID" required
+              #email="ngModel" />
           </div>
 
           <label>Password</label>
           <div class="input-group">
             <i class="bi bi-lock"></i>
             <input [type]="showPassword ? 'text' : 'password'" [(ngModel)]="password" name="password"
-              placeholder="Enter Password" />
+              placeholder="Enter Password" required #passwordField="ngModel" />
             <i class="bi" [ngClass]="showPassword ? 'bi-eye-slash' : 'bi-eye'"
               (click)="showPassword = !showPassword"></i>
           </div>
@@ -51,8 +52,10 @@
             <a (click)="onForgotPassword()">Forgot password?</a>
           </div>
 
-          <button type="submit" class="submit-btn" (click)="onSignIn()">Sign In</button>
-
+          <button type="submit" class="submit-btn" [disabled]="!loginForm.valid" (click)="onSignIn()">
+            Sign In
+          </button>
+          
           <p class="redirect">Don't have an account? <a routerLink="/auth/signup">Sign Up</a></p>
         </form>
       </div>
