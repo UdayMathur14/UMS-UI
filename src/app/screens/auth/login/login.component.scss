@@ -93,19 +93,20 @@
 
     label {
       font-size: 14px;
-      margin-bottom: 0.25rem;
+      margin-bottom: 0.15rem; // reduced from 0.25rem
       display: block;
-      margin-top: 1rem;
+      margin-top: 0.75rem; // reduced from 1rem
       color: #1f2937;
     }
 
     .input-group {
-      background: #f3f4f6;
+      background: #f9fafb; // lighter than #f3f4f6
       display: flex;
       align-items: center;
-      padding: 0.5rem 0.75rem;
+      padding: 0.45rem 0.7rem; // slightly reduced padding
       border-radius: 10px;
       color: #1f2937;
+      border: 1px solid #e5e7eb; // subtle border to separate from background
 
       i {
         margin-right: 10px;
@@ -175,28 +176,27 @@
 
 .social-signin-buttons {
   display: flex;
-  flex-direction: column;
+  justify-content: space-between;
+  margin-top: 1.5rem;
+  margin-bottom: 2rem;
   gap: 1rem;
-  margin-bottom: 1.5rem;
-  align-items: center;
 
   .social-signin {
-    width: 280px;
-    border-radius: 9999px;
-    padding: 0.75rem 1rem;
-    background-color: #111827;
-    color: #fff;
+    flex: 1;
+    border-radius: 10px;
+    padding: 0.65rem 1rem;
     display: flex;
     align-items: center;
     justify-content: center;
     font-weight: 600;
-    font-size: 15px;
+    font-size: 14px;
     border: none;
     cursor: pointer;
     transition: background 0.3s ease;
 
     i {
-      font-size: 18px;
+      font-size: 16px;
+      margin-right: 8px;
     }
 
     &.microsoft {
@@ -220,15 +220,27 @@
   }
 
   .or-divider {
-    text-align: center;
-    font-weight: 500;
-    font-size: 13px;
+    display: none; // hide divider since buttons are now side by side
   }
+
+
 }
 
-.spinner {
-  color: #fff;
-  font-size: 18px;
-  margin-top: 2rem;
+.or-continue-with {
+  display: flex;
+  align-items: center;
   text-align: center;
+  margin: 1.5rem 0;
+
+  &::before,
+  &::after {
+    content: "";
+    flex: 1;
+    border-bottom: 1px solid #d1d5db;
+    margin: 0 12px;
+  }
+
+  font-size: 13px;
+  font-weight: 500;
+  color: #6b7280;
 }
