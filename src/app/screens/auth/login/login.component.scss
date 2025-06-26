@@ -2,8 +2,9 @@
   position: relative;
   display: flex;
   min-height: 100vh;
+  max-height: 100vh; // Prevent overflow
   font-family: 'Segoe UI', sans-serif;
-  padding: 2rem;
+  padding: 1.5rem; // Reduced padding
   background: linear-gradient(135deg, rgba(15, 15, 15, 0.85), rgba(15, 23, 42, 0.85), rgba(220, 38, 38, 0.7)),
     url('/assets/images/background.png') center/cover no-repeat;
   overflow: hidden;
@@ -13,7 +14,7 @@
 .corner-img-wrapper {
   position: relative;
   width: 100%;
-  margin: 1rem 0;
+  margin: 0.8rem 0; // Reduced margin
 
   .floating-ticket {
     position: relative;
@@ -82,12 +83,12 @@
 
     p {
       font-size: 16px;
-      margin-bottom: 2rem;
+      margin-bottom: 1.5rem; // Reduced margin
     }
 
     .lottie-frame {
       width: 100%;
-      height: 400px;
+      height: 350px; // Reduced height
       max-width: 500px;
       background: transparent;
       border: none;
@@ -112,7 +113,7 @@
       backdrop-filter: blur(12px);
       background-color: rgba(255, 255, 255, 0.07);
       border: 1px solid rgba(255, 255, 255, 0.2);
-      padding: 2.5rem;
+      padding: 2rem; // Reduced padding
       border-radius: 20px;
       box-shadow: 0 12px 40px rgba(0, 0, 0, 0.35);
       text-align: center;
@@ -120,7 +121,7 @@
 
       .logo-wrapper img {
         width: 250px;
-        margin-bottom: 1rem;
+        margin-bottom: 0.8rem;
       }
 
       .login-title {
@@ -132,7 +133,7 @@
 
       .login-subtitle {
         font-size: 14px;
-        margin-bottom: 1.5rem;
+        margin-bottom: 1.2rem; // Reduced margin
         color: #d1d5db;
       }
 
@@ -155,7 +156,7 @@
           border: 1px solid #e5e7eb;
           border-radius: 10px;
           background-color: #f3f4f6;
-          margin-bottom: 1rem;
+          margin-bottom: 0.8rem; // Reduced margin
 
           i {
             font-size: 16px;
@@ -188,7 +189,7 @@
         .forgot-password {
           text-align: right;
           font-size: 12px;
-          margin-bottom: 1.2rem;
+          margin-bottom: 1rem; // Reduced margin
 
           a {
             color: #93c5fd;
@@ -200,7 +201,7 @@
 
         .btn.submit {
           display: block;
-          margin: 0 auto 1.2rem auto;
+          margin: 0 auto 1rem auto; // Reduced margin
           width: 60%;
           padding: 0.65rem;
           font-size: 14px;
@@ -230,7 +231,7 @@
           font-size: 15px;
           font-weight: 500;
           color: #d1d5db;
-          margin: 1.2rem 0;
+          margin: 1rem 0; // Reduced margin
           margin-top: -1px;
 
           &::before,
@@ -246,7 +247,7 @@
           display: flex;
           justify-content: space-between;
           gap: 1rem;
-          margin-bottom: 1rem;
+          margin-bottom: 0.8rem; // Reduced margin
 
           .btn {
             flex: 1;
