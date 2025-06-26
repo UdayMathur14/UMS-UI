@@ -13,10 +13,9 @@
   background-position: center;
   font-family: 'Segoe UI', sans-serif;
   padding: 2rem;
-  overflow: hidden;
 }
 
-// Left panel matching login design
+// Left panel
 .left-panel {
   width: 50%;
   display: flex;
@@ -47,8 +46,8 @@
 
     .lottie-frame {
       width: 100%;
-      height: 400px; // Increased from 300px to 400px
-      max-width: 500px; // Optional: prevents too wide on large screens
+      height: 400px;
+      max-width: 500px;
       border: none;
       background: transparent;
     }
@@ -57,193 +56,194 @@
 
 // Right panel with signup form
 .signup-container {
-  width: 50%;
+  flex: 1;
+  min-width: 0;
   display: flex;
   align-items: center;
   justify-content: center;
-}
 
-.form-section {
-  width: 100%;
-  max-width: 400px;
+  .form-section {
+    width: 100%;
+    max-width: 400px;
 
-  .signup-card {
-    background-color: #ffffff;
-    border-radius: 20px;
-    padding: 2.5rem;
-    box-shadow: 0 12px 40px rgba(0, 0, 0, 0.35);
-    color: #1f2937;
-    text-align: center;
-    border: none;
-    max-height: 90vh;
-    display: flex;
-    flex-direction: column;
-
-    .logo-wrapper {
+    .signup-card {
+      background: #fff;
+      padding: 2.5rem;
+      border-radius: 20px;
+      box-shadow: 0 12px 40px rgba(0, 0, 0, 0.35);
       text-align: center;
-      margin-bottom: 1rem;
-      flex-shrink: 0;
-
-      img {
-        width: 190px;
-      }
-    }
-
-    .signup-title {
-      font-size: clamp(1.4rem, 1.6vw, 1.8rem);
-      font-weight: bold;
-      margin-bottom: 0.25rem;
-      color: #111827;
-      flex-shrink: 0;
-    }
-
-    .signup-subtitle {
-      font-size: 14px;
-      margin-bottom: 1.5rem;
-      color: #4b5563;
-      flex-shrink: 0;
-    }
-
-    .form-container {
-      flex: 1;
-      overflow-y: auto;
-      overflow-x: hidden;
-      padding-right: 0.5rem;
-      margin-right: -0.5rem;
-
-      &::-webkit-scrollbar {
-        width: 6px;
-      }
-
-      &::-webkit-scrollbar-track {
-        background: #f1f1f1;
-        border-radius: 3px;
-      }
-
-      &::-webkit-scrollbar-thumb {
-        background: #c1c1c1;
-        border-radius: 3px;
-
-        &:hover {
-          background: #a8a8a8;
-        }
-      }
-    }
-
-    form {
-      text-align: left;
+      max-height: 85vh;
       display: flex;
       flex-direction: column;
-      gap: 0.75rem; // slightly reduce vertical gaps
-      padding-right: 0.5rem;
 
-      label {
-        font-size: 14px;
-        margin-bottom: 0.1rem; // tighter spacing below label
-        display: block;
-        color: #1f2937;
-        font-weight: 500;
-      }
+      .logo-wrapper {
+        flex-shrink: 0;
 
-
-      .input-group {
-        background: #ffffff; // Clean white background
-        border: 1px solid #d1d5db; // Light gray border
-        box-shadow: inset 0 1px 2px rgba(0, 0, 0, 0.05); // Subtle inner shadow
-        display: flex;
-        align-items: center;
-        padding: 0.5rem 0.75rem;
-        border-radius: 10px;
-        color: #1f2937;
-        border: 1px solid #e5e7eb;
-
-        i {
-          margin-right: 10px;
-          color: #6b7280;
-        }
-
-        input {
-          background: transparent;
-          border: none;
-          color: #111827;
-          outline: none;
-          flex: 1;
-        }
-
-        input::placeholder {
-          color: #6b7280;
-        }
-
-        input:disabled {
-          background-color: transparent;
-          color: #9ca3af;
+        img {
+          width: 190px;
+          margin-bottom: 1rem;
         }
       }
 
-      ng-select {
-        .ng-select-container {
-          background: #f3f4f6;
-          border-radius: 10px;
-          padding: 0.25rem 0.5rem;
-          min-height: 40px;
-          border: none;
-        }
-
-        .ng-placeholder {
-          color: #9ca3af;
-        }
-      }
-
-      .submit-btn {
-        width: 100%;
-        margin-top: 1.5rem;
-        padding: 0.7rem;
-        background-color: #1d4ed8;
-        border: none;
-        border-radius: 10px;
-        color: #fff;
+      .signup-title {
+        font-size: 22px;
         font-weight: bold;
-        cursor: pointer;
-        transition: background 0.3s ease;
-
-        &:hover {
-          background-color: #2563eb;
-        }
-
-        &:disabled {
-          background-color: #ccc;
-          cursor: not-allowed;
-        }
+        margin-bottom: 0.25rem;
+        color: #111827;
+        flex-shrink: 0;
       }
 
-      .error {
-        font-size: 13px;
-        color: #dc2626;
-        margin-top: -0.5rem;
-        margin-bottom: 0.5rem;
+      .signup-subtitle {
+        font-size: 14px;
+        margin-bottom: 1.5rem;
+        color: #4b5563;
+        flex-shrink: 0;
       }
 
-      .redirect {
-        text-align: center;
-        margin-top: 1.5rem;
-        font-size: 13px;
+      .form-container {
+        text-align: left;
+        max-height: 45vh;
+        overflow-y: auto;
+        padding-right: 0.5rem;
+        margin-right: -0.5rem;
+        flex: 1;
 
-        a {
-          color: #1d4ed8;
-          font-weight: bold;
-          margin-left: 5px;
-          text-decoration: none;
+        &::-webkit-scrollbar {
+          width: 6px;
+        }
+
+        &::-webkit-scrollbar-track {
+          background: #f1f1f1;
+          border-radius: 3px;
+        }
+
+        &::-webkit-scrollbar-thumb {
+          background: #c1c1c1;
+          border-radius: 3px;
+
+          &:hover {
+            background: #a8a8a8;
+          }
+        }
+
+        form {
+          label {
+            display: block;
+            font-size: 13px;
+            font-weight: 600;
+            color: #111827;
+            margin-bottom: 0.35rem;
+          }
+
+          .input-group {
+            display: flex;
+            align-items: center;
+            gap: 8px;
+            padding: 0.5rem 0.75rem;
+            border: 1px solid #e5e7eb;
+            border-radius: 10px;
+            background-color: #f9fafb;
+            margin-bottom: 1rem;
+
+            i {
+              font-size: 16px;
+              color: #6b7280;
+            }
+
+            input {
+              flex: 1;
+              font-size: 14px;
+              padding: 0.4rem 0;
+              border: none;
+              background: transparent;
+              outline: none;
+              color: #111827;
+
+              &::placeholder {
+                color: #9ca3af;
+              }
+
+              &:disabled {
+                background-color: transparent;
+                color: #9ca3af;
+              }
+            }
+          }
+
+          // ng-select styling to match input groups
+          ng-select {
+            margin-bottom: 1rem;
+
+            .ng-select-container {
+              background-color: #f9fafb;
+              border: 1px solid #e5e7eb;
+              border-radius: 10px;
+              padding: 0.5rem 0.75rem;
+              min-height: 44px;
+
+              .ng-placeholder {
+                color: #9ca3af;
+                font-size: 14px;
+              }
+
+              .ng-value-container {
+                .ng-value {
+                  color: #111827;
+                  font-size: 14px;
+                }
+              }
+            }
+          }
+
+          .submit-btn {
+            display: block;
+            margin: 1.2rem auto;
+            width: 60%;
+            padding: 0.65rem;
+            font-size: 14px;
+            background-color: #2563eb;
+            border-radius: 10px;
+            border: none;
+            color: #fff;
+            font-weight: bold;
+            transition: background 0.3s ease;
+            cursor: pointer;
+
+            &:hover {
+              background-color: #1d4ed8;
+            }
+
+            &:disabled {
+              background-color: #9ca3af;
+              cursor: not-allowed;
+              opacity: 0.7;
+            }
+          }
+
+          .error {
+            font-size: 12px;
+            color: #dc2626;
+            margin-top: -0.8rem;
+            margin-bottom: 0.5rem;
+            display: block;
+          }
+
+          .redirect {
+            text-align: center;
+            font-size: 13px;
+            margin-top: 1rem;
+
+            a {
+              margin-left: 4px;
+              font-weight: 600;
+              text-decoration: none;
+              color: #1d4ed8;
+            }
+          }
         }
       }
     }
   }
-}
-
-.spinner {
-  color: #fff;
-  font-size: 18px;
-  margin-top: 2rem;
-  text-align: center;
 }
 
 // Responsive design
