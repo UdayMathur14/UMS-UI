@@ -1,5 +1,5 @@
 <div class="login-page">
-  <!-- Left Section -->
+  <!-- Left Panel with Branding and Lottie -->
   <div class="left-panel">
     <div class="branding">
       <h1>Tick Wiz</h1>
@@ -10,17 +10,20 @@
     </div>
   </div>
 
-  <!-- Right Section -->
+  <!-- Right Panel with Login Form -->
   <div class="login-container">
     <div class="form-section">
       <div class="login-card">
+        <!-- Logo -->
         <div class="logo-wrapper">
           <img src="assets/images/diplogo.png" alt="Company Logo" />
         </div>
 
+        <!-- Title -->
         <h2 class="login-title">Welcome Back!</h2>
         <p class="login-subtitle">Sign in to your account</p>
 
+        <!-- Login Form -->
         <form #loginForm="ngForm" class="login-form">
           <!-- Email -->
           <label>Email Address</label>
@@ -36,12 +39,22 @@
             <i class="bi bi-lock"></i>
             <input [type]="showPassword ? 'text' : 'password'" [(ngModel)]="password" name="password"
               placeholder="Enter Password" required #passwordField="ngModel" />
-            <i class="bi" [ngClass]="showPassword ? 'bi-eye-slash' : 'bi-eye'"
-              (click)="showPassword = !showPassword"></i>
+            <i class="bi" [ngClass]="showPassword ? 'bi-eye-slash' : 'bi-eye'" (click)="showPassword = !showPassword">
+            </i>
           </div>
 
+          <!-- Forgot Password -->
+          <div class="forgot-password">
+            <a (click)="onForgotPassword()">Forgot password?</a>
+          </div>
+
+          <!-- Submit Button -->
+          <button type="submit" class="btn submit" [disabled]="!loginForm.valid" (click)="onSignIn()">
+            Sign In
+          </button>
+
           <!-- OR Divider -->
-          <div class="or-divider">OR continue with</div>
+          <div class="or-divider">Or continue with</div>
 
           <!-- Social Login -->
           <div class="social-login">
@@ -53,17 +66,7 @@
             </button>
           </div>
 
-          <!-- Forgot Password -->
-          <div class="forgot-password">
-            <a (click)="onForgotPassword()">Forgot password?</a>
-          </div>
-
-          <!-- Submit -->
-          <button type="submit" class="btn submit" [disabled]="!loginForm.valid" (click)="onSignIn()">
-            Sign In
-          </button>
-
-          <!-- Redirect -->
+          <!-- Redirect Link -->
           <p class="redirect">
             Don't have an account?
             <a routerLink="/auth/signup">Sign Up</a>

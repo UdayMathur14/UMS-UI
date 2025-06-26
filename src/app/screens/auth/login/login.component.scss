@@ -10,7 +10,8 @@
 
 // === Left Panel ===
 .left-panel {
-  width: 50%;
+  flex: 1;
+  min-width: 0;
   display: flex;
   justify-content: center;
   flex-direction: column;
@@ -44,7 +45,8 @@
 
 // === Right Panel ===
 .login-container {
-  width: 50%;
+  flex: 1;
+  min-width: 0;
   display: flex;
   align-items: center;
   justify-content: center;
@@ -66,7 +68,7 @@
       }
 
       .login-title {
-        font-size: 24px;
+        font-size: 22px;
         font-weight: bold;
         margin-bottom: 0.25rem;
         color: #111827;
@@ -83,39 +85,83 @@
 
         label {
           display: block;
-          font-size: 14px;
-          font-weight: 500;
-          margin: 0.75rem 0 0.1rem;
-          color: #1f2937;
+          font-size: 13px;
+          font-weight: 600;
+          color: #111827;
+          margin-bottom: 0.35rem;
         }
 
         .input-group {
           display: flex;
           align-items: center;
-          padding: 0.45rem 0.7rem;
+          gap: 8px;
+          padding: 0.5rem 0.75rem;
           border: 1px solid #e5e7eb;
           border-radius: 10px;
-          background: #fff;
-          box-shadow: inset 0 1px 2px rgba(0, 0, 0, 0.05);
+          background-color: #f9fafb;
+          margin-bottom: 1rem;
 
           i {
+            font-size: 16px;
             color: #6b7280;
-            margin-right: 10px;
           }
 
           input {
             flex: 1;
+            font-size: 14px;
+            padding: 0.4rem 0;
             border: none;
-            outline: none;
             background: transparent;
+            outline: none;
             color: #111827;
+
+            &::placeholder {
+              color: #9ca3af;
+            }
           }
 
           .bi-eye,
           .bi-eye-slash {
             cursor: pointer;
-            margin-left: 8px;
+            margin-left: auto;
+            font-size: 16px;
             color: #6b7280;
+          }
+        }
+
+        .forgot-password {
+          text-align: right;
+          font-size: 12px;
+          margin-bottom: 1.2rem;
+
+          a {
+            color: #1d4ed8;
+            font-weight: 600;
+            text-decoration: none;
+            cursor: pointer;
+          }
+        }
+
+        .btn.submit {
+          width: 100%;
+          padding: 0.65rem;
+          font-size: 14px;
+          background-color: #2563eb;
+          border-radius: 10px;
+          border: none;
+          color: #fff;
+          font-weight: bold;
+          margin-bottom: 1.2rem;
+          transition: background 0.3s ease;
+
+          &:hover {
+            background-color: #1d4ed8;
+          }
+
+          &:disabled {
+            background-color: #9ca3af;
+            cursor: not-allowed;
+            opacity: 0.7;
           }
         }
 
@@ -123,10 +169,10 @@
           display: flex;
           align-items: center;
           text-align: center;
-          font-size: 15px;
+          font-size: 13px;
           font-weight: 500;
-          color: black;
-          margin: 1.5rem 0;
+          color: #6b7280;
+          margin: 1.2rem 0;
 
           &::before,
           &::after {
@@ -139,24 +185,25 @@
 
         .social-login {
           display: flex;
+          justify-content: space-between;
           gap: 1rem;
-          margin-bottom: 2rem;
+          margin-bottom: 1rem;
 
           .btn {
             flex: 1;
-            padding: 0.65rem 1rem;
-            border-radius: 10px;
-            font-weight: 600;
             font-size: 14px;
+            padding: 0.6rem;
+            border-radius: 10px;
             display: flex;
-            justify-content: center;
             align-items: center;
+            justify-content: center;
+            font-weight: 600;
             cursor: pointer;
             transition: background 0.3s ease;
 
             i {
-              margin-right: 8px;
               font-size: 16px;
+              margin-right: 6px;
             }
 
             &.microsoft {
@@ -180,52 +227,15 @@
           }
         }
 
-        .forgot-password {
-          text-align: right;
-          margin-top: 0.5rem;
-          font-size: 13px;
-
-          a {
-            color: #1d4ed8;
-            font-weight: bold;
-            text-decoration: none;
-            cursor: pointer;
-          }
-        }
-
-        .btn.submit {
-          width: 60%;
-          margin: 1.5rem auto 0;
-          padding: 0.7rem;
-          background-color: #1d4ed8;
-          color: #fff;
-          border: none;
-          border-radius: 10px;
-          font-weight: bold;
-          transition: background 0.3s ease;
-          display: block;
-
-          &:hover {
-            background-color: #2563eb;
-          }
-
-          &:disabled {
-            background-color: #9ca3af;
-            cursor: not-allowed;
-            opacity: 0.7;
-          }
-        }
-
         .redirect {
           text-align: center;
           font-size: 13px;
-          margin-top: 1.5rem;
 
           a {
-            color: #1d4ed8;
-            font-weight: bold;
+            margin-left: 4px;
+            font-weight: 600;
             text-decoration: none;
-            margin-left: 5px;
+            color: #1d4ed8;
           }
         }
       }
