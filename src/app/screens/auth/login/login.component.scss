@@ -120,19 +120,19 @@
       color: #f3f4f6;
 
       .logo-wrapper img {
-        width: 250px;
+        width: 200px;
         margin-bottom: 0.8rem;
       }
 
       .login-title {
-        font-size: 22px;
+        font-size: 20px;
         font-weight: bold;
         margin-bottom: 0.25rem;
         color: #f3f4f6;
       }
 
       .login-subtitle {
-        font-size: 14px;
+        font-size: 13px;
         margin-bottom: 1.2rem; // Reduced margin
         color: #d1d5db;
       }
@@ -152,7 +152,7 @@
           display: flex;
           align-items: center;
           gap: 8px;
-          padding: 0.5rem 0.75rem;
+          padding: 0.3rem 0.6rem; // Reduced padding
           border: 1px solid #e5e7eb;
           border-radius: 10px;
           background-color: #f3f4f6;
@@ -166,7 +166,7 @@
           input {
             flex: 1;
             font-size: 14px;
-            padding: 0.4rem 0;
+            padding: 0.2rem 0; // Reduced vertical padding
             border: none;
             background: transparent;
             outline: none;
