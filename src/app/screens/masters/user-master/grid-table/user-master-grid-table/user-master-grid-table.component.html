@@ -22,7 +22,14 @@
                 <td>{{users?.userType || '-'}}</td>
                 <td>{{users?.userCategory || '-'}}</td>
                 <td>{{users?.organisation || '-'}}</td>
-                <td>{{users?.status || '-'}}</td>
+                <td class="pe-5">
+                    <span [ngClass]="{
+                     'status-active': users.status === 'Active',
+                     'status-inactive': users.status === 'Inactive',
+                    }" class="status-label">
+                        {{ users.status || "-" }}
+                    </span>
+                </td>
                 <td style="cursor: pointer">
                     <button class="icon-button" [disabled]="users?.status == 'New'">
                         <img class="ms-3" src="../../../../assets/images/icons/editPencil.svg" alt=""

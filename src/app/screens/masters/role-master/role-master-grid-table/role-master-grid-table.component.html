@@ -14,7 +14,14 @@
                 <td>{{data?.roleName || '-'}}</td>
                 <td>{{data?.roleDescription || '-'}}</td>
                 <td>{{data?.roleKey || '-'}}</td>
-                <td>{{data?.status || '-'}}</td>
+                <td class="pe-5">
+                    <span [ngClass]="{
+                     'status-active': data.status === 'Active',
+                     'status-inactive': data.status === 'Inactive',
+                    }" class="status-label">
+                        {{ data.status || "-" }}
+                    </span>
+                </td>
                 <td style="cursor: pointer">
                     <button class="icon-button">
                         <img class="ms-3" src="../../../../assets/images/icons/editPencil.svg" alt=""

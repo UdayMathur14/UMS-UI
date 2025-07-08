@@ -16,7 +16,14 @@
                 <td>{{lookup?.type || '-'}}</td>
                 <td>{{lookup?.value || '-'}}</td>
                 <td>{{lookup?.description || '-'}}</td>
-                <td>{{lookup?.status || '-'}}</td>
+                <td class="pe-5">
+                    <span [ngClass]="{
+                     'status-active': lookup.status === 'Active',
+                     'status-inactive': lookup.status === 'Inactive',
+                    }" class="status-label">
+                        {{ lookup.status || "-" }}
+                    </span>
+                </td>
                 <td>{{lookup?.url || '-'}}</td>
                 <td style="cursor: pointer">
                     <button class="icon-button">
