@@ -214,17 +214,6 @@ button {
   }
 }
 
-.top-controls {
-  display: flex;
-  justify-content: flex-end;
-  align-items: center;
-  gap: 15px;
-  position: absolute;
-  right: 25px;
-  top: 80px;
-  z-index: 10;
-}
-
 .lift-btn {
   @include lift-button(#2ecc71, #27ae60); // Green
 }
@@ -585,22 +574,6 @@ button {
   .change-photo-btn {
     transform: scale(0.98);
   }
-}
-
-//loader css
-.spinner {
-  position: fixed;
-  width: 100%;
-  height: 100%;
-  z-index: 1000;
-  background-color: #00000055;
-  color: #fff;
-  top: 0;
-  left: 0;
-  display: flex;
-  align-items: center;
-  justify-content: center;
-  font-size: 30px;
 }
 
 //NG SELECT GLOBAL CSS
