@@ -35,6 +35,7 @@ import { GridTableComponent } from './app-menu-mapping/grid-table/grid-table.com
 import { RoleAppMenuMappingGridTableComponent } from './app-role-menu-mapping/grid-table/role-app-menu-mapping-grid-table.component';
 import { AppRoleMenuMappingFilterComponent } from './app-role-menu-mapping/filter/app-role-menu-mapping-filter.component';
 import { AddEditAppRoleMenuMappingComponent } from './app-role-menu-mapping/add-edit-app-role-menu-mapping/add-edit-app-role-menu-mapping.component';
+import { SharedModule } from '../shared/shared.module';
 @NgModule({
   declarations: [
     UserSignupStatusComponent,
@@ -75,7 +76,8 @@ import { AddEditAppRoleMenuMappingComponent } from './app-role-menu-mapping/add-
     FormsModule,
     NgbPaginationModule,
     NgbModule,
-    NgMultiSelectDropDownModule
+    NgMultiSelectDropDownModule,
+    SharedModule
   ],
 })
 export class MastersModule {}

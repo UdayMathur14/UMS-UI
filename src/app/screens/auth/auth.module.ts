@@ -13,6 +13,7 @@ import { ChangePasswordComponent } from './change-password/change-password.compo
 import { ForgetPasswordComponent } from './forget-password/forget-password.component';
 import { NgSelectModule } from '@ng-select/ng-select';
 import { NewPasswordComponent } from './new-password/new-password.component';
+import { SharedModule } from '../shared/shared.module';
 
 
 @NgModule({
@@ -32,7 +33,8 @@ import { NewPasswordComponent } from './new-password/new-password.component';
     ReactiveFormsModule,
     FormsModule,
     LayoutModule,
-    NgSelectModule
+    NgSelectModule,
+    SharedModule
   ]
 })
 export class AuthModule { }

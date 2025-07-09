@@ -1,50 +1,46 @@
-
-    <div class="page-title">
-        <h1 class="screen-heading">{{roleId ? 'Edit' : 'Add'}} Role</h1>
-        <div class="d-flex gap-2 mt-2">
-            <button class="lift-btn me-2" (click)="onSubmit()" [disabled]="!roleForm.valid">Save</button>
-            <button class="lift-btn-cancel me-2" (click)="onCancel()">
-                <i class="bi bi-x-circle-fill me-1"></i> Cancel
-            </button>
+<div class="page-title">
+    <h1 class="screen-heading">{{roleId ? 'Edit' : 'Add'}} Role</h1>
+    <div class="d-flex gap-2 mt-2">
+        <button class="lift-btn me-2" (click)="onSubmit()" [disabled]="!roleForm.valid">Save</button>
+        <button class="lift-btn-cancel me-2" (click)="onCancel()">
+            <i class="bi bi-x-circle-fill me-1"></i> Cancel
+        </button>
+    </div>
+</div>
+<form [formGroup]="roleForm">
+    <div class="row">
+        <div class="col-lg-3">
+            <div class="custom-form-input">
+                <label>Role Name<span class="text-danger">*</span></label>
+                <input formControlName="roleName" />
+            </div>
+        </div>
+        <div class="col-lg-3">
+            <div class="custom-form-input">
+                <label>Description<span class="text-danger">*</span></label>
+                <input formControlName="description" />
+            </div>
+        </div>
+        <div class="col-lg-3">
+            <div class="custom-form-input">
+                <label>Role Key<span class="text-danger">*</span></label>
+                <input formControlName="roleKey" [readOnly]="roleId" />
+            </div>
+        </div>
+        <div class="col-lg-3" *ngIf="roleId">
+            <div class="custom-form-input">
+                <label>Status<span class="text-danger">*</span></label>
+                <ng-select formControlName="status">
+                    <ng-option value="Active">
+                        Active
+                    </ng-option>
+                    <ng-option value="Inactive">
+                        Inactive
+                    </ng-option>
+                </ng-select>
+            </div>
         </div>
     </div>
-    <form [formGroup]="roleForm">
-        <div class="row">
-            <div class="col-lg-3">
-                <div class="custom-form-input">
-                    <label>Role Name<span class="text-danger">*</span></label>
-                    <input formControlName="roleName" />
-                </div>
-            </div>
-            <div class="col-lg-3">
-                <div class="custom-form-input">
-                    <label>Description<span class="text-danger">*</span></label>
-                    <input formControlName="description" />
-                </div>
-            </div>
-            <div class="col-lg-3">
-                <div class="custom-form-input">
-                    <label>Role Key<span class="text-danger">*</span></label>
-                    <input formControlName="roleKey" [readOnly]="roleId"/>
-                </div>
-            </div> 
-            <div class="col-lg-3" *ngIf="roleId">
-                <div class="custom-form-input">
-                    <label>Status<span class="text-danger">*</span></label>
-                    <ng-select formControlName="status">
-                        <ng-option value="Active">
-                            Active
-                        </ng-option>
-                        <ng-option value="Inactive">
-                            Inactive
-                        </ng-option>
-                    </ng-select>
-                </div>
-            </div>
-        </div>
-    </form>
+</form>
 
-
-<div class="spinner" *ngIf="loadSpinner">
-    Loading...
-</div>
+<app-loader *ngIf="loadSpinner"></app-loader>
