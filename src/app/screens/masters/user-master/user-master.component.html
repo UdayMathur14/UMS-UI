@@ -1,37 +1,37 @@
 <div class="user-master-container">
-    <div class="d-flex align-items-center justify-content-between">
+    <!-- Header Section -->
+    <div class="d-flex align-items-center justify-content-between mb-3">
         <div class="d-flex align-items-center">
             <h3 class="screen-heading me-3">User Master</h3>
-      <div class="filter-toggle">
-        <div class="filter-toggle" (click)="toggleFilters()">
-          <i class="bi bi-funnel pointer" style="font-size: 1.5rem;"></i>
-        </div>
-      </div>
-        </div>
-            <div class="d-flex align-items-center mb-3">
-                <div class="action-buttons">
-                     <button type="button" class="lift-btn-info me-2 d-flex align-items-center" routerLink="/masters/add-user-master">
-           <i class="bi bi-plus-square me-2"></i> Create
-        </button>
-                </div>
+
+            <div class="filter-buttons d-flex gap-2">
+                <button type="button" class="btn btn-outline-primary" (click)="openFilterModal()">
+                    <i class="bi bi-funnel me-1"></i>
+                    {{ hasFiltersApplied() ? 'Update Filters (' + getFilterCount() + ')' : 'Filters' }}
+                </button>
+
+                <button *ngIf="hasFiltersApplied()" type="button" class="btn btn-outline-danger"
+                    (click)="clearFilters()">
+                    <i class="bi bi-x-circle me-1"></i> Clear Filter
+                </button>
             </div>
+        </div>
+
+        <!-- Create Button -->
+        <button type="button" class="lift-btn-info d-flex align-items-center" routerLink="/masters/add-user-master">
+            <i class="bi bi-plus-square me-2"></i> Create
+        </button>
     </div>
 
-    <div class="action-buttons d-flex align-items-start">
-       
-    </div>
-
-
-    <div class="filter-section" *ngIf="showFilters">
-        <app-user-master-filter [filters]="fillters" (getData)="getData($event)"></app-user-master-filter>
-    </div>
-
+    <!-- Table Section -->
     <div class="content-section">
         <div class="grid-table">
             <div class="table-container">
                 <app-user-master-grid-table [userMaster]="userMaster"></app-user-master-grid-table>
             </div>
-            <div class="d-flex justify-content-center mt-3">
+
+            <!-- Pagination -->
+            <div *ngIf="userMaster?.length > 0" class="d-flex justify-content-center mt-3" style="z-index: 0;">
                 <ngb-pagination [collectionSize]="totalUsersMasters" [(page)]="currentPage" [pageSize]="count"
                     (pageChange)="onPageChange($event)" [boundaryLinks]="true" [maxSize]="5"
                     [rotate]="true"></ngb-pagination>
@@ -48,6 +48,7 @@
     </div>
 </div>
 
+<!-- Loader -->
 <div class="spinner" *ngIf="loadSpinner">
     Loading...
 </div>

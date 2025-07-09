@@ -1,6 +1,8 @@
 import { Component } from '@angular/core';
 import { DomainProjectMappingService } from '../../../core/service/domain-project-mapping.service';
 import { Router } from '@angular/router';
+import { NgbModal } from '@ng-bootstrap/ng-bootstrap';
+import { DomainProjectMappingFiltersComponent } from './filters/domain-project-mapping-filters.component';
 
 @Component({
   selector: 'app-domain-project-mapping',
@@ -16,11 +18,14 @@ export class DomainProjectMappingComponent {
   count: number = 10;
   totalDomainProject: number = 0;
   filters: any = [];
-  appliedFilters: any = [];
   currentPage: number = 1;
-  showFilters: boolean = false;
+  selectedFilters: any = {};
 
-  constructor(private domainService: DomainProjectMappingService, private router: Router) {}
+  constructor(
+    private domainService: DomainProjectMappingService,
+    private router: Router,
+    private modalService: NgbModal
+  ) { }
 
   ngOnInit() {
     const data = localStorage.getItem('data');
@@ -28,19 +33,25 @@ export class DomainProjectMappingComponent {
       const dataObj = JSON.parse(data);
       this.userId = dataObj.userId;
     }
+
+    const savedFilters = localStorage.getItem('DomainProjectMappingFilters');
+    if (savedFilters) {
+      this.selectedFilters = JSON.parse(savedFilters);
+    }
+
     this.getdomainProjectList();
   }
 
   getdomainProjectList(
     offset: number = 0,
     count: number = this.count,
-    filters: any = this.appliedFilters
+    filters: any = this.selectedFilters
   ) {
-    this.loadSpinner=true;
+    this.loadSpinner = true;
     const data = {
-      status: filters?.status || '',
-      projectName: filters?.projectName || '',
-      domainName: filters?.domainName || '',
+      status: filters?.Status || '',
+      projectName: filters?.ProjectName || '',
+      domainName: filters?.DomainName || '',
     };
     this.domainService
       .projectDomainData(this.userId, offset, count, data)
@@ -57,30 +68,58 @@ export class DomainProjectMappingComponent {
       );
   }
 
-  getData(e: any) {
-    this.appliedFilters = e;
+  openFilterModal() {
+    const modalRef = this.modalService.open(DomainProjectMappingFiltersComponent, {
+      backdrop: 'static',
+      size: 'md'
+    });
+    modalRef.componentInstance.filterData = { ...this.selectedFilters };
+    modalRef.result.then((result) => {
+      if (result) {
+        this.applyFilter(result);
+      }
+    }).catch(() => { });
+  }
+
+  applyFilter(filterData: any) {
+    localStorage.setItem('DomainProjectMappingFilters', JSON.stringify(filterData));
+    this.selectedFilters = filterData;
     this.currentPage = 1;
-    this.getdomainProjectList(0, this.count, this.appliedFilters);
+    this.getdomainProjectList(0, this.count, this.selectedFilters);
+  }
+
+  hasFiltersApplied(): boolean {
+    return Object.keys(this.selectedFilters).some(
+      key => this.selectedFilters[key] !== '' && this.selectedFilters[key] !== null
+    );
+  }
+
+  getFilterCount(): number {
+    return Object.values(this.selectedFilters).filter(
+      value => value !== '' && value !== null
+    ).length;
   }
 
   onPageChange(page: number) {
     this.currentPage = page;
     const offset = (this.currentPage - 1) * this.count;
-    this.getdomainProjectList(offset, this.count, this.appliedFilters);
+    this.getdomainProjectList(offset, this.count, this.selectedFilters);
   }
 
   onPageSizeChange(data: any) {
     this.count = data;
     this.currentPage = 1;
-    this.getdomainProjectList(0, this.count, this.appliedFilters);
+    this.getdomainProjectList(0, this.count, this.selectedFilters);
   }
 
-  onCreate(){
+  onCreate() {
     this.router.navigate(['masters/add-domain-project-mapping']);
   }
 
-      toggleFilters() {
-    this.showFilters = !this.showFilters;
+  clearFilters() {
+    this.selectedFilters = {};
+    this.currentPage = 1;
+    this.getdomainProjectList(0, this.count, {});
+    localStorage.removeItem('DomainProjectMappingFilters');
   }
-
 }

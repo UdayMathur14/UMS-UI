@@ -18,10 +18,18 @@
         <td>{{data.description}}</td>
         <td>{{data.level}}</td>
         <td>{{data.menuUrl ||'-'}}</td>
-        <td>{{data.status}}</td>
+        <td class="pe-5">
+          <span [ngClass]="{
+                     'status-active': data.status === 'Active',
+                     'status-inactive': data.status === 'Inactive',
+                    }" class="status-label">
+            {{ data.status || "-" }}
+          </span>
+        </td>
         <td class="pointer">
           <button class="icon-button">
-            <img class="ms-3" src="../../../../assets/images/icons/editPencil.svg" alt="Edit" (click)="onEdit(data?.id)"> 
+            <img class="ms-3" src="../../../../assets/images/icons/editPencil.svg" alt="Edit"
+              (click)="onEdit(data?.id)">
           </button>
         </td>
       </tr>
