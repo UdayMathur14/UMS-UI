@@ -1,34 +1,49 @@
-<div class="filters-box">
-    <div class="row">
-        <div class="col-lg-2">
-            <div class="ng-select-wrapper">
-                <ng-select [(ngModel)]="name" placeholder="Select Name">
-                    <ng-option *ngFor="let data of filters?.Name" [value]="data">{{data}}</ng-option>
-                </ng-select>
-                <label>Name</label>
-            </div>
+<div class="modal-header">
+    <h5 class="modal-title">Filter User SignUp Status</h5>
+</div>
+
+<div class="modal-body p-0">
+    <div class="filter-container d-flex">
+        <!-- Left Sidebar -->
+        <div class="filter-sidebar">
+            <ul class="filter-list">
+                <li *ngFor="let filter of filters" [class.active]="selectedFilter === filter.key"
+                    (click)="selectFilter(filter.key)">
+                    {{ filter.label }}
+                </li>
+            </ul>
         </div>
-        <div class="col-lg-2">
+
+        <!-- Divider -->
+        <div class="filter-divider"></div>
+
+        <!-- Right Panel -->
+        <div class="filter-input-area p-3 w-100">
             <div class="ng-select-wrapper">
-                <ng-select [(ngModel)]="organisation" placeholder="Select Organisation">
-                    <ng-option *ngFor="let data of filters?.Organisation" [value]="data">{{data}}</ng-option>
+                <ng-select [items]="getFilterOptions(selectedFilter)" [(ngModel)]="filterValues[selectedFilter]"
+                    [searchable]="true" [clearable]="true" [placeholder]="'Select ' + getFilterLabel(selectedFilter)">
                 </ng-select>
-                <label>Organisation</label>
+                <label>{{ getFilterLabel(selectedFilter) }}</label>
             </div>
-        </div>
-        <div class="col-lg-2">
-            <div class="ng-select-wrapper">
-                <ng-select [(ngModel)]="status" placeholder="Select Status">
-                    <ng-option *ngFor="let status of filters?.Status" [value]="status">{{status}}</ng-option>
-                </ng-select>
-                <label>Status</label>
-            </div>
-        </div>
-        <div class="col-lg-4">
-            <div class="custom-form-input">
-                <button class="custom-button-filters" (click)="onSearch()">Search</button>
-                <button class="custom-button-filters ms-2" (click)="onClearFilter()">Clear</button>
+
+            <!-- Selected Filters Display -->
+            <div class="selected-filters mt-3 w-100">
+                <ng-container *ngFor="let filter of filters">
+                    <span class="badge bg-primary me-2 mb-2" *ngIf="filterValues[filter.key]">
+                        {{ filter.label }}: {{ filterValues[filter.key] }}
+                        <i class="bi bi-x-lg pointer" (click)="clearFilter(filter.key)"></i>
+                    </span>
+                </ng-container>
             </div>
         </div>
     </div>
 </div>
+
+<div class="modal-footer">
+    <button type="button" class="lift-btn-cancel me-2" (click)="close()">Cancel</button>
+    <button type="button" class="lift-btn me-2" (click)="applyFilter()" [disabled]="!isAnyFilterSelected()">
+        Apply
+    </button>
+</div>
+
+<div class="spinner" *ngIf="loadSpinner">Loading...</div>

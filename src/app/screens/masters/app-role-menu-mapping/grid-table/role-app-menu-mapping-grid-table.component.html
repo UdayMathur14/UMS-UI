@@ -26,7 +26,14 @@
                     </ng-container>
                 </td>
                 <td>{{ item.roleName }}</td>
-                <td>{{ item.status }}</td>
+                <td class="pe-5">
+                    <span [ngClass]="{
+                     'status-active': item.status === 'Active',
+                     'status-inactive': item.status === 'Inactive',
+                    }" class="status-label">
+                        {{ item.status || "-" }}
+                    </span>
+                </td>
                 <td style="cursor: pointer">
                     <button class="icon-button" (click)="onEdit(item?.id)">
                         <img class="ms-3" src="../../../../assets/images/icons/editPencil.svg" alt="Edit">

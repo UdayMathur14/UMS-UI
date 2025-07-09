@@ -10,12 +10,19 @@
             </tr>
         </thead>
 
-        <tbody >
+        <tbody>
             <tr *ngFor="let data of domainProjects">
                 <td>{{data?.domainName || '-'}}</td>
                 <td>{{data?.projectName || '-'}}</td>
                 <td>{{data?.projectManager || '-'}}</td>
-                <td>{{data?.status || '-'}}</td>
+                <td class="pe-5">
+                    <span [ngClass]="{
+                     'status-active': data.status === 'Active',
+                     'status-inactive': data.status === 'Inactive',
+                    }" class="status-label">
+                        {{ data.status || "-" }}
+                    </span>
+                </td>
                 <td style="cursor: pointer">
                     <button class="icon-button">
                         <img class="ms-3" src="../../../../assets/images/icons/editPencil.svg" alt=""

@@ -18,17 +18,18 @@
         <td>{{users?.contactNo || '-'}}</td>
         <td>{{users?.organisation || '-'}}</td>
         <td>{{users?.verified || '-'}}</td>
-        <td>
-          <span class="badge rounded-pill" [ngClass]="{
-                    'bg-danger': users?.status === 'Rejected',
-                    'bg-primary': users?.status === 'New',
-                    'bg-warning' :users?.status === 'Pending',
-                  }">
-            {{users?.status}}
+        <td class="pe-5">
+          <span [ngClass]="{
+           'status-rejected': users.status === 'Rejected',
+           'status-new': users.status === 'New',
+           'status-pending': users.status === 'Pending',
+          }" class="status-label">
+            {{ users.status || "-" }}
           </span>
+        </td>
         <td style="cursor: pointer">
-          <button class="icon-button" [disabled]="users?.status == 'New'" 
-          [routerLink]="['/masters/edit-user-signup-status', users.id]">
+          <button class="icon-button" [disabled]="users?.status == 'New'"
+            [routerLink]="['/masters/edit-user-signup-status', users.id]">
             <img class="ms-3" src="../../../../assets/images/icons/editPencil.svg" alt="">
           </button>
         </td>

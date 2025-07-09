@@ -1,36 +1,48 @@
-<div class="d-flex align-items-center justify-content-between">
-    <div class="d-flex align-items-center">
-        <h3 class="screen-heading me-3">Role Master</h3>
-        <div class="filter-toggle" (click)="toggleFilters()">
-          <i class="bi bi-funnel pointer" style="font-size: 1.5rem;"></i>
+<div class="role-master-container">
+    <div class="d-flex align-items-center justify-content-between mb-3">
+        <div class="d-flex align-items-center">
+            <h3 class="screen-heading me-3">Role Master</h3>
+            <div class="filter-buttons d-flex gap-2">
+                <button type="button" class="btn btn-outline-primary" (click)="openFilterModal()">
+                    <i class="bi bi-funnel me-1"></i>
+                    {{ hasFiltersApplied() ? 'Update Filters (' + getFilterCount() + ')' : 'Filters' }}
+                </button>
+
+                <button *ngIf="hasFiltersApplied()" type="button" class="btn btn-outline-danger"
+                    (click)="clearFilters()">
+                    <i class="bi bi-x-circle me-1"></i> Clear Filter
+                </button>
+            </div>
         </div>
+
+        <!-- Create new role button -->
+        <button type="button" class="lift-btn-info d-flex align-items-center" (click)="onCreate()">
+            <i class="bi bi-plus-square me-2"></i> Create
+        </button>
     </div>
-       <div class="d-flex align-items-center mb-3">
-           <button class="lift-btn-info me-2 d-flex align-items-center" (click)="onCreate()"><i class="bi bi-plus-square me-2"></i> Create</button>
-       </div>
-</div>
-<div class="filter-section" *ngIf="showFilters">
-    <app-role-master-filter [filters]="filters" (getData)="getData($event)"></app-role-master-filter>
-</div>
-<div class="content-section">
-    <div class="grid-table">
-        <div class="table-container">
-            <app-role-master-grid-table [roleData]="roleData"></app-role-master-grid-table>
 
-        </div>
+    <div class="content-section">
+        <div class="grid-table">
+            <div class="table-container">
+                <!-- Role data table -->
+                <app-role-master-grid-table [roleData]="roleData"></app-role-master-grid-table>
+            </div>
 
-        <div class="d-flex justify-content-center mt-3">
-            <ngb-pagination [collectionSize]="totalRoles" [(page)]="currentPage" [pageSize]="count"
-                (pageChange)="onPageChange($event)" [boundaryLinks]="true" [maxSize]="5"
-                [rotate]="true"></ngb-pagination>
-            <p class="mt-2 ms-3"> Items per page:</p>
-            <select class="custom-select ms-3" [(ngModel)]="count" (ngModelChange)="onPageSizeChange(count)">
-                <option [value]="10">10</option>
-                <option [value]="20">20</option>
-                <option [value]="50">50</option>
-                <option [value]="100">100</option>
-                <option [value]="500">500</option>
-            </select>
+            <!-- Pagination and page size selector -->
+            <div class="d-flex justify-content-center mt-3">
+                <ngb-pagination [collectionSize]="totalRoles" [(page)]="currentPage" [pageSize]="count"
+                    (pageChange)="onPageChange($event)" [boundaryLinks]="true" [maxSize]="5" [rotate]="true">
+                </ngb-pagination>
+
+                <p class="mt-2 ms-3">Items per page:</p>
+                <select class="custom-select ms-3" [(ngModel)]="count" (ngModelChange)="onPageSizeChange(count)">
+                    <option [value]="10">10</option>
+                    <option [value]="20">20</option>
+                    <option [value]="50">50</option>
+                    <option [value]="100">100</option>
+                    <option [value]="500">500</option>
+                </select>
+            </div>
         </div>
     </div>
 </div>

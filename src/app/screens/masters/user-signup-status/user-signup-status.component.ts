@@ -1,5 +1,7 @@
 import { Component, OnInit } from '@angular/core';
 import { UserSignupStatusService } from '../../../core/service/user-signup-status.service';
+import { NgbModal } from '@ng-bootstrap/ng-bootstrap';
+import { UserSignupStatusFilterComponent } from './filter/user-signup-status-filter.component';
 
 @Component({
   selector: 'app-user-signup-status',
@@ -14,11 +16,15 @@ export class UserSignupStatusComponent implements OnInit {
   count: number = 10;
   totalSignupUsers: number = 0;
   filters: any = [];
-  appliedFilters: any = [];
-  currentPage: number = 1;
-  showFilters: boolean = false;
 
-  constructor(private userService: UserSignupStatusService) {}
+  currentPage: number = 1;
+
+  selectedFilters: any = {};
+
+  constructor(
+    private userService: UserSignupStatusService,
+    private modalService: NgbModal
+  ) { }
 
   ngOnInit() {
     const data = localStorage.getItem('data');
@@ -26,19 +32,29 @@ export class UserSignupStatusComponent implements OnInit {
       const dataObj = JSON.parse(data);
       this.userId = dataObj.userId;
     }
+
+    const savedFilters = localStorage.getItem('UserSignupStatusFilters');
+    if (savedFilters) {
+      this.selectedFilters = JSON.parse(savedFilters);
+    }
+
     this.getSignUpUserList();
   }
 
+  // Fetch user signup status with pagination and filters
   getSignUpUserList(
     offset: number = 0,
     count: number = this.count,
-    filters: any = this.appliedFilters
+    filters: any = this.selectedFilters
   ) {
+    this.loadSpinner = true;
+
     const data = {
-      name: filters?.name || '',
-      organisation: filters?.organisation || '',
-      status: filters?.status || '',
+      name: filters?.Name || '',
+      organisation: filters?.Organisation || '',
+      status: filters?.Status || '',
     };
+
     this.userService
       .signupUserStatus(this.userId, offset, count, data)
       .subscribe(
@@ -54,24 +70,55 @@ export class UserSignupStatusComponent implements OnInit {
       );
   }
 
-  getData(e: any) {
-    this.appliedFilters = e;
-    this.currentPage = 1;
-    this.getSignUpUserList(0, this.count, this.appliedFilters);
+  openFilterModal() {
+    const modalRef = this.modalService.open(UserSignupStatusFilterComponent, {
+      backdrop: 'static',
+      size: 'md'
+    });
+    modalRef.componentInstance.filterData = { ...this.selectedFilters };
+    modalRef.componentInstance.userId = this.userId;
+    modalRef.result.then((result) => {
+      if (result) {
+        this.applyFilter(result);
+      }
+    }).catch(() => { });
   }
 
+  applyFilter(filterData: any) {
+    localStorage.setItem('UserSignupStatusFilters', JSON.stringify(filterData));
+    this.selectedFilters = filterData;
+    this.getSignUpUserList();
+  }
+
+  hasFiltersApplied(): boolean {
+    return Object.keys(this.selectedFilters).some(
+      key => this.selectedFilters[key] !== '' && this.selectedFilters[key] !== null
+    );
+  }
+
+  getFilterCount(): number {
+    return Object.values(this.selectedFilters).filter(
+      value => value !== '' && value !== null
+    ).length;
+  }
+
+  // Handle pagination change
   onPageChange(page: number) {
     this.currentPage = page;
     const offset = (this.currentPage - 1) * this.count;
-    this.getSignUpUserList(offset, this.count, this.appliedFilters);
+    this.getSignUpUserList(offset, this.count, this.selectedFilters);
   }
 
+  // Handle page size change
   onPageSizeChange(data: any) {
     this.count = data;
     this.currentPage = 1;
-    this.getSignUpUserList(0, this.count, this.appliedFilters);
+    this.getSignUpUserList(0, this.count, this.selectedFilters);
   }
-      toggleFilters() {
-    this.showFilters = !this.showFilters;
+
+  clearFilters() {
+    this.selectedFilters = {};
+    this.getSignUpUserList();
+    localStorage.removeItem('UserSignupStatusFilters');
   }
 }
