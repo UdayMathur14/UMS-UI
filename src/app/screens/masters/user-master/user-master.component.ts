@@ -1,5 +1,7 @@
 import { Component, OnInit } from '@angular/core';
 import { UserMasterService } from '../../../core/service/user-master.service';
+import { NgbModal } from '@ng-bootstrap/ng-bootstrap';
+import { UserMasterFilterComponent } from './Filters/user-master-filter.component';
 
 @Component({
   selector: 'app-user-master',
@@ -14,33 +16,43 @@ export class UserMasterComponent implements OnInit {
   userMaster: any;
   totalUsersMasters: number = 0;
   currentPage: number = 1;
-  appliedFilters: any;
-  fillters: any;
-  showFilters: boolean = false;
+  selectedFilters: any = {};
+  filters: any = [];
 
-  constructor(private userMasterService: UserMasterService) {}
+  constructor(
+    private userMasterService: UserMasterService,
+    private modalService: NgbModal
+  ) { }
+
   ngOnInit(): void {
     const data = localStorage.getItem('data');
     if (data) {
       const dataObj = JSON.parse(data);
       this.userId = dataObj.userId;
     }
+
+    // Load saved filters from localStorage
+    const savedFilters = localStorage.getItem('UserMasterFilters');
+    if (savedFilters) {
+      this.selectedFilters = JSON.parse(savedFilters);
+    }
+
     this.getUserMasterData();
   }
 
   getUserMasterData(
     offset: number = 0,
     count: number = this.count,
-    filters: any = this.appliedFilters
+    filters: any = this.selectedFilters
   ) {
     this.loadSpinner = true;
     const data = {
-      status: filters?.status || '',
-      name: filters?.name || '',
-      emailId: filters?.emailId || '',
-      userType: filters?.userType || '',
-      userCategory: filters?.userCategory || '',
-      organisation: filters?.organisation || '',
+      status: filters?.Status || '',
+      name: filters?.Name || '',
+      emailId: filters?.EmailId || '',
+      userType: filters?.UserType || '',
+      userCategory: filters?.UserCategory || '',
+      organisation: filters?.Organisation || '',
     };
     this.userMasterService
       .userMasterData(this.userId, offset, count, data)
@@ -48,36 +60,67 @@ export class UserMasterComponent implements OnInit {
         (response: any) => {
           this.userMaster = response.users;
           this.totalUsersMasters = response.paging.total;
-          this.fillters = response.filters;
+          this.filters = response.filters;
           this.loadSpinner = false;
 
           console.log(response);
         },
         (error) => {
           console.log(error);
+          this.loadSpinner = false;
         }
       );
   }
 
-  getData(e: any) {
-    this.appliedFilters = e;
+  openFilterModal() {
+    const modalRef = this.modalService.open(UserMasterFilterComponent, {
+      backdrop: 'static',
+      size: 'md'
+    });
+    modalRef.componentInstance.filterData = { ...this.selectedFilters };
+
+    modalRef.result.then((result) => {
+      if (result) {
+        this.applyFilter(result);
+      }
+    }).catch(() => { });
+  }
+
+  applyFilter(filterData: any) {
+    localStorage.setItem('UserMasterFilters', JSON.stringify(filterData));
+    this.selectedFilters = filterData;
     this.currentPage = 1;
-    this.getUserMasterData(0, this.count, this.appliedFilters);
+    this.getUserMasterData(0, this.count, this.selectedFilters);
+  }
+
+  hasFiltersApplied(): boolean {
+    return Object.keys(this.selectedFilters).some(
+      key => this.selectedFilters[key] !== '' && this.selectedFilters[key] !== null
+    );
+  }
+
+  getFilterCount(): number {
+    return Object.values(this.selectedFilters).filter(
+      value => value !== '' && value !== null
+    ).length;
+  }
+
+  clearFilters() {
+    this.selectedFilters = {};
+    localStorage.removeItem('UserMasterFilters');
+    this.currentPage = 1;
+    this.getUserMasterData(0, this.count, {});
   }
 
   onPageChange(page: number) {
     this.currentPage = page;
     const offset = (this.currentPage - 1) * this.count;
-    this.getUserMasterData(offset, this.count, this.appliedFilters);
+    this.getUserMasterData(offset, this.count, this.selectedFilters);
   }
 
   onPageSizeChange(data: number) {
     this.count = data;
     this.currentPage = 1;
-    this.getUserMasterData(0, this.count, this.appliedFilters);
-  }
-
-     toggleFilters() {
-    this.showFilters = !this.showFilters;
+    this.getUserMasterData(0, this.count, this.selectedFilters);
   }
 }
