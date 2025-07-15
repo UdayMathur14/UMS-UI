@@ -5,7 +5,7 @@ import { AuthGuard } from './core/guards/auth.guard';
 import { DashboardComponent } from './screens/auth/dashboard/dashboard.component';
 
 const routes: Routes = [
-  { path: '', redirectTo: '/login', pathMatch: 'full' },
+  { path: '', redirectTo: '/auth/callback', pathMatch: 'full' },
   { path: 'auth', loadChildren: () => import('./screens/auth/auth.module').then(m => m.AuthModule) },
   {
     path: '',

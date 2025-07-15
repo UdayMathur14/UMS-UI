@@ -11,7 +11,7 @@ import { NewPasswordComponent } from './new-password/new-password.component';
 // import { ResetPasswordComponent } from './reset-password/reset-password.component';
 
 const routes: Routes = [
-  { path: 'login', component: LoginComponent },
+  { path: 'auth/callback', component: LoginComponent },
   { path: 'signup', component: SignupComponent },
   { path: 'otpValidation', component: OtpValidationComponent },
   { path: 'dashboard', component: DashboardComponent },
