@@ -7,7 +7,7 @@ import { ToastrService } from 'ngx-toastr';
   providedIn: 'root',
 })
 export class GoogleAuthService {
-   clientId =
+  private clientId =
     '1085466297933-csqm5ssegal60n5puevnt6tuc9q0qffk.apps.googleusercontent.com';
   emailId: string = '';
 

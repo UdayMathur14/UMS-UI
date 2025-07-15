@@ -162,20 +162,6 @@ export class LoginComponent implements OnInit, AfterViewInit {
   //   this.googleAuthService.startGoogleLogin(); 
   // }
 
-   signInWithGoogle() {
-    console.log(this.googleAuthService)
-  this.googleAuthService.loadGoogleSDK().then(() => {
-    window.google.accounts.id.initialize({
-      client_id: this.googleAuthService.clientId,
-      callback: (response: any) => this.googleAuthService.handleCredentialResponse(response),
-    });
-
-    // Triggers the Google sign-in prompt
-    window.google.accounts.id.prompt();
-  });
-}
-
-
   checkLoginStatus(): void {
     const accounts = this.msalService.instance.getAllAccounts();
     if (accounts.length > 0) {
