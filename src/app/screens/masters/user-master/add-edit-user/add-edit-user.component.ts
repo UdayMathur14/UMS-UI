@@ -120,6 +120,8 @@ export class AddEditUserComponent {
       id: item.id,
       name: item.appName
     }));
+    const userCategoryId = this.roleList.find((item: any) => item?.roleName == formData?.userCategory)?.id;
+    
     if (this.isEditMode) {
       const updateData = {
         designation: formData.designation,
@@ -130,6 +132,7 @@ export class AddEditUserComponent {
           : 'External',
         actionBy: this.actionById,
         methodType: 'Portal',
+        userCategoryId: userCategoryId
       };
 
       this.userMasterService
