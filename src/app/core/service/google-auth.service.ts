@@ -2,6 +2,7 @@ import { Injectable, NgZone } from '@angular/core';
 import { Router } from '@angular/router';
 import { AuthService } from './auth.service';
 import { ToastrService } from 'ngx-toastr';
+import { LoaderService } from './loader.service';
 
 @Injectable({
   providedIn: 'root',
@@ -15,7 +16,8 @@ export class GoogleAuthService {
     private router: Router,
     private ngZone: NgZone,
     private authService: AuthService,
-    private toastr: ToastrService
+    private toastr: ToastrService,
+    private loaderService: LoaderService,
   ) { }
 
   loadGoogleSDK(): Promise<void> {
@@ -142,8 +144,10 @@ export class GoogleAuthService {
   }
 
   getLoginStatus() {
+    this.loaderService.show();
     this.authService.logInUserStatus(this.emailId).subscribe({
       next: (response: any) => {
+         this.loaderService.hide();
         if (response?.code === 200) {
           this.router.navigate(['/auth/signup']);
         } else {
@@ -151,6 +155,7 @@ export class GoogleAuthService {
         }
       },
       error: (err) => {
+        this.loaderService.hide();
         this.onSignIn();
       },
     });

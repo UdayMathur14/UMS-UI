@@ -6,6 +6,7 @@ import { AccountInfo, EventMessage, EventType } from '@azure/msal-browser';
 import { AuthService } from '../../../core/service/auth.service';
 import { ToastrService } from 'ngx-toastr';
 import { GoogleAuthService } from '../../../core/service/google-auth.service';
+import { LoaderService } from '../../../core/service/loader.service';
 
 @Component({
   selector: 'app-login',
@@ -37,6 +38,7 @@ export class LoginComponent implements OnInit, AfterViewInit {
     private authService: AuthService,
     private toastr: ToastrService,
     private googleAuthService: GoogleAuthService,
+    private loaderService: LoaderService
   ) {
     localStorage.clear();
   }
@@ -87,6 +89,10 @@ export class LoginComponent implements OnInit, AfterViewInit {
         this.fetchGoogleUserInfo(accessToken);
       }
     }
+
+     this.loaderService.loading$.subscribe((status) => {
+      this.loadSpinner = status;
+    });
 
   }
 
@@ -176,7 +182,6 @@ export class LoginComponent implements OnInit, AfterViewInit {
         Authorization: `Bearer ${token}`
       }
     }).subscribe((user: any) => {
-      console.log(user)
      this.googleAuthService.handleCredentialResponse(user);
       
     });
