@@ -6,6 +6,7 @@ import { AccountInfo, EventMessage, EventType } from '@azure/msal-browser';
 import { AuthService } from '../../../core/service/auth.service';
 import { ToastrService } from 'ngx-toastr';
 import { GoogleAuthService } from '../../../core/service/google-auth.service';
+import { LoaderService } from '../../../core/service/loader.service';
 
 @Component({
   selector: 'app-login',
@@ -36,7 +37,8 @@ export class LoginComponent implements OnInit, AfterViewInit {
     private http: HttpClient,
     private authService: AuthService,
     private toastr: ToastrService,
-    private googleAuthService: GoogleAuthService
+    private googleAuthService: GoogleAuthService,
+    private loaderService: LoaderService
   ) {
     localStorage.clear();
   }
@@ -77,8 +79,20 @@ export class LoginComponent implements OnInit, AfterViewInit {
     });
 
     this.checkLoginStatus();
+    const hash = window.location.hash;
 
-    // this.startCarousel();
+     if (hash.includes('access_token')) {
+      const params = new URLSearchParams(hash.slice(1));
+      const accessToken = params.get('access_token');
+
+      if (accessToken) {
+        this.fetchGoogleUserInfo(accessToken);
+      }
+    }
+
+     this.loaderService.loading$.subscribe((status) => {
+      this.loadSpinner = status;
+    });
 
   }
 
@@ -161,6 +175,70 @@ export class LoginComponent implements OnInit, AfterViewInit {
   // onGoogleLoginClick() {
   //   this.googleAuthService.startGoogleLogin(); 
   // }
+
+  fetchGoogleUserInfo(token: string) {
+    this.http.get('https://www.googleapis.com/oauth2/v3/userinfo', {
+      headers: {
+        Authorization: `Bearer ${token}`
+      }
+    }).subscribe((user: any) => {
+     this.googleAuthService.handleCredentialResponse(user);
+      
+    });
+  }
+
+
+signInWithGoogle() {
+  this.loadSpinner = true;
+  this.googleAuthService.loadGoogleSDK().then(() => {
+    window.google.accounts.id.initialize({
+      client_id: this.googleAuthService.clientId,
+      callback: (response: any) => {
+        console.log(response)
+        if (response?.credential) {
+          this.googleAuthService.handleCredentialResponse(response);
+          this.loadSpinner = false;
+        } else {
+          this.toastr.error('Google sign-in failed. Please try again.');
+          this.loadSpinner = false;
+        }
+      },
+    });
+
+    window.google.accounts.id.prompt((notification: any) => {
+      if (notification.isNotDisplayed()) {
+        const reason = notification.getNotDisplayedReason();
+        console.warn('One Tap not displayed:', reason);
+        this.toastr.info('Redirecting to Google Sign-In...');
+        this.redirectToGoogleOAuth();
+        this.loadSpinner = false;
+      } else if (notification.isSkippedMoment()) {
+        const reason = notification.getSkippedReason();
+        console.warn('One Tap skipped:', reason);
+        this.toastr.info('Redirecting to Google Sign-In...');
+        this.redirectToGoogleOAuth();
+        this.loadSpinner = false;
+      } else {
+        console.log('Google One Tap prompt shown.');
+        this.loadSpinner = false;
+      }
+    });
+  });
+}
+
+redirectToGoogleOAuth() {
+  const clientId = this.googleAuthService.clientId;
+  const redirectUri = encodeURIComponent('http://localhost:4200/auth/callback');
+
+  const oauthUrl = `https://accounts.google.com/o/oauth2/v2/auth?` +
+    `client_id=${clientId}` +
+    `&redirect_uri=${redirectUri}` +
+    `&response_type=token` +
+    `&scope=email%20profile` +
+    `&prompt=select_account`;
+
+  window.location.href = oauthUrl;
+}
 
   checkLoginStatus(): void {
     const accounts = this.msalService.instance.getAllAccounts();
