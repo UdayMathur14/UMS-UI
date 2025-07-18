@@ -8,7 +8,7 @@ import { ToastrService } from 'ngx-toastr';
 })
 export class GoogleAuthService {
    clientId =
-    '948926855203-5ru06furikiqlcbkih3fl7e39js2bvt4.apps.googleusercontent.com';
+    '1085466297933-csqm5ssegal60n5puevnt6tuc9q0qffk.apps.googleusercontent.com';
   emailId: string = '';
 
   constructor(
@@ -68,19 +68,16 @@ export class GoogleAuthService {
   // }
 
   handleCredentialResponse(response: any) {
-    const credential = JSON.parse(atob(response.credential.split('.')[1])); // Decode JWT
-    console.log('User Info:', credential);
-
     // Store user data in localStorage
     localStorage.setItem(
       'googleUser',
       JSON.stringify({
-        email: credential.email,
-        fullName: credential.name,
+        email: response.email,
+        fullName: response.name,
       })
     );
 
-    this.emailId = credential.email;
+    this.emailId = response.email;
     // Redirect to sign-up page
     setTimeout(() => this.ngZone.run(() => this.getLoginStatus()), 1000);
     // window.location.href = "/auth/signup";

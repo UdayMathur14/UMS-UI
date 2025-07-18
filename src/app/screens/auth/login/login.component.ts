@@ -176,7 +176,9 @@ export class LoginComponent implements OnInit, AfterViewInit {
         Authorization: `Bearer ${token}`
       }
     }).subscribe((user: any) => {
-      this.checkLoginStatus();
+      console.log(user)
+     this.googleAuthService.handleCredentialResponse(user);
+      
     });
   }
 
@@ -187,6 +189,7 @@ signInWithGoogle() {
     window.google.accounts.id.initialize({
       client_id: this.googleAuthService.clientId,
       callback: (response: any) => {
+        console.log(response)
         if (response?.credential) {
           this.googleAuthService.handleCredentialResponse(response);
           this.loadSpinner = false;
