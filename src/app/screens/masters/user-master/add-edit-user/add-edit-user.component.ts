@@ -132,7 +132,8 @@ export class AddEditUserComponent {
           : 'External',
         actionBy: this.actionById,
         methodType: 'Portal',
-        userCategoryId: userCategoryId
+        userCategoryId: userCategoryId,
+        appLists: appList
       };
 
       this.userMasterService

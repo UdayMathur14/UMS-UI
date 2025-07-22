@@ -41,5 +41,7 @@ export const APIConstant = {
 
   forgetPassword: `${apiPath}/api/v1/user-setup/forget-password`,
   changePassword:`${apiPath}/api/v1/user-setup/change-password`,
-  organisationsData: `${apiPath}/api/v1/domainsearch/search`
+  organisationsData: `${apiPath}/api/v1/domainsearch/search`,
+
+  uploadUsers: `${apiPath}/api/v1/user/upload-users`,
 };

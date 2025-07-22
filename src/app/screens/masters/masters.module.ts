@@ -36,6 +36,7 @@ import { RoleAppMenuMappingGridTableComponent } from './app-role-menu-mapping/gr
 import { AppRoleMenuMappingFilterComponent } from './app-role-menu-mapping/filter/app-role-menu-mapping-filter.component';
 import { AddEditAppRoleMenuMappingComponent } from './app-role-menu-mapping/add-edit-app-role-menu-mapping/add-edit-app-role-menu-mapping.component';
 import { SharedModule } from '../shared/shared.module';
+import { UploadUsersComponent } from './user-master/upload-users/upload-users.component';
 @NgModule({
   declarations: [
     UserSignupStatusComponent,
@@ -67,6 +68,7 @@ import { SharedModule } from '../shared/shared.module';
     RoleAppMenuMappingGridTableComponent,
     GridTableComponent,
     AddEditAppRoleMenuMappingComponent,
+    UploadUsersComponent,
   ],
   imports: [
     CommonModule,
