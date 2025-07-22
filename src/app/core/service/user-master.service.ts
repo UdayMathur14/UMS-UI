@@ -45,4 +45,9 @@ export class UserMasterService extends CRUDService<AuthRequest> {
       })
     );
   }
+
+  uploadUsers(data: any, organisation: string = '', actionBy: string = '') {
+    const url = `${APIConstant.uploadUsers}?organisation=${organisation}&actionBy=${actionBy}`;
+    return this.baseService.post(url, data);
+  }
 }

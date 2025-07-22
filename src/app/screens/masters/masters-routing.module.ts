@@ -16,6 +16,7 @@ import { AppMenuMappingComponent } from './app-menu-mapping/app-menu-mapping.com
 import { AddEditAppMenuMappingComponent } from './app-menu-mapping/add-edit-app-menu-mapping/add-edit-app-menu-mapping.component';
 import { AppRoleMenuMappingComponent } from './app-role-menu-mapping/app-role-menu-mapping.component';
 import { AddEditAppRoleMenuMappingComponent } from './app-role-menu-mapping/add-edit-app-role-menu-mapping/add-edit-app-role-menu-mapping.component';
+import { UploadUsersComponent } from './user-master/upload-users/upload-users.component';
 
 const routes: Routes = [
   {
@@ -97,6 +98,10 @@ const routes: Routes = [
   {
     path: 'edit-app-role-menu-mapping/:id',
     component: AddEditAppRoleMenuMappingComponent,
+  },
+  {
+    path: 'upload-users',
+    component: UploadUsersComponent, canActivate: [AuthGuard]
   },
 ];
 
