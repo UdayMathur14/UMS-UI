@@ -12,7 +12,7 @@ import { LookupService } from '../../../../core/service/lookup.service';
 export class AddEditLookupComponent implements OnInit {
   lookupId: any;
   userId: string = ''
-  loadSpinner: boolean = true;
+  loadSpinner: boolean = false;
   lookupType: any = [];
   lookupForm = new FormGroup({
     type: new FormControl('', Validators.required),
@@ -27,7 +27,7 @@ export class AddEditLookupComponent implements OnInit {
     private lookupService: LookupService,
     private router: Router,
     private toastr: ToastrService
-  ) {}
+  ) { }
 
   ngOnInit(): void {
     this.lookupId = this.activatedRoute.snapshot.paramMap.get('id');
@@ -38,16 +38,18 @@ export class AddEditLookupComponent implements OnInit {
     }
     // this.getLookupById();
     this.lookUpTypeData();
-    if(this.lookupId){
+    if (this.lookupId) {
       this.getLookupById()
     }
   }
 
-  lookUpTypeData(){
+  lookUpTypeData() {
     const data = {
       "status": "",
       "type": ""
     }
+    this.loadSpinner = true;
+
     this.lookupService.lookupType(data).subscribe(
       (response: any) => {
         this.lookupType = response?.lookUpTypes
@@ -60,6 +62,8 @@ export class AddEditLookupComponent implements OnInit {
   }
 
   getLookupById() {
+    this.loadSpinner = true;
+
     this.lookupService.lookupDataById(this.lookupId).subscribe(
       (response: any) => {
         this.lookupForm.patchValue({
@@ -81,12 +85,12 @@ export class AddEditLookupComponent implements OnInit {
     this.router.navigate(['/masters/lookup-master']);
   }
 
-  onSave(){
+  onSave() {
     const typeId = this.lookupForm.controls['type']?.value
     const typeName = this.lookupType.find((item: any) => item?.id == typeId)?.type
-    if(this.lookupId){
-      this.loadSpinner=true;
-      const data =  {
+    if (this.lookupId) {
+      this.loadSpinner = true;
+      const data = {
         status: this.lookupForm.controls['status']?.value,
         typeId: this.lookupForm.controls['type']?.value,
         type: typeName,
@@ -103,31 +107,31 @@ export class AddEditLookupComponent implements OnInit {
         },
         (error) => {
           this.loadSpinner = false;
-          this.toastr.error(error?.error?.message,'Error')
+          this.toastr.error(error?.error?.message, 'Error')
         }
       );
     } else {
- 
-    const data = {
-      status: 'Active',
-      typeId: this.lookupForm.controls['type']?.value,
-      type: typeName,
-      value: this.lookupForm.controls['value']?.value,
-      description: this.lookupForm.controls['description']?.value,
-      url: this.lookupForm.controls['url']?.value,
-      actionBy: this.userId,
-    };
-    this.lookupService.lookupCreate(data).subscribe(
-      (response: any) => {
-        this.loadSpinner = false;
-        this.toastr.success('Lookup ' + response.message);
-        this.onCancel();
-      },
-      (error) => {
-        this.loadSpinner = false;
-        this.toastr.error(error?.error?.message,'Error')
-      }
-    );
+
+      const data = {
+        status: 'Active',
+        typeId: this.lookupForm.controls['type']?.value,
+        type: typeName,
+        value: this.lookupForm.controls['value']?.value,
+        description: this.lookupForm.controls['description']?.value,
+        url: this.lookupForm.controls['url']?.value,
+        actionBy: this.userId,
+      };
+      this.lookupService.lookupCreate(data).subscribe(
+        (response: any) => {
+          this.loadSpinner = false;
+          this.toastr.success('Lookup ' + response.message);
+          this.onCancel();
+        },
+        (error) => {
+          this.loadSpinner = false;
+          this.toastr.error(error?.error?.message, 'Error')
+        }
+      );
     }
   }
 }

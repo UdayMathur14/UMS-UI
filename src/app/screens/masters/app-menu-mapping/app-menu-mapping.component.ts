@@ -11,7 +11,7 @@ import { FiltersComponent } from './filters/filters.component';
   styleUrl: './app-menu-mapping.component.scss',
 })
 export class AppMenuMappingComponent {
-  loadSpinner: boolean = true;
+  loadSpinner: boolean = false;
   currentPage: number = 1;
   count: number = 10;
   userId: string = '';

@@ -10,7 +10,7 @@ import { UserSignupStatusFilterComponent } from './filter/user-signup-status-fil
 })
 export class UserSignupStatusComponent implements OnInit {
   userId: string = '';
-  loadSpinner: boolean = true;
+  loadSpinner: boolean = false;
   signupUsers: any = [];
   offset = 0;
   count: number = 10;

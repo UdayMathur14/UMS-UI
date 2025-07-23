@@ -18,7 +18,7 @@ export class AddEditAppMenuMappingComponent implements OnInit {
   offset = 0;
   count: number = 9000000;
   appsData: any;
-  loadSpinner: boolean = true;
+  loadSpinner: boolean = false;
   permissionData: any[] = [];
   menuById: any;
   menuId: any;
@@ -281,6 +281,7 @@ export class AddEditAppMenuMappingComponent implements OnInit {
   }
 
   getApps() {
+    this.loadSpinner = true
     const data = {
       status: '',
       type: 'app',

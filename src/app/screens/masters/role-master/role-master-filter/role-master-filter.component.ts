@@ -11,7 +11,7 @@ import { ToastrService } from 'ngx-toastr';
 export class RoleMasterFilterComponent {
   @Input() filterData: any;
   @Input() userId: string = '';
-  loadSpinner: boolean = true;
+  loadSpinner: boolean = false;
   selectedFilter: string = 'RoleName';
 
   filters = [
@@ -50,6 +50,8 @@ export class RoleMasterFilterComponent {
       .roleData(this.userId, offset, count, data).subscribe({
         next: (response: any) => {
           this.roleFiltersData = response?.filters || {};
+          this.loadSpinner = false;
+
         },
         error: (error) => {
           console.error('Error loading filters:', error);

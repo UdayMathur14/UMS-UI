@@ -9,7 +9,7 @@ import { UserMasterFilterComponent } from './Filters/user-master-filter.componen
   styleUrl: './user-master.component.scss',
 })
 export class UserMasterComponent implements OnInit {
-  loadSpinner: boolean = true;
+  loadSpinner: boolean = false;
 
   count: number = 10;
   userId: string = '';

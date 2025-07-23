@@ -10,7 +10,7 @@ import { AppRoleMenuMappingFilterComponent } from './filter/app-role-menu-mappin
   styleUrl: './app-role-menu-mapping.component.scss',
 })
 export class AppRoleMenuMappingComponent implements OnInit {
-  loadSpinner: boolean = true;
+  loadSpinner: boolean = false;
   currentPage: number = 1;
   count: number = 10;
   userId: string = '';
