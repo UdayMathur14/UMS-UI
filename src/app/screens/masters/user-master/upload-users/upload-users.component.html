@@ -1,0 +1,47 @@
+<div class="d-flex justify-content-between align-items-center mb-3 flex-wrap gap-3">
+  <div>
+    <h3 class="screen-heading me-3 mb-0">Create Users</h3>
+  </div>
+
+  <div class="d-flex align-items-center gap-2">
+    <button type="button" class="lift-btn-info d-flex align-items-center" (click)="uploadExcel()">
+      <i class="bi bi-upload me-2"></i> Upload File
+    </button>
+
+    <input type="file" #excelInput accept=".xls,.xlsx" style="display: none" (change)="handleExcelUpload($event)" />
+  </div>
+</div>
+
+<app-loader *ngIf="loadSpinner"></app-loader>
+<div *ngIf="uploadedFile" class="table-responsive">
+  <table class="table table-bordered table-sm">
+    <thead class="table-light">
+      <tr>
+        <th>#</th>
+        <th>File Name</th>
+        <th>Size</th>
+        <th>Actions</th>
+      </tr>
+    </thead>
+    <tbody>
+      <tr>
+        <td>1</td>
+        <td>{{ uploadedFile.name }}</td>
+        <td>{{ uploadedFile.size / 1024 | number:'1.0-2' }} KB</td>
+        <td>
+          <div class="d-flex gap-2">
+            <button type="button" class="btn btn-md btn-outline-primary" (click)="viewFile()" title="View File">
+              View
+            </button>
+            <button type="button" class="btn btn-md btn-outline-danger" (click)="clearFile()" title="Clear File">
+              Clear
+            </button>
+            <button type="button" class="btn btn-md btn-success" (click)="onUpload()" title="Upload File">
+              Upload
+            </button>
+          </div>
+        </td>
+      </tr>
+    </tbody>
+  </table>
+</div>

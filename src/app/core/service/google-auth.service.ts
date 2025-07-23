@@ -2,12 +2,13 @@ import { Injectable, NgZone } from '@angular/core';
 import { Router } from '@angular/router';
 import { AuthService } from './auth.service';
 import { ToastrService } from 'ngx-toastr';
+import { LoaderService } from './loader.service';
 
 @Injectable({
   providedIn: 'root',
 })
 export class GoogleAuthService {
-  private clientId =
+   clientId =
     '1085466297933-csqm5ssegal60n5puevnt6tuc9q0qffk.apps.googleusercontent.com';
   emailId: string = '';
 
@@ -15,7 +16,8 @@ export class GoogleAuthService {
     private router: Router,
     private ngZone: NgZone,
     private authService: AuthService,
-    private toastr: ToastrService
+    private toastr: ToastrService,
+    private loaderService: LoaderService,
   ) { }
 
   loadGoogleSDK(): Promise<void> {
@@ -68,19 +70,16 @@ export class GoogleAuthService {
   // }
 
   handleCredentialResponse(response: any) {
-    const credential = JSON.parse(atob(response.credential.split('.')[1])); // Decode JWT
-    console.log('User Info:', credential);
-
     // Store user data in localStorage
     localStorage.setItem(
       'googleUser',
       JSON.stringify({
-        email: credential.email,
-        fullName: credential.name,
+        email: response.email,
+        fullName: response.name,
       })
     );
 
-    this.emailId = credential.email;
+    this.emailId = response.email;
     // Redirect to sign-up page
     setTimeout(() => this.ngZone.run(() => this.getLoginStatus()), 1000);
     // window.location.href = "/auth/signup";
@@ -145,8 +144,10 @@ export class GoogleAuthService {
   }
 
   getLoginStatus() {
+    this.loaderService.show();
     this.authService.logInUserStatus(this.emailId).subscribe({
       next: (response: any) => {
+         this.loaderService.hide();
         if (response?.code === 200) {
           this.router.navigate(['/auth/signup']);
         } else {
@@ -154,6 +155,7 @@ export class GoogleAuthService {
         }
       },
       error: (err) => {
+        this.loaderService.hide();
         this.onSignIn();
       },
     });

@@ -1,39 +1,41 @@
 <div class="modal-header">
     <h5 class="modal-title">Filter App Menu Mapping</h5>
 </div>
-
-<div class="modal-body p-0">
-    <div class="filter-container d-flex">
-        <!-- Left Sidebar -->
-        <div class="filter-sidebar">
-            <ul class="filter-list">
-                <li *ngFor="let filter of filters" [class.active]="selectedFilter === filter.key"
-                    (click)="selectFilter(filter.key)">
-                    {{ filter.label }}
-                </li>
-            </ul>
-        </div>
-
-        <!-- Divider -->
-        <div class="filter-divider"></div>
-
-        <!-- Right Panel -->
-        <div class="filter-input-area p-3 w-100">
-            <div class="ng-select-wrapper">
-                <ng-select [items]="getFilterOptions(selectedFilter)" [(ngModel)]="filterValues[selectedFilter]"
-                    [searchable]="true" [clearable]="true" [placeholder]="'Select ' + getFilterLabel(selectedFilter)">
-                </ng-select>
-                <label>{{ getFilterLabel(selectedFilter) }}</label>
+<div class="filter-modal-container">
+    <div class="modal-body p-0">
+        <div class="filter-container d-flex">
+            <!-- Left Sidebar -->
+            <div class="filter-sidebar">
+                <ul class="filter-list">
+                    <li *ngFor="let filter of filters" [class.active]="selectedFilter === filter.key"
+                        (click)="selectFilter(filter.key)">
+                        {{ filter.label }}
+                    </li>
+                </ul>
             </div>
 
-            <!-- Selected Filters Display -->
-            <div class="selected-filters mt-3 w-100">
-                <ng-container *ngFor="let filter of filters">
-                    <span class="badge bg-primary me-2 mb-2" *ngIf="filterValues[filter.key]">
-                        {{ filter.label }}: {{ filterValues[filter.key] }}
-                        <i class="bi bi-x-lg pointer" (click)="clearFilter(filter.key)"></i>
-                    </span>
-                </ng-container>
+            <!-- Divider -->
+            <div class="filter-divider"></div>
+
+            <!-- Right Panel -->
+            <div class="filter-input-area p-3 w-100">
+                <div class="ng-select-wrapper">
+                    <ng-select [items]="getFilterOptions(selectedFilter)" [(ngModel)]="filterValues[selectedFilter]"
+                        [searchable]="true" [clearable]="true"
+                        [placeholder]="'Select ' + getFilterLabel(selectedFilter)">
+                    </ng-select>
+                    <label>{{ getFilterLabel(selectedFilter) }}</label>
+                </div>
+
+                <!-- Selected Filters Display -->
+                <div class="selected-filters mt-3 w-100">
+                    <ng-container *ngFor="let filter of filters">
+                        <span class="badge bg-primary me-2 mb-2" *ngIf="filterValues[filter.key]">
+                            {{ filter.label }}: {{ filterValues[filter.key] }}
+                            <i class="bi bi-x-lg pointer" (click)="clearFilter(filter.key)"></i>
+                        </span>
+                    </ng-container>
+                </div>
             </div>
         </div>
     </div>
