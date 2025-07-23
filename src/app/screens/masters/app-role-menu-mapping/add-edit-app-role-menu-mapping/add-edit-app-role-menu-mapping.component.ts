@@ -15,7 +15,7 @@ import { RoleAppMenuMappingService } from '../../../../core/service/role-app-men
 export class AddEditAppRoleMenuMappingComponent implements OnInit {
   deletedSubMenus: any[] = [];
   appsData: any;
-  loadSpinner: boolean = true;
+  loadSpinner: boolean = false;
   userId: string = '';
   offset = 0;
   roleData: any = [];
@@ -101,6 +101,8 @@ export class AddEditAppRoleMenuMappingComponent implements OnInit {
       type: 'app',
       value: '',
     };
+    this.loadSpinner = true
+
     this.lookupService
       .lookupData(this.userId, this.offset, this.count, data)
       .subscribe(
@@ -263,12 +265,12 @@ export class AddEditAppRoleMenuMappingComponent implements OnInit {
 
 
   getSelectedMenu(menuIndex?: any) {
-    this.loadSpinner = true;
     const data = {
       status: 'Active',
       menuName: this.menuName || '',
       appName: this.appName || '',
     };
+    this.loadSpinner = true;
 
     this.appMenuMappingService
       .appMenuMappingData(this.userId, this.offset, this.count, data)
@@ -307,6 +309,7 @@ export class AddEditAppRoleMenuMappingComponent implements OnInit {
   }
 
   onSubmit() {
+    this.loadSpinner = true;
 
     console.log(this.deletedSubMenus, "deletedSubMenus");
 
@@ -388,6 +391,8 @@ export class AddEditAppRoleMenuMappingComponent implements OnInit {
         next: () => {
           this.toastr.success('Role menu mapping updated successfully');
           this.getRoleAppMenuById();
+          this.loadSpinner = false;
+
         },
         error: (error) => {
           this.toastr.error(error?.error?.message || 'Update failed');
@@ -440,6 +445,8 @@ export class AddEditAppRoleMenuMappingComponent implements OnInit {
         next: (response: any) => {
           this.toastr.success('App Menu Mapping created successfully');
           this.onCancel();
+          this.loadSpinner = false;
+
         },
         error: (error) => {
           this.toastr.error(error?.error?.message || 'Creation failed');
@@ -590,6 +597,4 @@ export class AddEditAppRoleMenuMappingComponent implements OnInit {
       this.menus().push(menuGroup);
     });
   }
-
-
 }

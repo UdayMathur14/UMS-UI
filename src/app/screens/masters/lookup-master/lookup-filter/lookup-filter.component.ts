@@ -10,7 +10,7 @@ import { ToastrService } from 'ngx-toastr';
 })
 export class LookupFilterComponent {
   @Input() filterData: any;
-  loadSpinner: boolean = true;
+  loadSpinner: boolean = false;
   selectedFilter: string = 'Type';
 
   userId: string = '';
@@ -53,6 +53,8 @@ export class LookupFilterComponent {
     this.lookupService.lookupData(this.userId, 0, 10, {}).subscribe({
       next: (response: any) => {
         this.lookupFiltersData = response?.filters || {};
+        this.loadSpinner = false;
+
       },
       error: (error) => {
         console.error('Error loading filters:', error);

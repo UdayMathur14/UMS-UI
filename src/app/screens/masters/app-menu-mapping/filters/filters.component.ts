@@ -10,7 +10,7 @@ import { AppMenuMappingService } from '../../../../core/service/app-menu-mapping
 })
 export class FiltersComponent {
   @Input() filterData: any;
-  loadSpinner: boolean = true;
+  loadSpinner: boolean = false;
   selectedFilter: string = 'AppName';
 
   userId: string = '';
@@ -60,6 +60,7 @@ export class FiltersComponent {
       .subscribe({
         next: (response: any) => {
           this.appMenuMappingFiltersData = response?.filters || {};
+          this.loadSpinner = false;
         },
         error: (error) => {
           console.error('Error loading filters:', error);

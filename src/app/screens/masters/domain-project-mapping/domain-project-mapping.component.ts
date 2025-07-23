@@ -12,7 +12,7 @@ import { DomainProjectMappingFiltersComponent } from './filters/domain-project-m
 export class DomainProjectMappingComponent {
 
   userId: string = '';
-  loadSpinner: boolean = true;
+  loadSpinner: boolean = false;
   domainProjects: any = [];
   offset = 0;
   count: number = 10;

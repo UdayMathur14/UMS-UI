@@ -10,7 +10,7 @@ import { RoleAppMenuMappingService } from '../../../../core/service/role-app-men
 })
 export class AppRoleMenuMappingFilterComponent {
   @Input() filterData: any;
-  loadSpinner: boolean = true;
+  loadSpinner: boolean = false;
   selectedFilter: string = 'AppName';
 
   userId: string = '';
@@ -64,6 +64,7 @@ export class AppRoleMenuMappingFilterComponent {
       .roleAppMenuMappingData(offset, count, data).subscribe({
         next: (response: any) => {
           this.roleMenuFiltersData = response?.filters || {};
+          this.loadSpinner = false;
         },
         error: (error) => {
           console.error('Error loading filters:', error);

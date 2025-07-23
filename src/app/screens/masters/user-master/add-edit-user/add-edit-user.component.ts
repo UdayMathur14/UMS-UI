@@ -14,7 +14,7 @@ import { RoleService } from '../../../../core/service/role.service';
 export class AddEditUserComponent {
   userId: any;
   isEditMode: boolean = false;
-  loadSpinner: boolean = true;
+  loadSpinner: boolean = false;
   actionById: string = '';
   createUserform!: FormGroup;
   roleData: any = [];
@@ -183,6 +183,7 @@ export class AddEditUserComponent {
       status: '',
       roleName: '',
     };
+    this.loadSpinner = true;
 
     this.roleService.roleData(this.userId, offset, count, data).subscribe(
       (response: any) => {
@@ -204,6 +205,7 @@ export class AddEditUserComponent {
       value: '',
       status: '',
     };
+    this.loadSpinner = true;
 
     this.lookupService.lookupData(this.userId, offset, count, data).subscribe(
       (response: any) => {

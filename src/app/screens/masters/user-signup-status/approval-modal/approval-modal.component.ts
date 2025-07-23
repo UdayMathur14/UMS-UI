@@ -14,7 +14,7 @@ import { LookupService } from '../../../../core/service/lookup.service';
 export class ApprovalModalComponent implements OnInit {
   userType: string = '';
   userCategory: string = '';
-  loadSpinner: boolean = true;
+  loadSpinner: boolean = false;
   userId: string = '';
   maxCount: number = 9000000;
   roleData: any = [];
@@ -36,7 +36,7 @@ export class ApprovalModalComponent implements OnInit {
     private router: Router,
     private roleService: RoleService,
     private lookupService: LookupService
-  ) {}
+  ) { }
 
   ngOnInit(): void {
     const data = localStorage.getItem('data');
@@ -54,10 +54,11 @@ export class ApprovalModalComponent implements OnInit {
       status: '',
       roleName: '',
     };
+    this.loadSpinner = true;
 
     this.roleService.roleData(this.userId, offset, count, data).subscribe(
       (response: any) => {
-        this.roleList  = response?.roles
+        this.roleList = response?.roles
         if (response && response.roles) {
           this.roleData = response.roles.map((role: any) => role.roleName);
         }
@@ -75,7 +76,8 @@ export class ApprovalModalComponent implements OnInit {
       value: '',
       status: '',
     };
-  
+    this.loadSpinner = true;
+
     this.lookupService.lookupData(this.userId, offset, count, data).subscribe(
       (response: any) => {
         if (response && response.lookUps) {
@@ -92,16 +94,16 @@ export class ApprovalModalComponent implements OnInit {
       }
     );
   }
-  
+
 
   updateUserSignUpStatus() {
     this.loadSpinner = true;
-    const roleid = this.roleList.find((item:any) => item?.roleName == this.userCategory)?.id;
+    const roleid = this.roleList.find((item: any) => item?.roleName == this.userCategory)?.id;
     const appList = this.app.map((item: any) => ({
       id: item.id,
       name: item.appName
     }));
-    
+
     const data = {
       status: this.status,
       actionBy: this.userId,

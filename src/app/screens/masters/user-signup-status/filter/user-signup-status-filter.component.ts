@@ -11,7 +11,7 @@ import { ToastrService } from 'ngx-toastr';
 export class UserSignupStatusFilterComponent {
   @Input() filterData: any;
   @Input() userId: string = '';
-  loadSpinner: boolean = true;
+  loadSpinner: boolean = false;
   selectedFilter: string = 'Name';
 
   filters = [
@@ -55,6 +55,8 @@ export class UserSignupStatusFilterComponent {
       .signupUserStatus(this.userId, offset, count, data).subscribe({
         next: (response: any) => {
           this.userSignupFiltersData = response?.filters || {};
+              this.loadSpinner = false;
+
         },
         error: (error) => {
           console.error('Error loading filters:', error);

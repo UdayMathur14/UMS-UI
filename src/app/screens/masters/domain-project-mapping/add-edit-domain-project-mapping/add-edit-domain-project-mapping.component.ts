@@ -39,7 +39,7 @@ export class AddEditDomainProjectMappingComponent implements OnInit {
     private router: Router,
     private toastr: ToastrService,
     private userMasterService: UserMasterService
-  ) {}
+  ) { }
 
   ngOnInit(): void {
     this.domainProjectId = this.activatedRoute.snapshot.paramMap.get('id');
@@ -84,25 +84,25 @@ export class AddEditDomainProjectMappingComponent implements OnInit {
   }
 
   domainNameLookup() {
-      const data = {
-        status: '',
-        type: 'domainName',
-        value: '',
-      };
-      this.loadSpinner = true;
+    const data = {
+      status: '',
+      type: 'domainName',
+      value: '',
+    };
+    this.loadSpinner = true;
 
-      this.lookupService
-        .lookupData(this.userId, this.offset, this.count, data)
-        .subscribe(
-          (response: any) => {
-            this.domainNames = response?.lookUps || [];
-            this.loadSpinner = false;
-          },
-          (error) => {
-            console.error('Error fetching domain names:', error);
-            this.loadSpinner = false;
-          }
-        );
+    this.lookupService
+      .lookupData(this.userId, this.offset, this.count, data)
+      .subscribe(
+        (response: any) => {
+          this.domainNames = response?.lookUps || [];
+          this.loadSpinner = false;
+        },
+        (error) => {
+          console.error('Error fetching domain names:', error);
+          this.loadSpinner = false;
+        }
+      );
   }
 
   projectNameLookup() {

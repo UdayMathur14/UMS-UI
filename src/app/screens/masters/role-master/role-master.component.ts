@@ -11,7 +11,7 @@ import { NgbModal } from '@ng-bootstrap/ng-bootstrap';
 })
 export class RoleMasterComponent implements OnInit {
   userId: string = '';
-  loadSpinner: boolean = true;
+  loadSpinner: boolean = false;
   roleData: any = [];
   offset = 0;
   count: number = 10;

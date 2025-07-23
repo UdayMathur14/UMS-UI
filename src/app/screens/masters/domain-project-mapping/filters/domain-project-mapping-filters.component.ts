@@ -10,7 +10,7 @@ import { ToastrService } from 'ngx-toastr';
 })
 export class DomainProjectMappingFiltersComponent implements OnInit {
   @Input() filterData: any;
-  loadSpinner: boolean = true;
+  loadSpinner: boolean = false;
   selectedFilter: string = 'DomainName';
   userId: string = '';
 
@@ -63,6 +63,8 @@ export class DomainProjectMappingFiltersComponent implements OnInit {
       .subscribe({
         next: (response: any) => {
           this.domainProjectFiltersData = response?.filters || {};
+          this.loadSpinner = false;
+
         },
         error: (error) => {
           console.error('Error loading filters:', error);

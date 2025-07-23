@@ -11,7 +11,7 @@ import { LookupFilterComponent } from './lookup-filter/lookup-filter.component';
 })
 export class LookupMasterComponent implements OnInit {
   userId: string = '';
-  loadSpinner: boolean = true;
+  loadSpinner: boolean = false;
   lookups: any = [];
   offset = 0;
   count: number = 10;

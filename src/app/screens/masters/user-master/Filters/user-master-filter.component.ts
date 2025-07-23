@@ -10,7 +10,7 @@ import { UserMasterService } from '../../../../core/service/user-master.service'
 })
 export class UserMasterFilterComponent {
   @Input() filterData: any;
-  loadSpinner: boolean = true;
+  loadSpinner: boolean = false;
   selectedFilter: string = 'Name';
 
   userId: string = '';
@@ -65,6 +65,8 @@ export class UserMasterFilterComponent {
       .userMasterData(this.userId, offset, count, data).subscribe({
         next: (response: any) => {
           this.userMasterFiltersData = response?.filters || {};
+          this.loadSpinner = false;
+
         },
         error: (error) => {
           console.error('Error loading filters:', error);
