@@ -380,8 +380,8 @@ export class AddEditAppRoleMenuMappingComponent implements OnInit {
       appName: appName || '',
       roleId: formData.role,
       roleName: roleName || '',
-      status: formData.status,
-      actionBy: this.userId,
+      // status: formData.status,
+      // actionBy: this.userId,
       menuDetail: menuDetail
     };
 
@@ -450,6 +450,7 @@ export class AddEditAppRoleMenuMappingComponent implements OnInit {
         },
         error: (error) => {
           this.toastr.error(error?.error?.message || 'Creation failed');
+          this.loadSpinner = false;
         }
       });
     }
