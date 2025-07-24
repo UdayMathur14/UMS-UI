@@ -3,9 +3,11 @@ import { RouterModule, Routes } from '@angular/router';
 import { LayoutComponent } from './layout/layout.component';
 import { AuthGuard } from './core/guards/auth.guard';
 import { DashboardComponent } from './screens/auth/dashboard/dashboard.component';
+import { LoginComponent } from './screens/auth/login/login.component';
 
 const routes: Routes = [
   { path: '', redirectTo: '/login', pathMatch: 'full' },
+   { path: 'auth/callback', component: LoginComponent },
   { path: 'auth', loadChildren: () => import('./screens/auth/auth.module').then(m => m.AuthModule) },
   {
     path: '',

@@ -190,41 +190,25 @@ export class LoginComponent implements OnInit, AfterViewInit {
 
 signInWithGoogle() {
   this.loadSpinner = true;
+
   this.googleAuthService.loadGoogleSDK().then(() => {
     window.google.accounts.id.initialize({
       client_id: this.googleAuthService.clientId,
       callback: (response: any) => {
-        console.log(response)
+        console.log(response);
         if (response?.credential) {
           this.googleAuthService.handleCredentialResponse(response);
-          this.loadSpinner = false;
         } else {
           this.toastr.error('Google sign-in failed. Please try again.');
-          this.loadSpinner = false;
         }
+        this.loadSpinner = false;
       },
     });
 
-    window.google.accounts.id.prompt((notification: any) => {
-      if (notification.isNotDisplayed()) {
-        const reason = notification.getNotDisplayedReason();
-        console.warn('One Tap not displayed:', reason);
-        this.toastr.info('Redirecting to Google Sign-In...');
-        this.redirectToGoogleOAuth();
-        this.loadSpinner = false;
-      } else if (notification.isSkippedMoment()) {
-        const reason = notification.getSkippedReason();
-        console.warn('One Tap skipped:', reason);
-        this.toastr.info('Redirecting to Google Sign-In...');
-        this.redirectToGoogleOAuth();
-        this.loadSpinner = false;
-      } else {
-        console.log('Google One Tap prompt shown.');
-        this.loadSpinner = false;
-      }
-    });
+    this.redirectToGoogleOAuth();
   });
 }
+
 
 redirectToGoogleOAuth() {
   const clientId = this.googleAuthService.clientId;
