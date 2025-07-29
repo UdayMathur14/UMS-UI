@@ -41,7 +41,11 @@ export class ChangePasswordComponent implements OnInit {
   ) { }
 
   ngOnInit() {
-    this.emailId = this.activatedRoute.snapshot.paramMap.get('email');
+      const data = localStorage.getItem('data');
+    if (data) {
+      const dataObj = JSON.parse(data);
+      this.emailId = dataObj.userEmailId;
+    }
     this.changePasswordForm = new FormGroup({
       emailId: new FormControl('', [
         Validators.required,
