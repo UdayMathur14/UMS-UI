@@ -137,7 +137,7 @@ export class LoginComponent implements OnInit, AfterViewInit {
             } else if (!firstAttempt) {
               this.router.navigate(['/dashboard']);
             } else {
-              this.router.navigate(['/change-password/', email]);
+              this.router.navigate(['/change-password']);
             }
 
             // if (userApp) {
