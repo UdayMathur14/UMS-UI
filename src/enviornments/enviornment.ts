@@ -4,10 +4,10 @@
 
 export const environment = {
     production: false,
-    // apiPath: 'https://localhost:7199'
+    apiPath: 'https://localhost:7128',
 
     //development url
-    apiPath: 'https://ums-internal-api.azurewebsites.net',
+    // apiPath: 'https://ums-internal-api.azurewebsites.net',
     umsURL: "http://111.93.61.253:8066",
 
     //production url
