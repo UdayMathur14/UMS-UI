@@ -4,6 +4,7 @@
 
 export const environment = {
     production: false,
+    //apiPath: 'https://localhost:7199',
     apiPath: 'https://localhost:7128',
 
     //development url
