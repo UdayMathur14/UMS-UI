@@ -13,7 +13,7 @@ export const APIConstant = {
   signupStatusUpdate: `${apiPath}/api/v1/SignUp/update`,
   login: `${apiPath}/api/v1/login/login`,
   userMaster: `${apiPath}/api/v1/user/search`,
-  getUserMasterById: `${apiPath}/api/v1/user/`,
+  getUserMasterById: `${apiPath}/api/v1/user`,
   userMasterUpdate: `${apiPath}/api/v1/user/update/`,
   createUserMaster: `${apiPath}/api/v1/user/create`,
   lookup: `${apiPath}/api/v1/lookup/search`,
