@@ -14,7 +14,7 @@ export const APIConstant = {
   login: `${apiPath}/api/v1/login/login`,
   userMaster: `${apiPath}/api/v1/user/search`,
   getUserMasterById: `${apiPath}/api/v1/user`,
-  userMasterUpdate: `${apiPath}/api/v1/user/update/`,
+  userMasterUpdate: `${apiPath}/api/v1/user/update`,
   createUserMaster: `${apiPath}/api/v1/user/create`,
   lookup: `${apiPath}/api/v1/lookup/search`,
   lookupCreate: `${apiPath}/api/v1/lookup/create`,
