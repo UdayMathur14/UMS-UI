@@ -116,6 +116,7 @@ export class SignupComponent implements OnInit {
     }
 
     this.startCarousel();
+    this.getOrganisationList();
 
   }
 
