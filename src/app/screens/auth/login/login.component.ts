@@ -212,7 +212,7 @@ signInWithGoogle() {
 
 redirectToGoogleOAuth() {
   const clientId = this.googleAuthService.clientId;
-  const redirectUri = encodeURIComponent('https://admin.diverseinfotech.com/auth/callback');
+  const redirectUri = encodeURIComponent('/auth/login'); // Adjust redirect URI as needed
 
   const oauthUrl = `https://accounts.google.com/o/oauth2/v2/auth?` +
     `client_id=${clientId}` +
