@@ -20,14 +20,3 @@ export const msalConfig = {
 export const loginRequest = {
     scopes: ['User.Read'],
   };
-export const msalGuardConfig: MsalGuardConfiguration = {
-  interactionType: InteractionType.Redirect, // or InteractionType.Popup
-  authRequest: loginRequest,
-};
-
-export const msalInterceptorConfig: MsalInterceptorConfiguration = {
-  interactionType: InteractionType.Redirect,
-  protectedResourceMap: new Map([
-    ['https://graph.microsoft.com/v1.0/me', ['user.read']],
-  ]),
-};

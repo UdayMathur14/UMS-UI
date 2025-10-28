@@ -1,8 +1,6 @@
-import { HttpClient, HttpHeaders } from '@angular/common/http';
+import { HttpClient } from '@angular/common/http';
 import { AfterViewInit, Component, OnInit } from '@angular/core';
 import { Router } from '@angular/router';
-import { MsalService } from '@azure/msal-angular';
-import { AccountInfo, EventMessage, EventType } from '@azure/msal-browser';
 import { AuthService } from '../../../core/service/auth.service';
 import { ToastrService } from 'ngx-toastr';
 import { GoogleAuthService } from '../../../core/service/google-auth.service';
@@ -11,29 +9,16 @@ import { LoaderService } from '../../../core/service/loader.service';
 @Component({
   selector: 'app-login',
   templateUrl: './login.component.html',
-  styleUrl: './login.component.scss',
+  styleUrls: ['./login.component.scss'],
 })
 export class LoginComponent implements OnInit, AfterViewInit {
   showPassword: boolean = false;
-  userProfile: any;
-  loginDisplay = false;
   emailId: string = '';
   password: string = '';
   loadSpinner: boolean = false;
-  userEmail: string = '';
-
-  // carouselImages: string[] = [
-  //   'assets/images/carousel-1.png',
-  //   'assets/images/carousel-2.png',
-  //   'assets/images/carousel-3.png',
-  //   'assets/images/carousel-4.png'
-  // ];
-
-  // currentImageIndex: number = 0;
 
   constructor(
     private router: Router,
-    private msalService: MsalService,
     private http: HttpClient,
     private authService: AuthService,
     private toastr: ToastrService,
@@ -44,63 +29,21 @@ export class LoginComponent implements OnInit, AfterViewInit {
   }
 
   ngOnInit() {
-    // Subscribe to MSAL events
-    this.msalService.instance.addEventCallback((event: EventMessage) => {
-      if (event.eventType === EventType.LOGIN_SUCCESS) {
-        const account = event.payload as AccountInfo;
-        this.msalService.instance.setActiveAccount(account);
-        this.updateLoginDisplay();
-        this.fetchUserProfile();
-
-        this.loadSpinner = true;
-
-        // Redirect after successful Microsoft login
-        setTimeout(() => {
-          this.loadSpinner = false;
-          const userProfile = localStorage.getItem('userProfile');
-          if (!userProfile) {
-            this.toastr.warning(
-              'Failed to retrieve profile. Please try signing in again.',
-              'Profile Missing'
-            );
-            console.log('called');
-
-            this.logout(); // Clear state and redirect to login
-          } else {
-            this.getLoginStatus();
-          }
-        }, 3000);
-      }
-
-      if (event.eventType === EventType.LOGOUT_SUCCESS) {
-        this.updateLoginDisplay();
-        this.userProfile = null;
-      }
+    // Loader status change
+    this.loaderService.loading$.subscribe((status) => {
+      this.loadSpinner = status;
     });
 
-    this.checkLoginStatus();
+    // Google redirect check
     const hash = window.location.hash;
-
-     if (hash.includes('access_token')) {
+    if (hash.includes('access_token')) {
       const params = new URLSearchParams(hash.slice(1));
       const accessToken = params.get('access_token');
-
       if (accessToken) {
         this.fetchGoogleUserInfo(accessToken);
       }
     }
-
-     this.loaderService.loading$.subscribe((status) => {
-      this.loadSpinner = status;
-    });
-
   }
-
-  // startCarousel() {
-  //   setInterval(() => {
-  //     this.currentImageIndex = (this.currentImageIndex + 1) % this.carouselImages.length;
-  //   }, 3000); // change image every 3 seconds
-  // }
 
   ngAfterViewInit() {
     this.googleAuthService.initializeGoogleSignIn();
@@ -115,178 +58,63 @@ export class LoginComponent implements OnInit, AfterViewInit {
         (response: any) => {
           const resData = JSON.stringify(response);
           const firstAttempt = response?.firstAttempt;
-          const email = response?.userEmailId
           localStorage.setItem('data', resData);
-          const storedData = localStorage.getItem('data');
-          if (storedData) {
-            const dataObj = JSON.parse(storedData);
-            this.toastr.success('Logged In Successfully', response.message);
-            const token = dataObj.accessToken;
-            const userApp = dataObj.apps.find(
-              (app: any) =>
-                app.name.toLowerCase().replace(/\s/g, '') ===
-                'usermanagamentsystem'
-            );
-            if (dataObj.apps.length == 1 && userApp && !firstAttempt) {
-              window.location.href = userApp.route;
-              // this.router.navigate(['/masters'])
-            } else if (dataObj.apps.length == 1 && !userApp && !firstAttempt) {
-              const appRoute = dataObj.apps[0].route;
-              const appId = dataObj.apps[0].id;
-              window.location.href = `${appRoute}?data=${token}&appId=${appId}`;
-            } else if (!firstAttempt) {
-              this.router.navigate(['/dashboard']);
-            } else {
-              this.router.navigate(['/change-password']);
-            }
 
-            // if (userApp) {
-            //   // window.location.href = userApp.route;
-            //   this.router.navigate(['/masters'])
-            // } else {
-            //   const appRoute = dataObj.apps[0].route;
-            //   const appId = dataObj.apps[0].id;
-            //   window.location.href = `${appRoute}?data=${token}&appId=${appId}`;
-            // }
+          this.toastr.success('Logged In Successfully', response.message);
+          const token = response?.accessToken;
 
-            this.loadSpinner = false;
+          if (response.apps?.length === 1 && !firstAttempt) {
+            const app = response.apps[0];
+            window.location.href = `${app.route}?data=${token}&appId=${app.id}`;
+          } else if (!firstAttempt) {
+            this.router.navigate(['/dashboard']);
+          } else {
+            this.router.navigate(['/change-password']);
           }
+
+          this.loadSpinner = false;
         },
         (error) => {
-          this.toastr.error(error?.error?.message, 'Error');
+          this.toastr.error(error?.error?.message || 'Login failed', 'Error');
           this.loadSpinner = false;
         }
       );
   }
 
-  // 🔹 Microsoft Login
-  loginWithMicrosoft(): void {
-    this.msalService.loginRedirect();
-  }
+  // 🔹 Google Login
+  signInWithGoogle() {
+    this.loadSpinner = true;
+    this.googleAuthService.loadGoogleSDK().then(() => {
+      window.google.accounts.id.initialize({
+        client_id: this.googleAuthService.clientId,
+        callback: (response: any) => {
+          if (response?.credential) {
+            this.googleAuthService.handleCredentialResponse(response);
+          } else {
+            this.toastr.error('Google sign-in failed. Please try again.');
+          }
+          this.loadSpinner = false;
+        },
+      });
 
-  logout(): void {
-    this.msalService.logoutRedirect({
-      // postLogoutRedirectUri: 'http://localhost:4200',
-      postLogoutRedirectUri: window.location.origin,
+      this.redirectToGoogleOAuth();
     });
-    localStorage.removeItem('userProfile');
   }
 
-  // onGoogleLoginClick() {
-  //   this.googleAuthService.startGoogleLogin(); 
-  // }
+  redirectToGoogleOAuth() {
+    const clientId = this.googleAuthService.clientId;
+    const redirectUri = encodeURIComponent('/auth/login');
+    const oauthUrl = `https://accounts.google.com/o/oauth2/v2/auth?client_id=${clientId}&redirect_uri=${redirectUri}&response_type=token&scope=email%20profile&prompt=select_account`;
+    window.location.href = oauthUrl;
+  }
 
   fetchGoogleUserInfo(token: string) {
-    this.http.get('https://www.googleapis.com/oauth2/v3/userinfo', {
-      headers: {
-        Authorization: `Bearer ${token}`
-      }
-    }).subscribe((user: any) => {
-     this.googleAuthService.handleCredentialResponse(user);
-      
-    });
-  }
-
-
-signInWithGoogle() {
-  this.loadSpinner = true;
-
-  this.googleAuthService.loadGoogleSDK().then(() => {
-    window.google.accounts.id.initialize({
-      client_id: this.googleAuthService.clientId,
-      callback: (response: any) => {
-        console.log(response);
-        if (response?.credential) {
-          this.googleAuthService.handleCredentialResponse(response);
-        } else {
-          this.toastr.error('Google sign-in failed. Please try again.');
-        }
-        this.loadSpinner = false;
-      },
-    });
-
-    this.redirectToGoogleOAuth();
-  });
-}
-
-
-redirectToGoogleOAuth() {
-  const clientId = this.googleAuthService.clientId;
-  const redirectUri = encodeURIComponent('/auth/login'); // Adjust redirect URI as needed
-
-  const oauthUrl = `https://accounts.google.com/o/oauth2/v2/auth?` +
-    `client_id=${clientId}` +
-    `&redirect_uri=${redirectUri}` +
-    `&response_type=token` +
-    `&scope=email%20profile` +
-    `&prompt=select_account`;
-
-  window.location.href = oauthUrl;
-}
-
-  checkLoginStatus(): void {
-    const accounts = this.msalService.instance.getAllAccounts();
-    if (accounts.length > 0) {
-      const activeAccount =
-        this.msalService.instance.getActiveAccount() || accounts[0];
-      this.msalService.instance.setActiveAccount(activeAccount);
-      this.updateLoginDisplay();
-      this.fetchUserProfile();
-    } else {
-      this.loginDisplay = false;
-    }
-  }
-
-  updateLoginDisplay(): void {
-    const activeAccount = this.msalService.instance.getActiveAccount();
-    this.loginDisplay = !!activeAccount; // Set to true if active account exists
-  }
-
-  fetchUserProfile(): void {
-    const graphEndpoint = 'https://graph.microsoft.com/v1.0/me';
-    const activeAccount = this.msalService.instance.getActiveAccount();
-
-    if (!activeAccount) {
-      console.error('No active account found.');
-      return;
-    }
-
-    this.msalService.instance
-      .acquireTokenSilent({
-        account: activeAccount,
-        scopes: ['User.Read'],
+    this.http
+      .get('https://www.googleapis.com/oauth2/v3/userinfo', {
+        headers: { Authorization: `Bearer ${token}` },
       })
-      .then((response) => {
-        const headers = new HttpHeaders({
-          Authorization: `Bearer ${response.accessToken}`,
-        });
-
-        this.http.get(graphEndpoint, { headers }).subscribe({
-          next: (profile) => {
-            this.userProfile = profile;
-            this.emailId = this.userProfile?.mail
-
-            localStorage.setItem(
-              'userProfile',
-              JSON.stringify(this.userProfile)
-            );
-          },
-          error: (err) => {
-            console.error('Error fetching user profile:', err);
-          },
-        });
-      })
-      .catch((error) => {
-        // console.error('Error acquiring token:', error);
-        console.warn(
-          'Silent token acquisition failed. Trying interactive redirect...'
-        );
-        console.warn(
-          'Silent token acquisition failed. Trying interactive redirect...'
-        );
-        this.msalService.instance.acquireTokenRedirect({
-          scopes: ['User.Read'],
-        });
+      .subscribe((user: any) => {
+        this.googleAuthService.handleCredentialResponse(user);
       });
   }
 
@@ -297,23 +125,4 @@ redirectToGoogleOAuth() {
   onChangePassword() {
     this.router.navigate(['change-password']);
   }
-
-  getLoginStatus() {
-    this.loadSpinner = true;
-    this.authService.logInUserStatus(this.emailId).subscribe({
-      next: (response: any) => {
-        if (response?.code === 200) {
-          this.router.navigate(['/auth/signup']);
-        } else {
-          this.onSignIn();
-        }
-        this.loadSpinner = false;
-      },
-      error: (err) => {
-        this.onSignIn();
-        this.loadSpinner = false;
-      }
-    });
-  }
-
 }
