@@ -71,7 +71,7 @@ export class LoginComponent implements OnInit, AfterViewInit {
           } else {
             this.router.navigate(['/change-password']);
           }
-
+          
           this.loadSpinner = false;
         },
         (error) => {
