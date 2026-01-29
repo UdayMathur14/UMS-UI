@@ -20,7 +20,7 @@ export class DashboardComponent implements OnInit {
 
   onClickApp(data: any){
     this.loadSpinner = true;    
-    if(data.name.toLowerCase().replace(/\s/g, '') == 'usermanagamentsystem'){
+    if(data.name.toLowerCase().replace(/\s/g, '') == 'UMS'){
       window.location.href = data.route;
       this.loadSpinner = false;
     } else {

@@ -7,8 +7,9 @@
       "type": "chrome",
       "request": "launch",
       "preLaunchTask": "npm: start",
-        //  "url": "http://localhost:4200/"
-      "url": "https://admin.diverseinfotech.com/"
+       "url": "http://localhost:4200/"
+      //"url": "https://admin.diverseinfotech.com/"
+      //"url": "https://admin.diverseinfotech.com/"
     },
     {
       "name": "ng test",
