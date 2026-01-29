@@ -2,19 +2,19 @@
   <!-- Left Section with Heading and Lottie (matching login design) -->
   <div class="left-panel">
     <div class="branding">
-      <h1>Create Your User Account</h1>
+      <h1 style="margin-left: 50px;">Create Your User Account</h1>
       <!-- <p>Get started with Tick Wiz — your journey to smarter support begins here.</p> -->
 
-      <iframe src="https://lottie.host/embed/465f8ec3-f3aa-4c5c-aab0-95d5170759e7/O9h5pbVJHC.lottie" frameborder="0" class="lottie-frame" ></iframe>
+      <!-- <iframe src="https://lottie.host/embed/465f8ec3-f3aa-4c5c-aab0-95d5170759e7/O9h5pbVJHC.lottie" frameborder="0" class="lottie-frame" ></iframe> -->
 
-      <!-- <iframe src="https://lottie.host/embed/bc8c778f-806d-4663-9f91-ec0c943788c1/UE8t0yAiQf.lottie" frameborder="0"
-        class="lottie-frame"></iframe> -->
+      <iframe src="https://lottie.host/embed/bc8c778f-806d-4663-9f91-ec0c943788c1/UE8t0yAiQf.lottie" frameborder="0"
+        class="lottie-frame"></iframe>
 
       <!-- <iframe src="https://lottie.host/embed/3846c5b8-6e37-48b7-bb98-0e4d83f83ce6/GlbKfAHp2u.lottie" frameborder="0"
-        class="lottie-frame"></iframe> -->
+        class="lottie-frame"></iframe> 
 
-      <!-- <iframe src="https://lottie.host/embed/acbe168c-3327-4f06-8d3a-077bc01a9700/vHylOeSboy.lottie" frameborder="0"
-        class="lottie-frame"></iframe> -->
+       <iframe src="https://lottie.host/embed/acbe168c-3327-4f06-8d3a-077bc01a9700/vHylOeSboy.lottie" frameborder="0"
+        class="lottie-frame"></iframe>  -->
 
     </div>
   </div>
@@ -24,10 +24,11 @@
     <div class="form-section">
       <div class="signup-card">
         <div class="logo-wrapper">
-          <img style="width: 80px; height: auto;" src="assets/images/diplogo-white.png" alt="Company Logo" />
+          <img style="width: 90px; height: auto;border-radius: 0.80rem;" src="assets/images/diplogo-white.png"
+            alt="Company Logo" />
         </div>
         <h2 class="signup-title">Create an Account</h2>
-        <p class="signup-subtitle">Start your journey with a smart workspace</p>
+        <!-- <p class="signup-subtitle">Start your journey with a smart workspace</p> -->
 
         <div class="form-container">
           <form [formGroup]="signUpForm" (ngSubmit)="onSubmit()">
@@ -50,9 +51,19 @@
             <label>Phone Number</label>
             <div class="input-group">
               <i class="bi bi-telephone"></i>
-              <input type="tel" formControlName="contactNo" placeholder="Enter phone number" inputIntegerValidator />
+              <input type="text" formControlName="contactNo" placeholder="Enter phone number" maxlength="10" />
             </div>
-            <small *ngIf="isFieldRequired('contactNo')" class="error">Phone number is required.</small>
+
+            <small *ngIf="signUpForm.get('contactNo')?.touched && signUpForm.get('contactNo')?.hasError('required')"
+              class="error">
+              Phone number is required.
+            </small>
+
+            <small *ngIf="signUpForm.get('contactNo')?.touched && signUpForm.get('contactNo')?.hasError('minlength')"
+              class="error">
+              Phone number must be 10 digits.
+            </small>
+
 
             <label>Organisation</label>
             <ng-select [items]="filteredOrganisations" bindLabel="organisation" bindValue="organisation"

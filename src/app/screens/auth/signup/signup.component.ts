@@ -97,7 +97,12 @@ export class SignupComponent implements OnInit {
           ), noWhitespaceValidator
         ]
       ),
-      contactNo: new FormControl('', [Validators.required, noWhitespaceValidator]),
+ contactNo: new FormControl('', [
+  Validators.required,
+  Validators.minLength(10),
+  Validators.maxLength(10),
+  noWhitespaceValidator
+]),
       organisation: new FormControl(null, [Validators.required, noWhitespaceValidator]),
       designation: new FormControl('', [Validators.required, noWhitespaceValidator]),
       methodType: new FormControl(''),
@@ -161,10 +166,16 @@ export class SignupComponent implements OnInit {
     }
   }
 
-  isFieldRequired(field: string): any {
-    const control = this.signUpForm.get(field);
-    return control?.touched && (control.hasError('required') || control.hasError('whitespace'));
-  }
+ isFieldRequired(field: string): boolean {
+  const control = this.signUpForm.get(field);
+  return !!(
+    control &&
+    control.touched &&
+    (control.hasError('required') ||
+     control.hasError('whitespace') ||
+     control.hasError('pattern'))
+  );
+}
 
   isEmailInvalid(): any {
     const control = this.signUpForm.get('emailId');

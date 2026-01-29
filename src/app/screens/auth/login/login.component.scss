@@ -5,7 +5,7 @@
   max-height: 100vh; // Prevent overflow
   font-family: 'Segoe UI', sans-serif;
   padding: 1.5rem; // Reduced padding
-  background: linear-gradient(135deg, rgba(15, 15, 15, 0.85), rgba(15, 23, 42, 0.85), rgba(220, 38, 38, 0.7)),
+  background: linear-gradient(135deg, rgba(235, 231, 231, 0.85), rgba(75, 75, 75, 0.85), rgba(255, 143, 142, 0.7)),
     url('/assets/images/background.png') center/cover no-repeat;
   overflow: hidden;
 }
@@ -19,7 +19,7 @@
   .floating-ticket {
     position: relative;
     display: inline-block;
-    background: rgba(255, 255, 255, 0.9);
+    background: rgba(253, 244, 244, 0.9);
     color: #111827;
     padding: 4px 10px;
     border-radius: 8px;
@@ -192,7 +192,7 @@
           margin-bottom: 1rem; // Reduced margin
 
           a {
-            color: #93c5fd;
+            color: #ffdede;
             font-weight: 600;
             text-decoration: none;
             cursor: pointer;
@@ -297,7 +297,7 @@
             margin-left: 4px;
             font-weight: 600;
             text-decoration: none;
-            color: #60a5fa;
+            color: #f6faff;
           }
         }
       }
