@@ -236,7 +236,7 @@ export class SignupComponent implements OnInit {
         org.organisation.toLowerCase().includes(term.toLowerCase())
       );
 
-    const staticOrg = { organisation: 'Diverse Infotech Private Limited' };
+    const staticOrg = { organisation: 'Ennoble Ip' };
     const exists = this.filteredOrganisations.some(
       (org) => org.organisation === staticOrg.organisation
     );
