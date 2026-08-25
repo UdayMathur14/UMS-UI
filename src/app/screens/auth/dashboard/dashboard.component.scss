@@ -100,7 +100,7 @@ header {
         
 
         &:nth-child(1) {
-            background-image: url('./../../../../assets/images/icons/tile_vector1.png');
+            background-image: url('./../../../../assets/images/icons/favicon.ico');
             background-size: 103px;
             background-repeat: no-repeat;
             background-position: bottom right;
@@ -115,7 +115,7 @@ header {
         }
 
         &:nth-child(2) {
-            background-image: url('./../../../../assets/images/icons/tile_vector2.png');
+            background-image: url('./../../../../assets/images/icons/favicon.ico');
             background-size: 103px;
             background-repeat: no-repeat;
             background-position: bottom right;
@@ -124,6 +124,49 @@ header {
                 .icon {
                     span {
                         background-image: url('./../../../../assets/images/icons/tile_icn2.svg');
+                    }
+                }
+            }
+        }
+
+        &:nth-child(3) {
+            background-image: url('./../../../../assets/images/icons/favicon.ico');
+            background-size: 103px;
+            background-repeat: no-repeat;
+            background-position: bottom right;
+
+            .tile-content {
+                .icon {
+                    span {
+                        background-image: url('./../../../../assets/images/icons/tile_icn1.svg');
+                    }
+                }
+            }
+        }
+        &:nth-child(4) {
+            background-image: url('./../../../../assets/images/icons/favicon.ico');
+            background-size: 103px;
+            background-repeat: no-repeat;
+            background-position: bottom right;
+
+            .tile-content {
+                .icon {
+                    span {
+                        background-image: url('./../../../../assets/images/icons/tile_icn2.svg');
+                    }
+                }
+            }
+        }
+        &:nth-child(5) {
+            background-image: url('./../../../../assets/images/icons/favicon.ico');
+            background-size: 103px;
+            background-repeat: no-repeat;
+            background-position: bottom right;
+
+            .tile-content {
+                .icon {
+                    span {
+                        background-image: url('./../../../../assets/images/icons/tile_icn1.svg');
                     }
                 }
             }
