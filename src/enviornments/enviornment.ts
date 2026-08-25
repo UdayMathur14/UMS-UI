@@ -5,8 +5,8 @@
 export const environment = {
     production: true,
     //apiPath: 'https://localhost:7199',
-    apiPath: 'https://localhost:7128',
-    //apiPath: 'http://192.168.29.100:100',
+    //apiPath: 'https://localhost:7128',
+    apiPath: 'http://192.168.29.101:100',
 
     //development url
     // apiPath: 'https://ums-internal-api.azurewebsites.net',
