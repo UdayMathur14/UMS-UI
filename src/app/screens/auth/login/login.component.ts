@@ -60,7 +60,7 @@ export class LoginComponent implements OnInit, AfterViewInit {
           const firstAttempt = response?.firstAttempt;
           localStorage.setItem('data', resData);
 
-          this.toastr.success('Logged In Successfully', response.message);
+          this.toastr.success('Your access portal is ready.', 'Welcome back');
           const token = response?.accessToken;
 
           if (response.apps?.length === 1 && !firstAttempt) {

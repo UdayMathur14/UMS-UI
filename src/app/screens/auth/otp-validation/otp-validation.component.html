@@ -1,41 +1,29 @@
-<div class="header d-flex bd-highlight">
-    <div class="mt-3 ms-3">
-        <img src="../../../assets/images/diplogo.png" class="full-logo">
+<div class="verification-page">
+  <aside class="verification-aside">
+    <img src="../../../assets/images/diplogo-white.png" class="full-logo" alt="Ennoble IP logo">
+    <div><span>Identity check</span><h1>One last step to keep your account secure.</h1><p>Enter the one-time code sent to your registered email address.</p></div>
+    <small>ENNOBLE IP · USER MANAGEMENT</small>
+  </aside>
+  <main class="verification-main">
+    <div class="verification-card">
+      <div class="step-label">SECURE VERIFICATION</div>
+      <h2>Verify OTP</h2>
+      <p class="helper">Use the verification code to continue.</p>
+      <div class="input-field-login">
+        <label>Verification code</label>
+        <input class="form-control" (keypress)="validateNo($event)" placeholder="Enter OTP" [(ngModel)]="otp">
+      </div>
+      <div *ngIf="isForgetPasswordFlow && enterPassword" class="input-field-login position-relative">
+        <label>New password</label>
+        <input [type]="showNewPassword ? 'text' : 'password'" class="form-control" placeholder="Enter new password" [(ngModel)]="newPassword">
+        <img src="assets/images/icons/viewPassword.svg" alt="Toggle password" (click)="showNewPassword = !showNewPassword" class="password-toggle">
+      </div>
+      <button (click)="submit()" [disabled]="!otp" type="button" class="password-button">Verify and continue</button>
+      <div class="verification-meta">
+        <p class="time">Code expires in {{ minutes }}:{{ seconds | number: '2.0' }}</p>
+        <button type="button" class="resend-otp-button" [disabled]="!enableResend" (click)="resendOtp()">Resend code</button>
+      </div>
+      <button class="back-link" (click)="onBackSignUp()"><i class="bi bi-arrow-left"></i> Go back</button>
     </div>
-</div>
-<div class="container">
-    <div class="row justify-content-center align-items-center" style="height: 100vh;">
-        <div class="col-md-6">
-            <div class="card shadow">
-                <div class="text-center password-header mb-2 pt-4">Verify OTP</div>
-                <div class="card-body">
-                    <div class="input-field-login">
-                        <input class="form-control" (keypress)="validateNo($event)" placeholder="Enter Otp"
-                            [(ngModel)]="otp">
-                    </div>
-                    <div *ngIf="isForgetPasswordFlow && enterPassword" class="input-field-login mt-3 position-relative">
-                        <input [type]="showNewPassword ? 'text' : 'password'" class="form-control"
-                            placeholder="Enter New Password" [(ngModel)]="newPassword">
-                        <img src="assets/images/icons/viewPassword.svg" alt="Toggle Password"
-                            (click)="showNewPassword = !showNewPassword"
-                            style="position: absolute; top: 50%; right: 10px; transform: translateY(-50%); width: 12px; height: 12px; cursor: pointer;" />
-                    </div>
-                    <div class="text-center mt-4">
-                        <button (click)="submit()" [disabled]="!otp" type="button" class="password-button mb-3">Submit
-                            OTP</button>
-                    </div>
-                    <div class="d-flex justify-content-between mt-4">
-                        <p class="time">Time Remaining: {{ minutes }}:{{ seconds | number: '2.0' }}</p>
-                        <button type="button" class="resend-otp-button" [disabled]="!enableResend"
-                            (click)="resendOtp()">Resend OTP</button>
-                    </div>
-
-                </div>
-            </div>
-            <div class="text-center mt-2" style="cursor: pointer;">
-                <p><span (click)="onBackSignUp()" class="pointer"><img src="assets/images/icons/left-angle.svg" alt=""
-                            width="6px"> Back</span></p>
-            </div>
-        </div>
-    </div>
+  </main>
 </div>

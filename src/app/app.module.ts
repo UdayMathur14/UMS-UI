@@ -19,7 +19,14 @@ import { AuthInterceptor } from './core/interceptor';
     AuthModule,
     HttpClientModule,
     LayoutModule,
-    ToastrModule.forRoot(),
+    ToastrModule.forRoot({
+      positionClass: 'toast-top-right',
+      timeOut: 3200,
+      progressBar: true,
+      newestOnTop: true,
+      preventDuplicates: true,
+      closeButton: false,
+    }),
     BrowserAnimationsModule
   ],
   providers: [

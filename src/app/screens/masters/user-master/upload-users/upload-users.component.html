@@ -13,6 +13,14 @@
 </div>
 
 <app-loader *ngIf="loadSpinner"></app-loader>
+<div *ngIf="!uploadedFile" class="upload-dropzone" (click)="uploadExcel()">
+  <div class="upload-dropzone-inner">
+    <div class="upload-icon"><i class="bi bi-cloud-arrow-up"></i></div>
+    <h4>Import users in one step</h4>
+    <p>Select an Excel workbook containing your user records. Supported formats: XLS and XLSX.</p>
+    <button type="button" class="lift-btn-info"><i class="bi bi-folder2-open me-2"></i>Choose workbook</button>
+  </div>
+</div>
 <div *ngIf="uploadedFile" class="table-responsive">
   <table class="table table-bordered table-sm">
     <thead class="table-light">

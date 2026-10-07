@@ -11,6 +11,8 @@ import { ToastrService } from 'ngx-toastr';
   styleUrl: './add-edit-app-menu-mapping.component.scss',
 })
 export class AddEditAppMenuMappingComponent implements OnInit {
+  private readonly emptyGuid = '00000000-0000-0000-0000-000000000000';
+
   menuForm: FormGroup;
   permissionDropdown = {};
   statusOptions = ['Active', 'Inactive'];
@@ -104,7 +106,7 @@ export class AddEditAppMenuMappingComponent implements OnInit {
         description: [''],
         orderBy: ['', [Validators.required, Validators.pattern('^[0-9]*$')]],
         level: ['', [Validators.required, Validators.pattern('^[0-9]*$')]],
-        status: [''],
+        status: ['Active'],
         permissions: [[]],
       });
 
@@ -204,7 +206,9 @@ export class AddEditAppMenuMappingComponent implements OnInit {
 
           );
           return {
-            id: submenu.id || null,
+            // The update API uses a non-nullable System.Guid. Guid.Empty marks
+            // a submenu that must be inserted; existing submenu IDs are retained.
+            id: submenu.id || this.emptyGuid,
             menuName: submenu.menuName,
             menuURL: submenu.routing,
             description: submenu.description || '',

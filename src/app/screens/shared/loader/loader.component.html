@@ -1,18 +1,7 @@
-<div class="custom-loader-wrapper">
-  <div id="wifi-loader">
-    <svg class="circle-outer" viewBox="0 0 86 86">
-      <circle class="back" cx="43" cy="43" r="40"></circle>
-      <circle class="front" cx="43" cy="43" r="40"></circle>
-      <circle class="new" cx="43" cy="43" r="40"></circle>
-    </svg>
-    <svg class="circle-middle" viewBox="0 0 60 60">
-      <circle class="back" cx="30" cy="30" r="27"></circle>
-      <circle class="front" cx="30" cy="30" r="27"></circle>
-    </svg>
-    <svg class="circle-inner" viewBox="0 0 34 34">
-      <circle class="back" cx="17" cy="17" r="14"></circle>
-      <circle class="front" cx="17" cy="17" r="14"></circle>
-    </svg>
-    <div class="text" data-text="Loading..."></div>
+<div class="custom-loader-wrapper" role="status" aria-live="polite" aria-label="Loading">
+  <div class="loader-panel">
+    <div class="loader-mark"><span></span><span></span><span></span><span></span></div>
+    <div class="loader-copy"><strong>Preparing secure access</strong><small>Please wait a moment</small></div>
+    <div class="loader-progress"><i></i></div>
   </div>
 </div>

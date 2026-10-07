@@ -1,30 +1,29 @@
-.main-wrapper {
-  display: flex;
-  flex-direction: column;
-  height: 100vh; // Set exact viewport height
-  overflow: hidden; // Prevent scrolling on the main container
-  
-  .main-article-wrapper {
-    display: flex;
-    position: relative;
-    height: calc(100vh - 110px); // Adjust based on header/footer height
-    margin-top: 70px; // Space for header
-    margin-bottom: 40px; // Space for footer
-    overflow-y: auto; // This is where the scrollbar will appear
-    overflow-x: hidden;
-    
-    .right-article-section {
-      width: calc(100% - 250px);
-      transition: width 0.3s ease;
-      padding: 20px 0;
-      margin-left: 240px; // Match sidebar width
-      // No overflow property here as the parent will handle scrolling
-    }
-    
-    &.collapsed-sidebar {
-      .right-article-section {
-        width: calc(100% - 70px);
-      }
-    }
-  }
+.main-wrapper{
+  width:100vw;
+  height:100vh;
+  overflow:hidden;
+  background:
+    radial-gradient(circle at 96% 4%,rgba(104,94,224,.12),transparent 24%),
+    radial-gradient(circle at 18% 98%,rgba(28,190,187,.09),transparent 22%),
+    #e7e9f1;
+}
+
+.main-article-wrapper{
+  width:100%;
+  height:100%;
+  padding-top:50px;
+  padding-left:200px;
+  overflow:hidden;
+}
+
+.right-article-section{
+  width:100%;
+  height:100%;
+  padding:14px 14px 18px;
+  overflow:visible;
+}
+
+@media(max-width:800px){
+  .main-article-wrapper{padding-top:48px;padding-left:68px}
+  .right-article-section{padding:12px 13px 16px}
 }

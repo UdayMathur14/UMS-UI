@@ -172,8 +172,7 @@ export class SignupComponent implements OnInit {
     control &&
     control.touched &&
     (control.hasError('required') ||
-     control.hasError('whitespace') ||
-     control.hasError('pattern'))
+     control.hasError('whitespace'))
   );
 }
 

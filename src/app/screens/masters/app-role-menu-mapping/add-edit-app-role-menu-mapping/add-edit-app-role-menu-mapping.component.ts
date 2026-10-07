@@ -28,7 +28,6 @@ export class AddEditAppRoleMenuMappingComponent implements OnInit {
   subMenuPermissionData: any[] = [];
   roleMenuId: any;
   allMenus: any;
-  allSubmenus: any;
   appName: string = '';
   menuName: any;
   selectedMenuId: string = '';
@@ -155,14 +154,23 @@ export class AddEditAppRoleMenuMappingComponent implements OnInit {
     const subMenuArray = this.subMenus(menuIndex);
     if (!subMenuArray) return;
 
-    const availableSubMenus = this.getAvailableSubMenus(menuIndex, -1);
-    const availableCounts = availableSubMenus.length || 0;
-    if (availableCounts < numberOfSubMenus) {
-      this.toastr.warning('Not enough submenus available to add');
+    const requestedCount = Number(numberOfSubMenus);
+    if (!Number.isInteger(requestedCount) || requestedCount < 1) {
+      this.toastr.warning('Please enter a valid number of submenus');
       return;
     }
 
-    for (let i = 0; i < numberOfSubMenus; i++) {
+    const availableSubMenus = this.getAvailableSubMenus(menuIndex, -1);
+    const availableCount = availableSubMenus.length;
+    if (availableCount < requestedCount) {
+      const label = availableCount === 1 ? 'submenu is' : 'submenus are';
+      this.toastr.warning(
+        `Only ${availableCount} ${label} available to add for this menu`
+      );
+      return;
+    }
+
+    for (let i = 0; i < requestedCount; i++) {
       const newSubMenu = this.formBuilder.group({
         menuName: ['', Validators.required],
         permissions: [[]],
@@ -205,7 +213,7 @@ export class AddEditAppRoleMenuMappingComponent implements OnInit {
   ) {
     const subMenuArray = this.subMenus(menuIndex);
     if (!subMenuArray) return;
-    const selectedSubMenu = this.allSubmenus?.find(
+    const selectedSubMenu = this.getSubMenusForMenu(menuIndex).find(
       (sub: any) => sub.id === selectedSubMenuId
     );
     this.subMenuPermissionsMap[`${menuIndex}-${subMenuIndex}`] =
@@ -277,7 +285,6 @@ export class AddEditAppRoleMenuMappingComponent implements OnInit {
       .subscribe(
         (response: any) => {
           this.selectedMenu = response.menus;
-          this.allSubmenus = this.selectedMenu[0]?.subMenu;
 
           if (this.selectedMenuId) {
             this.getMenuPermissions(this.selectedMenuId, menuIndex);
@@ -472,7 +479,8 @@ export class AddEditAppRoleMenuMappingComponent implements OnInit {
     // Find parent and submenu names
     const parentMenuId = this.menus().at(menuIndex).get('menuName')?.value;
     const parentMenuName = this.allMenus.find((m: any) => m.id === parentMenuId)?.menuName;
-    const menuName = this.allSubmenus?.find((sub: any) => sub.id === menuId)?.menuName || '';
+    const menuName = this.getSubMenusForMenu(menuIndex)
+      .find((sub: any) => sub.id === menuId)?.menuName || '';
 
     if (existingSubMenuId) {
       this.deletedSubMenus.push({
@@ -493,7 +501,16 @@ export class AddEditAppRoleMenuMappingComponent implements OnInit {
       .map((ctrl, idx) => idx !== subMenuIndex ? ctrl.get('menuName')?.value : null)
       .filter(id => !!id);
 
-    return this.allSubmenus?.filter((submenu: any) => !selectedIds.includes(submenu.id)) || [];
+    return this.getSubMenusForMenu(menuIndex)
+      .filter((submenu: any) => !selectedIds.includes(submenu.id));
+  }
+
+  private getSubMenusForMenu(menuIndex: number): any[] {
+    const parentMenuId = this.menus().at(menuIndex)?.get('menuName')?.value;
+    const parentMenu = (this.allMenus || [])
+      .find((menu: any) => menu.id === parentMenuId);
+
+    return parentMenu?.subMenu || [];
   }
 
   // onSubMenuChange(event: any, i: number, j: number) {
@@ -550,6 +567,7 @@ export class AddEditAppRoleMenuMappingComponent implements OnInit {
     menuList?.menuDetails.forEach((menuItem: any, index: number) => {
       const menuId = menuItem.menuId;
       const matchedMenu = this.allMenus.find((m: any) => m.id === menuId);
+      const availableSubMenus = matchedMenu?.subMenu || [];
 
       const allPermissions = matchedMenu?.permissions?.map((perm: any) => ({
         id: perm.id,
@@ -571,15 +589,13 @@ export class AddEditAppRoleMenuMappingComponent implements OnInit {
 
         menuItem.subMenuLists.forEach((subMenuItem: any, subIndex: number) => {
           const subMenuId = subMenuItem.menuId;
-          const parentMenu = this.allMenus.find((m: any) => m.id === menuId);
-          const matchedSubMenu = parentMenu?.subMenu?.find((s: any) => s.id === subMenuId);
+          const matchedSubMenu = availableSubMenus
+            .find((s: any) => s.id === subMenuId);
 
           const allSubPermissions = matchedSubMenu?.permissions?.map((perm: any) => ({
             id: perm.id,
             permissionName: perm.permissionName.split('_').pop()
           })) || [];
-
-          this.allSubmenus = parentMenu?.subMenu || [];
 
           const selectedSubPermissions = this.mapPermissions(subMenuItem.permissionDetails);
 

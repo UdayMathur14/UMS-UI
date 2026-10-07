@@ -1,46 +1,177 @@
-h3 {
-    margin-top: 5rem;
-    font-weight: bold;
+.menu-container {
+  min-height: calc(100vh - 160px);
+  max-height: calc(100vh - 150px);
+  padding: 0 15px;
+  overflow-x: hidden;
+  overflow-y: auto;
 }
 
-h5 {
-    font-weight: bold;
+.mapping-overview {
+  --bs-gutter-x: 28px;
+  margin-right: 0;
+  margin-left: 0;
+  padding: 18px 4px 8px;
+  border: 1px solid #dce2eb;
+  border-radius: 16px;
+  background: #fff;
 }
 
-// .delete-icon {
-//     width: 30px;
-//     height: 30px;
-//     margin-top: 20px;
-//     margin-right: 30px;
-// }
+.mapping-menu-list {
+  margin-right: 0;
+  margin-left: 0;
+}
+
 .menu-card {
-    background: #ffffff;
-    box-shadow: 0 2px 5px rgba(0, 0, 0, 0.1);
-    border-radius: 8px;
-    margin-bottom: 20px;
-  }
-  
-  .submenu-section {
-    border-left: 5px solid #007bff;
-  }
-  
-  .submenu-item {
-    background: #f8f9fa;
+  margin-bottom: 20px;
+  padding: 0 24px 24px;
+  border: 1px solid #d7dee8;
+  border-radius: 16px;
+  background: #fff;
+  box-shadow: 0 10px 26px rgba(28, 39, 59, 0.07);
+}
+
+.menu-card-header {
+  min-height: 68px;
+  margin: 0 -24px;
+  padding: 0 24px;
+  border-bottom: 1px solid #cfd6e0;
+  border-radius: 15px 15px 0 0;
+  background: #f7f8fa;
+}
+
+.menu-card-header h5 {
+  margin: 0;
+  color: #1d2636;
+  font-size: 14px;
+  font-weight: 800;
+}
+
+.mapping-fields-grid,
+.submenu-fields-grid {
+  display: grid;
+  grid-template-columns: minmax(260px, 1fr) minmax(260px, 1fr) 54px;
+  column-gap: 28px;
+  align-items: start;
+}
+
+.mapping-fields-grid {
+  padding-top: 22px;
+}
+
+.mapping-field {
+  min-width: 0;
+}
+
+.mapping-field .custom-form-input {
+  width: 100%;
+  margin: 0;
+}
+
+.mapping-field .custom-form-input label,
+.action-label {
+  min-height: 15px;
+  margin: 0 0 7px;
+  color: #637087;
+  font-size: 10px;
+  font-weight: 800;
+  line-height: 15px;
+  text-transform: uppercase;
+  letter-spacing: 0.045em;
+}
+
+.mapping-field ::ng-deep .ng-select .ng-select-container,
+.mapping-field ::ng-deep .multiselect-dropdown .dropdown-btn {
+  height: 46px !important;
+  min-height: 46px !important;
+  display: flex !important;
+  align-items: center !important;
+}
+
+.mapping-field ::ng-deep .multiselect-dropdown .dropdown-btn {
+  padding-top: 8px !important;
+  padding-bottom: 8px !important;
+}
+
+.submenu-section {
+  margin-top: 26px;
+  padding: 0;
+  border-top: 2px solid #202631;
+  border-bottom: 1px solid #cfd6e0;
+  background: #fff;
+}
+
+.submenu-section-title {
+  margin: 0;
+  padding: 14px 0;
+  border-bottom: 1px solid #cfd6e0;
+  color: #1d2636;
+  font-size: 13px;
+  font-weight: 800;
+}
+
+.submenu-item {
+  padding: 0 0 20px;
+  border-bottom: 1px solid #dfe4eb;
+  background: #fff;
+}
+
+.submenu-item:last-child {
+  border-bottom: 0;
+}
+
+.submenu-item-header {
+  margin-bottom: 18px;
+  padding: 14px 0 10px;
+  color: #273143;
+  font-size: 11px;
+  font-weight: 800;
+}
+
+.submenu-action {
+  display: flex;
+  flex-direction: column;
+  align-items: flex-start;
+}
+
+.action-label {
+  display: block;
+  width: 100%;
+  color: transparent;
+  user-select: none;
+}
+
+.submenu-delete {
+  width: 46px;
+  height: 46px;
+  min-height: 46px;
+  display: grid;
+  place-items: center;
+  margin: 0 !important;
+  padding: 0 !important;
+  border-radius: 9px !important;
+}
+
+.submenu-delete .bi {
+  font-size: 14px;
+  line-height: 1;
+}
+
+@media (max-width: 900px) {
+  .mapping-fields-grid,
+  .submenu-fields-grid {
+    grid-template-columns: 1fr;
+    row-gap: 14px;
   }
 
-  .menu-heading{
-    font-weight: 600;
-    font-size:16px;
-    color: #4361ee;
+  .mapping-action-spacer {
+    display: none;
   }
 
-  .menu-container{
-    min-height: calc(100vh - 160px);
-    max-height: calc(100vh - 150px);    
-    overflow-y: auto;
-    overflow-x: hidden;
-    padding: 0 15px;
+  .submenu-action {
+    align-items: flex-end;
   }
-  
-  
-  
+
+  .action-label {
+    display: none;
+  }
+}

@@ -8,7 +8,7 @@
 </div>
 <div class="menu-container">
   <form [formGroup]="menuForm">
-    <div class="row mt-3">
+    <div class="row application-details-section">
       <div class="menu-heading mb-3">
         Application Details
       </div>
@@ -30,19 +30,19 @@
         </div>
       </div>
     </div>
-    <div class="d-flex justify-content-between" *ngIf="menus().length">
-      <div class="menu-heading mt-3">
+    <div class="d-flex justify-content-between menu-details-header" *ngIf="menus().length">
+      <div class="menu-heading">
         Menu Details
       </div>
     </div>
 
 
-    <div class="row mt-4" formArrayName="menu">
+    <div class="row menus-layout" formArrayName="menu">
       <div *ngFor="let menu of menus().controls; let i = index" [formGroupName]="i"
-        class="menu-card p-3 border rounded">
-        <div class="row align-items-center">
+        class="menu-card">
+        <div class="row align-items-center menu-card-header">
           <div class="col-6">
-            <h5 class="fw-bold text-primary">Menu {{ i + 1 }}</h5>
+            <h5>Menu {{ i + 1 }}</h5>
           </div>
           <div class="col-6 text-end">
             <!-- <button type="button" class="custom-button-regulr" [ngbPopover]="popContent" [autoClose]="'outside'"
@@ -89,7 +89,7 @@
         </div>
 
         <!-- Menu Fields -->
-        <div class="row mt-3">
+        <div class="row menu-fields-grid">
           <div class="col-lg-3">
             <div class="custom-form-input">
               <label>Menu Name<span class="text-danger">*</span></label>
@@ -131,15 +131,15 @@
         </div>
 
         <!-- Submenu Section -->
-        <div *ngIf="subMenus(i).length > 0" formArrayName="subMenu" class="mt-4 submenu-section p-3 bg-light rounded">
-          <h6 class="fw-bold text-secondary">Sub Menus</h6>
+        <div *ngIf="subMenus(i).length > 0" formArrayName="subMenu" class="submenu-section">
+          <h6 class="submenu-title">Sub Menus</h6>
           <div *ngIf="subMenus(i) as subMenuArray">
             <div *ngFor="let _subSubMenu of subMenuArray.controls; let j = index" [formGroupName]="j"
-              class="submenu-item mt-3 p-2 border rounded">
-              <div class="row">
-                <div class="mb-3 fw-bold text-success">
-                  Sub Menu {{i+1}}.{{j+1}}
-                </div>
+              class="submenu-item">
+              <div class="submenu-item-header">
+                <span>Sub Menu {{i+1}}.{{j+1}}</span>
+              </div>
+              <div class="row submenu-fields-grid">
                 <div class="col-lg-3">
                   <div class="custom-form-input">
                     <label>Name<span class="text-danger">*</span></label>

@@ -11,7 +11,7 @@
 </div>
 <div class="menu-container">
   <form [formGroup]="menuForm">
-    <div class="row mt-3">
+    <div class="row mt-3 mapping-overview">
       <div class="col-4">
         <div class="custom-form-input">
           <label>App Name<span class="text-danger">*</span></label>
@@ -40,12 +40,12 @@
       </div>
     </div>
 
-    <div class="row mt-4" formArrayName="menu">
+    <div class="row mt-4 mapping-menu-list" formArrayName="menu">
       <div *ngFor="let menu of menus().controls; let i = index" [formGroupName]="i"
-        class="menu-card p-3 border rounded">
-        <div class="row align-items-center">
+        class="menu-card">
+        <div class="row align-items-center menu-card-header">
           <div class="col-6">
-            <h5 class="fw-bold text-primary">Menu {{ i + 1 }}</h5>
+            <h5>Menu {{ i + 1 }}</h5>
           </div>
           <!-- *ngIf="!isUpdateMode" -->
           <div class="col-6 text-end">
@@ -70,8 +70,8 @@
           </div>
         </div>
 
-        <div class="row mt-3">
-          <div class="col-lg-4">
+        <div class="mapping-fields-grid">
+          <div class="mapping-field">
             <div class="custom-form-input">
               <label>Menu Name</label>
               <ng-select class="input-field" dropdownPosition="bottom" placeholder="Select Menu Name"
@@ -80,7 +80,7 @@
               </ng-select>
             </div>
           </div>
-          <div class="col-lg-4">
+          <div class="mapping-field">
             <div class="custom-form-input">
               <label>Permissions</label>
               <ng-multiselect-dropdown [settings]="permissionDropdown" [data]="menuPermissionsMap[i] || []"
@@ -89,19 +89,20 @@
 
             </div>
           </div>
+          <div class="mapping-action-spacer" aria-hidden="true"></div>
         </div>
 
-        <div *ngIf="subMenus(i).length > 0" formArrayName="subMenu" class="mt-4 submenu-section p-3 bg-light rounded">
-          <h6 class="fw-bold text-secondary">Sub Menus</h6>
+        <div *ngIf="subMenus(i).length > 0" formArrayName="subMenu" class="submenu-section">
+          <h6 class="submenu-section-title">Sub Menus</h6>
           <div *ngIf="subMenus(i) as subMenuArray">
             <div *ngFor="let subMenu of subMenuArray.controls; let j = index">
               <div [formGroupName]="j" *ngIf="subMenu.get('status')?.value !== 'Inactive'"
-                class="submenu-item mt-3 p-2 border rounded">
-                <div class="row">
-                  <div class="mb-3 fw-bold text-success">
+                class="submenu-item">
+                <div class="submenu-item-header">
                     Sub Menu {{ i + 1 }}.{{ j + 1 }}
-                  </div>
-                  <div class="col-lg-4">
+                </div>
+                <div class="submenu-fields-grid">
+                  <div class="mapping-field">
                     <div class="custom-form-input">
                       <label>Name<span class="text-danger">*</span></label>
                       <ng-select class="input-field" dropdownPosition="bottom" placeholder="Select Menu Name"
@@ -114,7 +115,7 @@
                     </div>
                   </div>
 
-                  <div class="col-lg-4">
+                  <div class="mapping-field">
                     <div class="custom-form-input">
                       <label>Permissions</label>
                       <ng-multiselect-dropdown [settings]="permissionDropdown"
@@ -123,8 +124,10 @@
                     </div>
                   </div>
 
-                  <div class="col-lg-1">
-                    <button type="button" class="btn btn-danger mt-4" (click)="removeSubMenu(i, j)">
+                  <div class="submenu-action">
+                    <span class="action-label" aria-hidden="true">Action</span>
+                    <button type="button" class="btn btn-danger submenu-delete" (click)="removeSubMenu(i, j)"
+                      aria-label="Remove submenu">
                       <i class="bi bi-trash"></i>
                     </button>
                   </div>

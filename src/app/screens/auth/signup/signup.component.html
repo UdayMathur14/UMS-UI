@@ -2,7 +2,7 @@
   <!-- Left Section with Heading and Lottie (matching login design) -->
   <div class="left-panel">
     <div class="branding">
-      <h1 style="margin-left: 50px;">Create Your User Account</h1>
+      <h1>Create Your User Account</h1>
       <!-- <p>Get started with Tick Wiz — your journey to smarter support begins here.</p> -->
 
       <!-- <iframe src="https://lottie.host/embed/465f8ec3-f3aa-4c5c-aab0-95d5170759e7/O9h5pbVJHC.lottie" frameborder="0" class="lottie-frame" ></iframe> -->
@@ -28,56 +28,73 @@
             alt="Company Logo" />
         </div>
         <h2 class="signup-title">Create an Account</h2>
-        <!-- <p class="signup-subtitle">Start your journey with a smart workspace</p> -->
 
         <div class="form-container">
           <form [formGroup]="signUpForm" (ngSubmit)="onSubmit()">
-            <label>Full Name</label>
-            <div class="input-group">
-              <i class="bi bi-person"></i>
-              <input type="text" formControlName="userName" placeholder="Enter full name" />
-            </div>
-            <small *ngIf="isFieldRequired('userName')" class="error">Full Name is required.</small>
-
-            <label>Email Address</label>
-            <div class="input-group">
-              <i class="bi bi-envelope"></i>
-              <input type="email" formControlName="emailId" placeholder="Enter email address"
-                [disabled]="isMicrosoftLogin" />
-            </div>
-            <small *ngIf="isFieldRequired('emailId')" class="error">Email is required.</small>
-            <small *ngIf="isEmailInvalid()" class="error">Enter a valid email address.</small>
-
-            <label>Phone Number</label>
-            <div class="input-group">
-              <i class="bi bi-telephone"></i>
-              <input type="text" formControlName="contactNo" placeholder="Enter phone number" maxlength="10" />
+            <div class="signup-field">
+              <label>Full Name</label>
+              <div class="input-group">
+                <i class="bi bi-person"></i>
+                <input type="text" formControlName="userName" placeholder="Enter full name" />
+              </div>
+              <div class="field-error" aria-live="polite">
+                <small *ngIf="isFieldRequired('userName')" class="error">Full name is required.</small>
+              </div>
             </div>
 
-            <small *ngIf="signUpForm.get('contactNo')?.touched && signUpForm.get('contactNo')?.hasError('required')"
-              class="error">
-              Phone number is required.
-            </small>
-
-            <small *ngIf="signUpForm.get('contactNo')?.touched && signUpForm.get('contactNo')?.hasError('minlength')"
-              class="error">
-              Phone number must be 10 digits.
-            </small>
-
-
-            <label>Organisation</label>
-            <ng-select [items]="filteredOrganisations" bindLabel="organisation" bindValue="organisation"
-              [searchable]="true" placeholder="Search your organisation..." formControlName="organisation"
-              (search)="onSearchOrganisation($event)">
-            </ng-select>
-            <small *ngIf="isFieldRequired('organisation')" class="error">Organisation is required.</small>
-
-            <label>Designation</label>
-            <div class="input-group">
-              <i class="bi bi-briefcase"></i>
-              <input type="text" formControlName="designation" placeholder="Enter your designation" />
+            <div class="signup-field">
+              <label>Email Address</label>
+              <div class="input-group">
+                <i class="bi bi-envelope"></i>
+                <input type="email" formControlName="emailId" placeholder="Enter email address"
+                  [disabled]="isMicrosoftLogin" />
+              </div>
+              <div class="field-error" aria-live="polite">
+                <small *ngIf="isFieldRequired('emailId')" class="error">Email is required.</small>
+                <small *ngIf="isEmailInvalid()" class="error">Enter a valid email address.</small>
+              </div>
             </div>
-            <small *ngIf="isFieldRequired('designation')" class="error">Designation is required.</small>
+
+            <div class="signup-field">
+              <label>Phone Number</label>
+              <div class="input-group">
+                <i class="bi bi-telephone"></i>
+                <input type="text" formControlName="contactNo" placeholder="Enter phone number" maxlength="10" />
+              </div>
+              <div class="field-error" aria-live="polite">
+                <small *ngIf="signUpForm.get('contactNo')?.touched && signUpForm.get('contactNo')?.hasError('required')"
+                  class="error">
+                  Phone number is required.
+                </small>
+                <small
+                  *ngIf="signUpForm.get('contactNo')?.touched && !signUpForm.get('contactNo')?.hasError('required') && signUpForm.get('contactNo')?.hasError('minlength')"
+                  class="error">
+                  Phone number must be 10 digits.
+                </small>
+              </div>
+            </div>
+
+            <div class="signup-field">
+              <label>Organisation</label>
+              <ng-select [items]="filteredOrganisations" bindLabel="organisation" bindValue="organisation"
+                [searchable]="true" placeholder="Search your organisation..." formControlName="organisation"
+                (search)="onSearchOrganisation($event)">
+              </ng-select>
+              <div class="field-error" aria-live="polite">
+                <small *ngIf="isFieldRequired('organisation')" class="error">Organisation is required.</small>
+              </div>
+            </div>
+
+            <div class="signup-field signup-field-wide">
+              <label>Designation</label>
+              <div class="input-group">
+                <i class="bi bi-briefcase"></i>
+                <input type="text" formControlName="designation" placeholder="Enter your designation" />
+              </div>
+              <div class="field-error" aria-live="polite">
+                <small *ngIf="isFieldRequired('designation')" class="error">Designation is required.</small>
+              </div>
+            </div>
 
             <button type="submit" class="submit-btn" [disabled]="!signUpForm.valid">Sign Up</button>
             <p class="redirect">Already have an account? <a routerLink="/auth/login">Log In</a></p>

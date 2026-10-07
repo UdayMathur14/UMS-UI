@@ -109,7 +109,7 @@ export class GoogleAuthService {
         const storedData = localStorage.getItem('data');
         if (storedData) {
           const dataObj = JSON.parse(storedData);
-          this.toastr.success('Logged In Successfully', response.message);
+          this.toastr.success('Your access portal is ready.', 'Welcome back');
           const token = dataObj.accessToken;
           const userApp = dataObj.apps.find(
             (app: any) =>

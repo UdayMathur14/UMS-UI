@@ -10,7 +10,23 @@ import { ThemeService } from '../../core/service/theme.service';
 export class SidebarComponent implements OnInit {
     isDarkMode: boolean = false;
 
-    constructor(private themeService: ThemeService) { }
+    private readonly sectionRoutes: Record<string, string[]> = {
+        'signup-status': ['user-signup-status', 'edit-user-signup-status'],
+        'user-master': ['user-master', 'add-user-master', 'edit-user-master', 'upload-users'],
+        'lookup-master': ['lookup-master', 'add-lookup', 'edit-lookup'],
+        'role-master': ['role-master', 'add-role', 'edit-role'],
+        'app-menu-mapping': ['app-menu-mapping', 'add-app-menu-mapping', 'edit-app-menu-mapping'],
+        'app-role-menu-mapping': [
+            'app-role-menu-mapping',
+            'add-app-role-menu-mapping',
+            'edit-app-role-menu-mapping'
+        ]
+    };
+
+    constructor(
+        private themeService: ThemeService,
+        private router: Router
+    ) { }
 
     ngOnInit(): void {
         // Initialize the dark mode state
@@ -18,6 +34,13 @@ export class SidebarComponent implements OnInit {
         this.themeService.darkMode$.subscribe(isDark => {
             this.isDarkMode = isDark;
         });
+    }
+
+    isSectionActive(section: string): boolean {
+        const currentPath = this.router.url.split('?')[0].split('#')[0];
+        return (this.sectionRoutes[section] || []).some((route) =>
+            currentPath === `/masters/${route}` || currentPath.startsWith(`/masters/${route}/`)
+        );
     }
 
 }

@@ -1,26 +1,51 @@
-<div>
-  <a href="client/dashboard">
-      <img style="width: 100px; height: 65px; margin-left: 60px; "  src="../../../assets/images/diplogo.png" class="full-logo ms-4">
-  </a>
-  <app-header></app-header>
+<div class="portal-shell">
+  <header class="portal-nav">
+    <a class="portal-brand" href="client/dashboard" aria-label="Ennoble IP home">
+      <span class="brand-mark"><img src="../../../assets/images/diplogo.png" alt="Ennoble IP logo"></span>
+      <span class="brand-copy"><strong>UMS</strong><small>ENNOBLE IP</small></span>
+    </a>
+
+    <app-header></app-header>
+  </header>
+
+  <main class="portal-main">
+    <section class="launch-deck">
+      <div class="launch-heading">
+        <div>
+          <h2>Applications</h2>
+        </div>
+      </div>
+
+      <div class="application-grid" *ngIf="apps?.length; else noApplications">
+        <button class="application-card" *ngFor="let app of apps; let i = index" (click)="onClickApp(app)">
+          <span class="card-index">{{ (i + 1).toString().padStart(2, '0') }}</span>
+          <span class="card-state"><i></i> AVAILABLE</span>
+          <span class="application-icon">{{ app.name?.charAt(0) }}</span>
+          <span class="application-copy">
+            <strong>{{ app.name }}</strong>
+            <small>Secure application</small>
+          </span>
+          <span class="open-action">OPEN <i class="bi bi-arrow-up-right"></i></span>
+          <span class="card-accent"></span>
+          <span class="hover-emblem" aria-hidden="true"><i class="bi bi-stars"></i></span>
+        </button>
+      </div>
+
+      <ng-template #noApplications>
+        <div class="empty-applications">
+          <div class="empty-graphic">
+            <span></span><span></span><span></span>
+            <i class="bi bi-grid"></i>
+          </div>
+          <div>
+            <strong>Your launchpad is ready</strong>
+            <p>Applications assigned to your account will appear here automatically.</p>
+          </div>
+        </div>
+      </ng-template>
+
+    </section>
+  </main>
+
+  <app-loader *ngIf="loadSpinner"></app-loader>
 </div>
-
-
-<div class="tiles-wrapper ms-5">
-  <div class="tile-box" *ngFor="let app of apps" (click)="onClickApp(app)">
-
-    <div class="tile-content">
-      <div class="icon">
-        <span></span>
-      </div>
-      <div class="tile-title">
-        {{ app.name}}
-      </div>
-
-      <div class="tile-desc">
-        {{app.description}}
-      </div>
-    </div>
-</div>
-<app-loader *ngIf="loadSpinner"></app-loader>
-

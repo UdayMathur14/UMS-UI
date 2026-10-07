@@ -1,35 +1,38 @@
-<div>
-<img style="width: 100px; height: 65px; margin-left: 60px; " [src]="isDarkMode ? 'assets/images/diplogo-white.png' : 'assets/images/diplogo.png'" class="full-logo"
-      alt="Logo">
-</div>
-
 <div class="sidebar">
+    <div class="brand-block">
+        <img src="assets/images/diplogo-white.png" class="full-logo" alt="Ennoble IP Logo">
+        <div class="brand-copy"><strong>UMS</strong><span>Control centre</span></div>
+    </div>
+    <div class="menu-label">Navigation</div>
     <ul class="nav-menu">
-        <li class="nav-item" routerLink="/masters/user-signup-status" routerLinkActive="active">
+        <li class="nav-item" routerLink="/masters/user-signup-status"
+            [class.active]="isSectionActive('signup-status')">
             <a class="nav-link">
                 <div class="nav-content">
                     <div class="icon-container">
-                        <i class="icon user-signup-icon"></i>
+                        <i class="bi bi-person-check nav-icon"></i>
                     </div>
                     <span>User SignUp Status</span>
                 </div>
             </a>
         </li>
-        <li class="nav-item" routerLink="/masters/user-master" routerLinkActive="active">
+        <li class="nav-item" routerLink="/masters/user-master"
+            [class.active]="isSectionActive('user-master')">
             <a class="nav-link">
                 <div class="nav-content">
                     <div class="icon-container">
-                        <i class="icon user-master-icon"></i>
+                        <i class="bi bi-people nav-icon"></i>
                     </div>
                     <span>User Master</span>
                 </div>
             </a>
         </li>
-        <li class="nav-item" routerLink="/masters/lookup-master" routerLinkActive="active">
+        <li class="nav-item" routerLink="/masters/lookup-master"
+            [class.active]="isSectionActive('lookup-master')">
             <a class="nav-link">
                 <div class="nav-content">
                     <div class="icon-container">
-                        <i class="icon lookup-master-icon"></i>
+                        <i class="bi bi-sliders2 nav-icon"></i>
                     </div>
                     <span>Lookup Master</span>
                 </div>
@@ -45,35 +48,39 @@
                 </div>
             </a>
         </li> -->
-        <li class="nav-item" routerLink="/masters/role-master" routerLinkActive="active">
+        <li class="nav-item" routerLink="/masters/role-master"
+            [class.active]="isSectionActive('role-master')">
             <a class="nav-link">
                 <div class="nav-content">
                     <div class="icon-container">
-                        <i class="icon role-master-icon"></i>
+                        <i class="bi bi-shield-lock nav-icon"></i>
                     </div>
                     <span>Role Master</span>
                 </div>
             </a>
         </li>
-        <li class="nav-item" routerLink="/masters/app-menu-mapping" routerLinkActive="active">
+        <li class="nav-item" routerLink="/masters/app-menu-mapping"
+            [class.active]="isSectionActive('app-menu-mapping')">
             <a class="nav-link">
                 <div class="nav-content">
                     <div class="icon-container">
-                        <i class="icon app-menu-mapping-icon"></i>
+                        <i class="bi bi-grid-1x2 nav-icon"></i>
                     </div>
                     <span>App Menu Mapping</span>
                 </div>
             </a>
         </li>
-        <li class="nav-item" routerLink="/masters/app-role-menu-mapping" routerLinkActive="active">
+        <li class="nav-item" routerLink="/masters/app-role-menu-mapping"
+            [class.active]="isSectionActive('app-role-menu-mapping')">
             <a class="nav-link">
                 <div class="nav-content">
                     <div class="icon-container">
-                        <i class="icon app-role-menu-mapping-icon"></i>
+                        <i class="bi bi-diagram-3 nav-icon"></i>
                     </div>
                     <span>App Role Menu Mapping</span>
                 </div>
             </a>
         </li>
     </ul>
+    <div class="sidebar-footer"><span class="footer-monogram">E</span><strong>ENNOBLE IP</strong></div>
 </div>
